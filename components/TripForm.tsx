@@ -1,23 +1,12 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { supabase } from '@/lib/supabase';
-import { useUser } from '@/hooks/useUser';
 import { useState } from 'react';
-
-const tripSchema = z.object({
-  name: z.string().min(1, 'Trip name is required'),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-  notes: z.string().optional(),
-});
-
-type TripFormValues = z.infer<typeof tripSchema>;
+import { useAddTrip } from '@/lib/mutations/useAddTrip';
+import { TripFormValues, tripSchema } from '@/types/forms';
 
 export default function TripForm() {
-  const { user } = useUser();
   const [message, setMessage] = useState('');
   const {
     register,
@@ -25,24 +14,15 @@ export default function TripForm() {
     formState: { errors },
   } = useForm<TripFormValues>({ resolver: zodResolver(tripSchema) });
 
+  const addTrip = useAddTrip();
+
   const onSubmit = async (data: TripFormValues) => {
     setMessage('');
-    if (!user) return;
-
-    const { error } = await supabase.from('trips').insert([
-      {
-        user_id: user.id,
-        name: data.name,
-        start_date: data.start_date || null,
-        end_date: data.end_date || null,
-        notes: data.notes || null,
-      },
-    ]);
-
-    if (error) {
-      setMessage(error.message);
-    } else {
+    try {
+      await addTrip.mutateAsync(data);
       setMessage('Trip added!');
+    } catch (err: any) {
+      setMessage(err.message);
     }
   };
 
