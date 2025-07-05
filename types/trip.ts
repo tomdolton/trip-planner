@@ -1,14 +1,13 @@
-interface Trip {
-    id: string;
-    name: string;
-    destination: string;
-    startDate: string;
-    endDate: string;
-    description?: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: string;
-    isPublic: boolean;
-    isArchived: boolean;
-    isDeleted: boolean;
+export interface Trip {
+  id: string;
+  name: string;
+  //   destination: string;
+  start_date?: string;
+  end_date?: string;
+  notes?: string;
+  createdAt: string;
+  userId: string;
+  //   isPublic: boolean;
+  //   isArchived: boolean;
+  //   isDeleted: boolean;
 }
