@@ -21,6 +21,7 @@ import { Trip } from '@/types/trip';
 import { toast } from 'sonner';
 import { format, parseISO } from 'date-fns';
 import { Pencil, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
@@ -28,6 +29,8 @@ export default function TripList() {
 
   const { data: trips, isLoading, isError } = useTrips();
   const deleteTrip = useDeleteTrip();
+
+  const router = useRouter();
 
   const confirmDelete = () => {
     if (!tripToDelete) return;
@@ -67,7 +70,11 @@ export default function TripList() {
     <>
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
         {trips.map((trip) => (
-          <Card key={trip.id}>
+          <Card
+            key={trip.id}
+            onClick={() => router.push(`/trips/${trip.id}`)}
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+          >
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>{trip.name}</span>
@@ -89,14 +96,24 @@ export default function TripList() {
             </CardContent>
 
             <CardFooter className="flex justify-end gap-2">
-              <Button variant="outline" size="sm" onClick={() => setEditingTrip(trip)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEditingTrip(trip);
+                }}
+              >
                 <Pencil className="w-4 h-4 mr-1" />
                 Edit
               </Button>
               <Button
                 variant="destructive"
                 size="sm"
-                onClick={() => setTripToDelete(trip)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTripToDelete(trip);
+                }}
                 disabled={deleteTrip.isPending}
               >
                 {deleteTrip.isPending && tripToDelete?.id === trip.id ? (

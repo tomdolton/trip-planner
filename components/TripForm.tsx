@@ -37,27 +37,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
   const addTrip = useAddTrip();
 
   const onSubmit = (data: TripFormValues) => {
-    addTrip.mutate(data);
+    addTrip.mutate(data, {
+      onSuccess: () => form.reset(),
+    });
   };
-
-  // Handle toast and reset
-  useEffect(() => {
-    if (addTrip.isSuccess) {
-      toast.success('Trip added successfully!');
-      form.reset();
-      onSuccess?.();
-    }
-
-    if (addTrip.isError) {
-      if (addTrip.error instanceof Error) {
-        toast.error('Error adding trip', {
-          description: addTrip.error.message,
-        });
-      } else {
-        toast.error('Error adding trip');
-      }
-    }
-  }, [addTrip.isSuccess, addTrip.isError, addTrip.error, form, onSuccess]);
 
   return (
     <Form {...form}>

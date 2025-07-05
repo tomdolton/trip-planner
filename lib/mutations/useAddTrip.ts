@@ -1,31 +1,26 @@
+// lib/mutations/useAddTrip.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../supabase';
+import { supabase } from '@/lib/supabase';
 import { TripFormValues } from '@/types/forms';
-import { useUser } from '@/hooks/useUser';
+import { toast } from 'sonner';
 
 export function useAddTrip() {
   const queryClient = useQueryClient();
-  const { user } = useUser();
 
   return useMutation({
-    mutationFn: async (trip: TripFormValues) => {
-      if (!user) throw new Error('User not authenticated');
-
-      const { error } = await supabase.from('trips').insert([
-        {
-          ...trip,
-          user_id: user.id,
-          start_date: trip.start_date || null,
-          end_date: trip.end_date || null,
-          notes: trip.notes || null,
-        },
-      ]);
-
+    mutationFn: async (newTrip: TripFormValues) => {
+      const { data, error } = await supabase.from('trips').insert(newTrip).select().single();
       if (error) throw new Error(error.message);
+      return data;
     },
     onSuccess: () => {
-      // Refresh trip list after adding
-      queryClient.invalidateQueries({ queryKey: ['trips', user?.id] });
+      toast.success('Trip added successfully!');
+      queryClient.invalidateQueries({ queryKey: ['trips'] });
+    },
+    onError: (err: Error) => {
+      toast.error('Error adding trip', {
+        description: err.message,
+      });
     },
   });
 }
