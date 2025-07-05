@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { createSupabaseClient } from '@/lib/supabase';
 import { useUser } from '@/hooks/useUser';
 
 export default function SupabaseTest() {
   const [data, setData] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
+
+  const supabase = createSupabaseClient();
 
   useEffect(() => {
     async function fetchTrips() {

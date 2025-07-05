@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { supabase } from '@/lib/supabase';
+import { createSupabaseClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
 const schema = z.object({
@@ -15,6 +15,7 @@ const schema = z.object({
 type AuthFormValues = z.infer<typeof schema>;
 
 export default function AuthForm({ type }: { type: 'login' | 'signup' }) {
+  const supabase = createSupabaseClient();
   const {
     register,
     handleSubmit,

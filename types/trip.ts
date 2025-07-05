@@ -5,8 +5,8 @@ export interface Trip {
   start_date?: string;
   end_date?: string;
   notes?: string;
-  createdAt: string;
-  userId: string;
+  // createdAt: string;
+  // userId: string;
   //   isPublic: boolean;
   //   isArchived: boolean;
   //   isDeleted: boolean;

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../supabase';
+import { createSupabaseClient } from '../supabase';
 import { TripFormValues } from '@/types/forms';
 import { useUser } from '@/hooks/useUser';
 
@@ -10,6 +10,7 @@ export function useAddTrip() {
   return useMutation({
     mutationFn: async (trip: TripFormValues) => {
       if (!user) throw new Error('User not authenticated');
+      const supabase = createSupabaseClient();
 
       const { error } = await supabase.from('trips').insert([
         {

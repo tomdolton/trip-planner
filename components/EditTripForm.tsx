@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -41,23 +40,20 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
 
   const onSubmit = (data: TripFormValues) => {
     updateTrip.mutate(
-      { ...data, id: trip.id } // Include the trip ID
+      { ...data, id: trip.id },
+      {
+        onSuccess: () => {
+          toast.success('Trip updated');
+          onClose();
+        },
+        onError: (err) => {
+          toast.error('Failed to update trip', {
+            description: err.message,
+          });
+        },
+      }
     );
   };
-
-  useEffect(() => {
-    if (updateTrip.isSuccess) {
-      toast.success('Trip updated successfully!');
-      form.reset();
-      onClose(); // Close dialog
-    }
-
-    if (updateTrip.isError && updateTrip.error instanceof Error) {
-      toast.error('Failed to update trip', {
-        description: updateTrip.error.message,
-      });
-    }
-  }, [updateTrip.isSuccess, updateTrip.isError, updateTrip.error, form, onClose]);
 
   return (
     <Form {...form}>
