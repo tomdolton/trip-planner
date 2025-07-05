@@ -13,16 +13,20 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import EditTripForm from '@/components/EditTripForm';
 import { Trip } from '@/types/trip';
 import { toast } from 'sonner';
+import { format, parseISO } from 'date-fns';
+import { Pencil, Trash2 } from 'lucide-react';
 
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
   const [tripToDelete, setTripToDelete] = useState<Trip | null>(null);
 
   const { data: trips, isLoading, isError } = useTrips();
-
   const deleteTrip = useDeleteTrip();
 
   const confirmDelete = () => {
@@ -37,27 +41,61 @@ export default function TripList() {
     setTripToDelete(null);
   };
 
-  if (isLoading) return <p className="text-center">Loading trips...</p>;
-  if (isError) return <p className="text-center text-red-500">Failed to load trips.</p>;
-  if (!trips || trips.length === 0) return <p className="text-center">No trips found.</p>;
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-32 rounded-xl" />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <p className="text-center text-red-500">Failed to load trips.</p>;
+  }
+
+  if (!trips || trips.length === 0) {
+    return (
+      <div className="text-center text-muted-foreground border rounded-md p-6">
+        <p>No trips found. Add one to get started!</p>
+      </div>
+    );
+  }
 
   return (
     <>
-      <ul>
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
         {trips.map((trip) => (
-          <li key={trip.id} className="flex justify-between items-center p-4 border-b">
-            <div>
-              <h3 className="font-semibold">{trip.name}</h3>
+          <Card key={trip.id}>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>{trip.name}</span>
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p>
-                {trip.start_date} – {trip.end_date}
+                {trip.start_date && trip.end_date ? (
+                  <>
+                    {format(parseISO(trip.start_date), 'dd MMM yyyy')} –{' '}
+                    {format(parseISO(trip.end_date), 'dd MMM yyyy')}
+                  </>
+                ) : (
+                  'No date set'
+                )}
               </p>
-            </div>
-            <div className="flex gap-2">
-              <button className="btn btn-outline" onClick={() => setEditingTrip(trip)}>
+              {trip.notes && <p>{trip.notes}</p>}
+            </CardContent>
+
+            <CardFooter className="flex justify-end gap-2">
+              <Button variant="outline" size="sm" onClick={() => setEditingTrip(trip)}>
+                <Pencil className="w-4 h-4 mr-1" />
                 Edit
-              </button>
-              <button
-                className="btn btn-destructive"
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
                 onClick={() => setTripToDelete(trip)}
                 disabled={deleteTrip.isPending}
               >
@@ -67,11 +105,14 @@ export default function TripList() {
                     Deleting...
                   </span>
                 ) : (
-                  'Delete'
+                  <>
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    Delete
+                  </>
                 )}
-              </button>
-            </div>
-          </li>
+              </Button>
+            </CardFooter>
+          </Card>
         ))}
       </ul>
 

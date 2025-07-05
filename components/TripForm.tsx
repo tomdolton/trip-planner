@@ -19,7 +19,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
-export default function TripForm() {
+type TripFormProps = {
+  onSuccess?: () => void;
+};
+
+export default function TripForm({ onSuccess }: TripFormProps) {
   const form = useForm<TripFormValues>({
     resolver: zodResolver(tripSchema),
     defaultValues: {
@@ -41,6 +45,7 @@ export default function TripForm() {
     if (addTrip.isSuccess) {
       toast.success('Trip added successfully!');
       form.reset();
+      onSuccess?.();
     }
 
     if (addTrip.isError) {
@@ -52,7 +57,7 @@ export default function TripForm() {
         toast.error('Error adding trip');
       }
     }
-  }, [addTrip.isSuccess, addTrip.isError, addTrip.error, form]);
+  }, [addTrip.isSuccess, addTrip.isError, addTrip.error, form, onSuccess]);
 
   return (
     <Form {...form}>
