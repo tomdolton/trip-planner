@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import ModeToggle from '@/components/ui/ModeToggle';
 
 import { useUser } from '@/hooks/useUser';
-import { createSupabaseClient } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,8 +19,6 @@ export default function Navbar() {
     { name: 'New Trip', path: '/trips/new-trip' },
     { name: 'Sign Up', path: '/signup' },
   ];
-
-  const supabase = createSupabaseClient();
 
   return (
     <header className="w-full px-6 py-4 shadow-sm border-b bg-background">

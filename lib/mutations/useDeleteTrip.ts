@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSupabaseClient } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { Trip } from '@/types/trip';
 
 export function useDeleteTrip() {
@@ -7,7 +7,6 @@ export function useDeleteTrip() {
 
   return useMutation({
     mutationFn: async (tripId: string) => {
-      const supabase = createSupabaseClient();
       const { error } = await supabase.from('trips').delete().eq('id', tripId);
       if (error) throw new Error(error.message);
     },

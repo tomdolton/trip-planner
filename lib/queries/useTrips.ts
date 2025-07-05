@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { createSupabaseClient } from '../supabase';
+import { supabase } from '../supabase';
 import { useUser } from '@/hooks/useUser';
 
 export function useTrips() {
-  const supabase = createSupabaseClient();
   const { user } = useUser();
 
   return useQuery({
@@ -15,7 +14,6 @@ export function useTrips() {
         .select('*')
         .eq('user_id', user!.id)
         .order('created_at', { ascending: false });
-
       if (error) throw new Error(error.message);
       return data;
     },

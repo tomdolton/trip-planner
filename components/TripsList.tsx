@@ -22,6 +22,7 @@ export default function TripList() {
   const [tripToDelete, setTripToDelete] = useState<Trip | null>(null);
 
   const { data: trips, isLoading, isError } = useTrips();
+
   const deleteTrip = useDeleteTrip();
 
   const confirmDelete = () => {

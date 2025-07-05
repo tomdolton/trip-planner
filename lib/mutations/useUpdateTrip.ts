@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSupabaseClient } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { Trip } from '@/types/trip';
 import { TripFormValues } from '@/types/forms';
 
@@ -8,7 +8,6 @@ export function useUpdateTrip() {
 
   return useMutation<void, Error, TripFormValues & { id: string }, { previousTrips?: Trip[] }>({
     mutationFn: async ({ id, ...data }) => {
-      const supabase = createSupabaseClient();
       const { error } = await supabase.from('trips').update(data).eq('id', id);
       if (error) throw new Error(error.message);
     },
