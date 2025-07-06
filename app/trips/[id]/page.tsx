@@ -76,6 +76,45 @@ export default function TripDetailPage() {
         </div>
       )}
 
+      {trip.trip_phases?.map((phase) => (
+        <div key={phase.id} className="mt-6 border-t pt-4">
+          <h2 className="text-xl font-bold">{phase.title}</h2>
+          {phase.description && <p className="text-muted-foreground">{phase.description}</p>}
+
+          {phase.locations?.map((loc) => (
+            <div key={loc.id} className="mt-4 pl-4 border-l">
+              <h3 className="text-lg font-semibold">{loc.name}</h3>
+              {loc.accommodations?.map((acc) => (
+                <p key={acc.id} className="text-sm text-muted-foreground">
+                  🏨 {acc.name}
+                </p>
+              ))}
+              {loc.trip_days?.map((day) => (
+                <div key={day.id} className="mt-2">
+                  <p className="text-sm font-medium">📅 {day.date}</p>
+                  <ul className="list-disc list-inside text-sm">
+                    {day.activities?.map((act) => (
+                      <li key={act.id}>🎯 {act.title}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {Array.isArray(trip.journeys) && trip.journeys.length > 0 && (
+        <div className="mt-6 border-t pt-4">
+          <h2 className="text-xl font-bold">Journeys</h2>
+          {trip.journeys.map((j) => (
+            <p key={j.id} className="text-sm text-muted-foreground">
+              ✈️ {j.mode} from {j.departure_location_id} to {j.arrival_location_id}
+            </p>
+          ))}
+        </div>
+      )}
+
       <Dialog open={editing} onOpenChange={(open) => setEditing(open)}>
         <DialogContent>
           <EditTripForm trip={trip} onClose={() => setEditing(false)} />
