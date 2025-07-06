@@ -2,10 +2,8 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { useAddTrip } from '@/lib/mutations/useAddTrip';
 import { TripFormValues, tripSchema } from '@/types/forms';
-import { toast } from 'sonner';
 
 import {
   Form,
@@ -20,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
 type TripFormProps = {
-  onSuccess?: () => void;
+  onSuccess: () => void;
 };
 
 export default function TripForm({ onSuccess }: TripFormProps) {
@@ -38,7 +36,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
 
   const onSubmit = (data: TripFormValues) => {
     addTrip.mutate(data, {
-      onSuccess: () => form.reset(),
+      onSuccess: () => {
+        form.reset();
+        onSuccess();
+      },
     });
   };
 
