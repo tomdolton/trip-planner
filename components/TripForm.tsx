@@ -27,10 +27,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
   const form = useForm<TripFormValues>({
     resolver: zodResolver(tripSchema),
     defaultValues: {
-      name: '',
+      title: '',
       start_date: '',
       end_date: '',
-      notes: '',
+      description: '',
     },
   });
 
@@ -49,10 +49,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
 
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Trip Name</FormLabel>
+              <FormLabel>Trip Title</FormLabel>
               <FormControl>
                 <Input placeholder="Trip to Japan" disabled={addTrip.isPending} {...field} />
               </FormControl>
@@ -91,10 +91,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
 
         <FormField
           control={form.control}
-          name="notes"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder="Anything else..." disabled={addTrip.isPending} {...field} />
               </FormControl>

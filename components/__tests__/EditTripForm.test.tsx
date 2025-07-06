@@ -7,10 +7,10 @@ import { useUpdateTrip } from '@/lib/mutations/useUpdateTrip';
 
 const mockTrip: Trip = {
   id: 'trip1',
-  name: 'Test Trip',
+  title: 'Test Trip',
   start_date: '2025-08-01',
   end_date: '2025-08-10',
-  notes: 'Some notes',
+  description: 'Some notes',
 };
 
 describe('EditTripForm', () => {
@@ -36,16 +36,16 @@ describe('EditTripForm', () => {
   it('submits updated trip data', async () => {
     render(<EditTripForm trip={mockTrip} onClose={onCloseMock} />);
 
-    fireEvent.change(screen.getByLabelText('Trip Name'), {
-      target: { value: 'Updated Trip Name' },
+    fireEvent.change(screen.getByLabelText('Trip title'), {
+      target: { value: 'Updated Trip title' },
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+    fireEvent.click(screen.getByRole('button', { title: /save changes/i }));
 
     await waitFor(() => {
       expect(mutateMock).toHaveBeenCalledWith(
         expect.objectContaining({
-          name: 'Updated Trip Name',
+          title: 'Updated Trip title',
           id: 'trip1',
         }),
         expect.any(Object)

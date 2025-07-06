@@ -1,10 +1,10 @@
 export interface Trip {
   id: string;
-  name: string;
+  title: string;
   //   destination: string;
   start_date?: string;
   end_date?: string;
-  notes?: string;
+  description?: string;
   // createdAt: string;
   // userId: string;
   //   isPublic: boolean;

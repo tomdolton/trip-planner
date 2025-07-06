@@ -29,10 +29,10 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
   const form = useForm<TripFormValues>({
     resolver: zodResolver(tripSchema),
     defaultValues: {
-      name: trip.name,
+      title: trip.title,
       start_date: trip.start_date,
       end_date: trip.end_date,
-      notes: trip.notes ?? '',
+      description: trip.description ?? '',
     },
   });
 
@@ -62,10 +62,10 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
 
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Trip Name</FormLabel>
+              <FormLabel>Trip Title</FormLabel>
               <FormControl>
                 <Input disabled={updateTrip.isPending} {...field} />
               </FormControl>
@@ -104,10 +104,10 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
 
         <FormField
           control={form.control}
-          name="notes"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea disabled={updateTrip.isPending} {...field} />
               </FormControl>

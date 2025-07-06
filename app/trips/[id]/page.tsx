@@ -57,7 +57,7 @@ export default function TripDetailPage() {
         Back to trips
       </Link>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{trip.name}</h1>
+        <h1 className="text-3xl font-bold">{trip.title}</h1>
         <Button variant="outline" onClick={() => setEditing(true)}>
           Edit
         </Button>
@@ -69,10 +69,10 @@ export default function TripDetailPage() {
           : 'No dates specified'}
       </p>
 
-      {trip.notes && (
+      {trip.description && (
         <div>
-          <h2 className="text-lg font-semibold mb-1">Notes</h2>
-          <p className="whitespace-pre-line">{trip.notes}</p>
+          <h2 className="text-lg font-semibold mb-1">Description</h2>
+          <p className="whitespace-pre-line">{trip.description}</p>
         </div>
       )}
 

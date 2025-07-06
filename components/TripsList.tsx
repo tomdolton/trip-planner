@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogCancel,
   AlertDialogAction,
+  AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -77,7 +78,7 @@ export default function TripList() {
           >
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>{trip.name}</span>
+                <span>{trip.title}</span>
               </CardTitle>
             </CardHeader>
 
@@ -92,7 +93,7 @@ export default function TripList() {
                   'No date set'
                 )}
               </p>
-              {trip.notes && <p>{trip.notes}</p>}
+              {trip.description && <p>{trip.description}</p>}
             </CardContent>
 
             <CardFooter className="flex justify-end gap-2">
@@ -143,8 +144,12 @@ export default function TripList() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete <strong>{tripToDelete?.name}</strong>?
+              Are you sure you want to delete <strong>{tripToDelete?.title}</strong>?
             </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. All data associated with this trip will be permanently
+              deleted.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
