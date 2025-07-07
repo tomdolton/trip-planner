@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { getTripById } from '@/lib/queries/getTripById';
-import { Trip } from '@/types/trip';
-import { format, parseISO } from 'date-fns';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import EditTripForm from '@/components/EditTripForm';
-import { Skeleton } from '@/components/ui/skeleton';
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { getTripById } from "@/lib/queries/getTripById";
+import { Trip } from "@/types/trip";
+import { format, parseISO } from "date-fns";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import EditTripForm from "@/components/EditTripForm";
+import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
 export default function TripDetailPage() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ export default function TripDetailPage() {
         const tripData = await getTripById(id as string);
         setTrip(tripData);
       } catch (err) {
-        console.error('Failed to fetch trip', err);
+        console.error("Failed to fetch trip", err);
       } finally {
         setIsLoading(false);
       }
@@ -65,8 +65,8 @@ export default function TripDetailPage() {
 
       <p className="text-muted-foreground">
         {trip.start_date && trip.end_date
-          ? `${format(parseISO(trip.start_date), 'dd MMM yyyy')} - ${format(parseISO(trip.end_date), 'dd MMM yyyy')}`
-          : 'No dates specified'}
+          ? `${format(parseISO(trip.start_date), "dd MMM yyyy")} - ${format(parseISO(trip.end_date), "dd MMM yyyy")}`
+          : "No dates specified"}
       </p>
 
       {trip.description && (
