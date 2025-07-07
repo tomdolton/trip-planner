@@ -1,5 +1,7 @@
 // jest.config.ts
 import nextJest from 'next/jest.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.test' });
 
 const createJestConfig = nextJest({
   dir: './',
