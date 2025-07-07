@@ -50,7 +50,7 @@ describe('EditTripForm', () => {
       target: { value: 'Updated Trip title' },
     });
 
-    fireEvent.click(screen.getByRole('button', { title: /save changes/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
     await waitFor(() => {
       expect(mutateMock).toHaveBeenCalledWith(

@@ -35,7 +35,7 @@ describe('TripForm', () => {
   });
 
   it('renders form fields', () => {
-    render(<TripForm />);
+    render(<TripForm onSuccess={jest.fn()} />);
     expect(screen.getByLabelText(/trip title/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/start date/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/end date/i)).toBeInTheDocument();
@@ -43,14 +43,14 @@ describe('TripForm', () => {
   });
 
   it('submits valid form', async () => {
-    render(<TripForm />);
+    render(<TripForm onSuccess={jest.fn()} />);
 
     fireEvent.change(screen.getByLabelText(/trip title/i), { target: { value: 'Japan Trip' } });
     fireEvent.change(screen.getByLabelText(/start date/i), { target: { value: '2025-08-01' } });
     fireEvent.change(screen.getByLabelText(/end date/i), { target: { value: '2025-08-10' } });
     fireEvent.change(screen.getByLabelText(/description/i), { target: { value: 'Exciting!' } });
 
-    fireEvent.click(screen.getByRole('button', { title: /save trip/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save trip/i }));
 
     await waitFor(() =>
       expect(mutateMock).toHaveBeenCalledWith(
