@@ -36,7 +36,7 @@ describe('EditTripForm', () => {
   it('submits updated trip data', async () => {
     render(<EditTripForm trip={mockTrip} onClose={onCloseMock} />);
 
-    fireEvent.change(screen.getByLabelText('Trip title'), {
+    fireEvent.change(screen.getByLabelText(/trip title/i), {
       target: { value: 'Updated Trip title' },
     });
 
