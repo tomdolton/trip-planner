@@ -10,6 +10,16 @@ jest.mock('sonner', () => ({
     error: jest.fn(),
   },
 }));
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: () => ({
+      select: () => ({ data: [], error: null }),
+    }),
+    auth: {
+      signOut: jest.fn(),
+    },
+  },
+}));
 
 describe('TripForm', () => {
   const mutateMock = jest.fn();

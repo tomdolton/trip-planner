@@ -1,4 +1,14 @@
 jest.mock('@/lib/mutations/useUpdateTrip');
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: () => ({
+      select: () => ({ data: [], error: null }),
+    }),
+    auth: {
+      signOut: jest.fn(),
+    },
+  },
+}));
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import EditTripForm from '../EditTripForm';
