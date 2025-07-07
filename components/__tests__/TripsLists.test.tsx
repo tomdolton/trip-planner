@@ -45,10 +45,10 @@ describe('TripsList', () => {
   it('renders trip and calls delete mutation on confirm', async () => {
     render(<TripsList />);
 
-    fireEvent.click(screen.getByRole('button', { title: /delete/i }));
+    fireEvent.click(screen.getByRole('button', { name: /delete/i }));
 
     // Wait for alert dialog
-    const confirmButton = await screen.findByRole('button', { title: /yes, delete/i });
+    const confirmButton = await screen.findByRole('button', { name: /yes, delete/i });
 
     fireEvent.click(confirmButton);
 

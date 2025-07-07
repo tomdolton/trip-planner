@@ -116,7 +116,6 @@ export default function TripList() {
                   setTripToDelete(trip);
                 }}
                 disabled={deleteTrip.isPending}
-                title="Delete"
               >
                 {deleteTrip.isPending && tripToDelete?.id === trip.id ? (
                   <span className="flex items-center gap-1">
@@ -154,11 +153,7 @@ export default function TripList() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              disabled={deleteTrip.isPending}
-              title="Yes, delete"
-            >
+            <AlertDialogAction onClick={confirmDelete} disabled={deleteTrip.isPending}>
               Yes, delete
             </AlertDialogAction>
           </AlertDialogFooter>
