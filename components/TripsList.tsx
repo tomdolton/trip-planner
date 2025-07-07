@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useTrips } from '@/lib/queries/useTrips';
-import { useDeleteTrip } from '@/lib/mutations/useDeleteTrip';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useState } from "react";
+import { useTrips } from "@/lib/queries/useTrips";
+import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -13,16 +13,16 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   AlertDialogDescription,
-} from '@/components/ui/alert-dialog';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import EditTripForm from '@/components/EditTripForm';
-import { Trip } from '@/types/trip';
-import { toast } from 'sonner';
-import { format, parseISO } from 'date-fns';
-import { Pencil, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/alert-dialog";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import EditTripForm from "@/components/EditTripForm";
+import { Trip } from "@/types/trip";
+import { toast } from "sonner";
+import { format, parseISO } from "date-fns";
+import { Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
@@ -36,9 +36,9 @@ export default function TripList() {
   const confirmDelete = () => {
     if (!tripToDelete) return;
     deleteTrip.mutate(tripToDelete.id, {
-      onSuccess: () => toast.success('Trip deleted'),
+      onSuccess: () => toast.success("Trip deleted"),
       onError: (err) =>
-        toast.error('Failed to delete trip', {
+        toast.error("Failed to delete trip", {
           description: (err as Error).message,
         }),
     });
@@ -86,11 +86,11 @@ export default function TripList() {
               <p>
                 {trip.start_date && trip.end_date ? (
                   <>
-                    {format(parseISO(trip.start_date), 'dd MMM yyyy')} –{' '}
-                    {format(parseISO(trip.end_date), 'dd MMM yyyy')}
+                    {format(parseISO(trip.start_date), "dd MMM yyyy")} –{" "}
+                    {format(parseISO(trip.end_date), "dd MMM yyyy")}
                   </>
                 ) : (
-                  'No date set'
+                  "No date set"
                 )}
               </p>
               {trip.description && <p>{trip.description}</p>}

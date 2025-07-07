@@ -1,9 +1,9 @@
-import { supabase } from '../supabase';
-import { Trip } from '@/types/trip';
+import { supabase } from "../supabase";
+import { Trip } from "@/types/trip";
 
 export async function getTripById(id: string): Promise<Trip | null> {
   const { data, error } = await supabase
-    .from('trips')
+    .from("trips")
     .select(
       `
       *,
@@ -21,7 +21,7 @@ export async function getTripById(id: string): Promise<Trip | null> {
       journeys (*)
     `
     )
-    .eq('id', id)
+    .eq("id", id)
     .single();
 
   if (error) throw new Error(error.message);

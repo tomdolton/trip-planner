@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAddTrip } from '@/lib/mutations/useAddTrip';
-import { TripFormValues, tripSchema } from '@/types/forms';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAddTrip } from "@/lib/mutations/useAddTrip";
+import { TripFormValues, tripSchema } from "@/types/forms";
 
 import {
   Form,
@@ -12,10 +12,10 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type TripFormProps = {
   onSuccess: () => void;
@@ -25,10 +25,10 @@ export default function TripForm({ onSuccess }: TripFormProps) {
   const form = useForm<TripFormValues>({
     resolver: zodResolver(tripSchema),
     defaultValues: {
-      title: '',
-      start_date: '',
-      end_date: '',
-      description: '',
+      title: "",
+      start_date: "",
+      end_date: "",
+      description: "",
     },
   });
 
@@ -111,7 +111,7 @@ export default function TripForm({ onSuccess }: TripFormProps) {
               Saving...
             </span>
           ) : (
-            'Save Trip'
+            "Save Trip"
           )}
         </Button>
       </form>

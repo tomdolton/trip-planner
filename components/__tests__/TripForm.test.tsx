@@ -1,16 +1,16 @@
-jest.mock('@/lib/mutations/useAddTrip');
+jest.mock("@/lib/mutations/useAddTrip");
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import TripForm from '../TripForm';
-import { useAddTrip } from '@/lib/mutations/useAddTrip';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import TripForm from "../TripForm";
+import { useAddTrip } from "@/lib/mutations/useAddTrip";
 
-jest.mock('sonner', () => ({
+jest.mock("sonner", () => ({
   toast: {
     success: jest.fn(),
     error: jest.fn(),
   },
 }));
-jest.mock('@/lib/supabase', () => ({
+jest.mock("@/lib/supabase", () => ({
   supabase: {
     from: () => ({
       select: () => ({ data: [], error: null }),
@@ -21,7 +21,7 @@ jest.mock('@/lib/supabase', () => ({
   },
 }));
 
-describe('TripForm', () => {
+describe("TripForm", () => {
   const mutateMock = jest.fn();
 
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('TripForm', () => {
     });
   });
 
-  it('renders form fields', () => {
+  it("renders form fields", () => {
     render(<TripForm onSuccess={jest.fn()} />);
     expect(screen.getByLabelText(/trip title/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/start date/i)).toBeInTheDocument();
@@ -42,23 +42,23 @@ describe('TripForm', () => {
     expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
   });
 
-  it('submits valid form', async () => {
+  it("submits valid form", async () => {
     render(<TripForm onSuccess={jest.fn()} />);
 
-    fireEvent.change(screen.getByLabelText(/trip title/i), { target: { value: 'Japan Trip' } });
-    fireEvent.change(screen.getByLabelText(/start date/i), { target: { value: '2025-08-01' } });
-    fireEvent.change(screen.getByLabelText(/end date/i), { target: { value: '2025-08-10' } });
-    fireEvent.change(screen.getByLabelText(/description/i), { target: { value: 'Exciting!' } });
+    fireEvent.change(screen.getByLabelText(/trip title/i), { target: { value: "Japan Trip" } });
+    fireEvent.change(screen.getByLabelText(/start date/i), { target: { value: "2025-08-01" } });
+    fireEvent.change(screen.getByLabelText(/end date/i), { target: { value: "2025-08-10" } });
+    fireEvent.change(screen.getByLabelText(/description/i), { target: { value: "Exciting!" } });
 
-    fireEvent.click(screen.getByRole('button', { name: /save trip/i }));
+    fireEvent.click(screen.getByRole("button", { name: /save trip/i }));
 
     await waitFor(() =>
       expect(mutateMock).toHaveBeenCalledWith(
         {
-          title: 'Japan Trip',
-          start_date: '2025-08-01',
-          end_date: '2025-08-10',
-          description: 'Exciting!',
+          title: "Japan Trip",
+          start_date: "2025-08-01",
+          end_date: "2025-08-10",
+          description: "Exciting!",
         },
         expect.any(Object) // handles config like onSuccess
       )

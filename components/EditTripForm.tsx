@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-import { TripFormValues, tripSchema } from '@/types/forms';
-import { Trip } from '@/types/trip';
-import { useUpdateTrip } from '@/lib/mutations/useUpdateTrip';
+import { TripFormValues, tripSchema } from "@/types/forms";
+import { Trip } from "@/types/trip";
+import { useUpdateTrip } from "@/lib/mutations/useUpdateTrip";
 
 import {
   Form,
@@ -15,10 +15,10 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type EditTripFormProps = {
   trip: Trip;
@@ -32,7 +32,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
       title: trip.title,
       start_date: trip.start_date,
       end_date: trip.end_date,
-      description: trip.description ?? '',
+      description: trip.description ?? "",
     },
   });
 
@@ -43,11 +43,11 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
       { ...data, id: trip.id },
       {
         onSuccess: () => {
-          toast.success('Trip updated');
+          toast.success("Trip updated");
           onClose();
         },
         onError: (err) => {
-          toast.error('Failed to update trip', {
+          toast.error("Failed to update trip", {
             description: err.message,
           });
         },
@@ -124,7 +124,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
                 Saving...
               </span>
             ) : (
-              'Save Changes'
+              "Save Changes"
             )}
           </Button>
         </div>

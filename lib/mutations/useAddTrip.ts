@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
-import { TripFormValues } from '@/types/forms';
-import { toast } from 'sonner';
-import { useUser } from '@/hooks/useUser';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { TripFormValues } from "@/types/forms";
+import { toast } from "sonner";
+import { useUser } from "@/hooks/useUser";
 
 export function useAddTrip() {
   const queryClient = useQueryClient();
@@ -10,9 +10,9 @@ export function useAddTrip() {
 
   return useMutation({
     mutationFn: async (trip: TripFormValues) => {
-      if (!user) throw new Error('User not authenticated');
+      if (!user) throw new Error("User not authenticated");
 
-      const { error } = await supabase.from('trips').insert([
+      const { error } = await supabase.from("trips").insert([
         {
           ...trip,
           user_id: user.id,
@@ -24,11 +24,11 @@ export function useAddTrip() {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
-      toast.success('Trip added successfully!');
-      queryClient.invalidateQueries({ queryKey: ['trips'] });
+      toast.success("Trip added successfully!");
+      queryClient.invalidateQueries({ queryKey: ["trips"] });
     },
     onError: (err: Error) => {
-      toast.error('Error adding trip', {
+      toast.error("Error adding trip", {
         description: err.message,
       });
     },

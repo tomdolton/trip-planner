@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import ModeToggle from '@/components/ui/ModeToggle';
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import ModeToggle from "@/components/ui/ModeToggle";
 
-import { useUser } from '@/hooks/useUser';
-import { supabase } from '@/lib/supabase';
+import { useUser } from "@/hooks/useUser";
+import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -15,9 +15,9 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   const navItems = [
-    { name: 'Trips', path: '/trips' },
-    { name: 'New Trip', path: '/trips/new-trip' },
-    { name: 'Sign Up', path: '/signup' },
+    { name: "Trips", path: "/trips" },
+    { name: "New Trip", path: "/trips/new-trip" },
+    { name: "Sign Up", path: "/signup" },
   ];
 
   return (
@@ -33,7 +33,7 @@ export default function Navbar() {
               key={item.name}
               href={item.path}
               className={`text-sm font-medium transition-colors ${
-                isActive(item.path) ? 'text-primary' : 'text-muted-foreground'
+                isActive(item.path) ? "text-primary" : "text-muted-foreground"
               }`}
             >
               {item.name}
