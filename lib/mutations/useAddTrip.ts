@@ -1,4 +1,3 @@
-// lib/mutations/useAddTrip.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { TripFormValues } from '@/types/forms';
