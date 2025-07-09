@@ -1,4 +1,5 @@
 import { groupActivitiesByDate } from "@/lib/groupActivitiesByDate";
+import { Activity } from "@/types/trip";
 
 export function TripActivities({ activities }: { activities: Activity[] }) {
   const grouped = groupActivitiesByDate(activities);
