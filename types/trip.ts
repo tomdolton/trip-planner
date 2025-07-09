@@ -35,15 +35,6 @@ export interface Location {
   activities?: Activity[];
 }
 
-export interface TripDay {
-  id: string;
-  trip_id: string;
-  date: string;
-  location_id: string;
-  notes?: string;
-  activities?: Activity[];
-}
-
 export interface Activity {
   id: string;
   trip_id: string;

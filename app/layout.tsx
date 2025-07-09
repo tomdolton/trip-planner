@@ -2,11 +2,11 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Layout/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/Layout/theme-provider";
 import { useState } from "react";
 
 const geistSans = Geist({

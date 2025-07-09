@@ -1,5 +1,6 @@
-import { groupActivitiesByDate } from "@/lib/groupActivitiesByDate";
+import { groupActivitiesByDate } from "@/lib/utils/groupActivitiesByDate";
 import { Activity } from "@/types/trip";
+import { formatTimeRange } from "@/lib/utils/formatTimeRange";
 
 export function TripActivities({ activities }: { activities: Activity[] }) {
   const grouped = groupActivitiesByDate(activities);
@@ -13,7 +14,7 @@ export function TripActivities({ activities }: { activities: Activity[] }) {
             {acts.map((act) => (
               <li key={act.id} className="border p-2 rounded">
                 <div className="font-medium">{act.name}</div>
-                {act.start_time && <div className="text-sm">🕒 {act.start_time}</div>}
+                <p>{formatTimeRange(act.start_time, act.end_time)}</p>
                 {act.notes && <div className="text-sm text-muted-foreground">{act.notes}</div>}
               </li>
             ))}

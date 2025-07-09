@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import TripsList from "../TripsList";
+import TripsList from "../TripsDashboard/TripsList";
 import { useTrips } from "@/lib/queries/useTrips";
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
 

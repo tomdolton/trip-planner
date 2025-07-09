@@ -1,6 +1,6 @@
 import { supabase } from "../supabase";
 import { ActivityType } from "@/lib/constants/activityTypes";
-import { normalizeTime } from "@/lib/utils";
+import { normalizeTime } from "@/lib/utils/normalizeTime";
 
 export async function addActivity({
   tripId,

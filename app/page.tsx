@@ -1,5 +1,5 @@
 import Image from "next/image";
-import LogOutButton from "@/components/LogOutButton";
+import LogOutButton from "@/components/Auth/LogOutButton";
 
 export default function Home() {
   return (

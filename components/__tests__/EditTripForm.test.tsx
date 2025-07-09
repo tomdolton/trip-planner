@@ -11,7 +11,7 @@ jest.mock("@/lib/supabase", () => ({
 }));
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import EditTripForm from "../EditTripForm";
+import EditTripForm from "../TripsDashboard/EditTripForm";
 import { Trip } from "@/types/trip";
 import { useUpdateTrip } from "@/lib/mutations/useUpdateTrip";
 

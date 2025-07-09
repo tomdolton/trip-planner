@@ -17,12 +17,12 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import EditTripForm from "@/components/EditTripForm";
+import EditTripForm from "@/components/TripsDashboard/EditTripForm";
 import { Trip } from "@/types/trip";
 import { toast } from "sonner";
-import { format, parseISO } from "date-fns";
 import { Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { formatDateRange } from "@/lib/utils/formatDateRange";
 
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
@@ -83,16 +83,7 @@ export default function TripList() {
             </CardHeader>
 
             <CardContent className="text-sm text-muted-foreground space-y-2">
-              <p>
-                {trip.start_date && trip.end_date ? (
-                  <>
-                    {format(parseISO(trip.start_date), "dd MMM yyyy")} –{" "}
-                    {format(parseISO(trip.end_date), "dd MMM yyyy")}
-                  </>
-                ) : (
-                  "No date set"
-                )}
-              </p>
+              <p>{formatDateRange(trip.start_date, trip.end_date)}</p>
               {trip.description && <p>{trip.description}</p>}
             </CardContent>
 
