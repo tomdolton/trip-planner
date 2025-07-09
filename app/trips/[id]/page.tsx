@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { useAddTripPhase } from "@/lib/mutations/useAddTripPhase";
 import { useQuery } from "@tanstack/react-query";
 import { useAddLocation } from "@/lib/mutations/useAddLocation";
+import { TripActivities } from "@/components/TripActivities";
+import { AddActivityForm } from "@/components/AddActivityForm";
 
 export default function TripDetailPage() {
   const { id } = useParams();
@@ -136,23 +138,17 @@ export default function TripDetailPage() {
           {phase.locations?.map((loc) => (
             <div key={loc.id} className="mt-4 pl-4 border-l">
               <h3 className="text-lg font-semibold">{loc.name}</h3>
+              <AddActivityForm tripId={trip.id} locationId={loc.id} />
               {loc.accommodations?.map((acc) => (
                 <p key={acc.id} className="text-sm text-muted-foreground">
                   🏨 {acc.name}
                 </p>
               ))}
-              {loc.trip_days?.map((day) => (
-                <div key={day.id} className="mt-2">
-                  <p className="text-sm font-medium">📅 {day.date}</p>
-                  <ul className="list-disc list-inside text-sm">
-                    {day.activities?.map((act) => (
-                      <li key={act.id}>🎯 {act.title}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
             </div>
           ))}
+          <TripActivities
+            activities={phase.locations?.flatMap((loc) => loc.activities || []) ?? []}
+          />
 
           <div className="mt-4 flex gap-2 items-center">
             <input

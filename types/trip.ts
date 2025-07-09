@@ -1,3 +1,5 @@
+import type { ActivityType } from "@/lib/constants/activityTypes";
+
 export interface Trip {
   id: string;
   title: string;
@@ -30,7 +32,7 @@ export interface Location {
   lat?: number;
   lng?: number;
   accommodations?: Accommodation[];
-  trip_days?: TripDay[];
+  activities?: Activity[];
 }
 
 export interface TripDay {
@@ -44,13 +46,16 @@ export interface TripDay {
 
 export interface Activity {
   id: string;
-  trip_day_id: string;
-  title: string;
+  trip_id: string;
+  location_id: string;
+  user_id: string;
+  name: string;
+  notes?: string;
+  date: string;
   start_time?: string;
   end_time?: string;
-  location?: string;
-  notes?: string;
   place_id?: string;
+  activity_type: ActivityType;
 }
 
 export interface Accommodation {

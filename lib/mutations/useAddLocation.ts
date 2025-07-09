@@ -31,7 +31,7 @@ export function useAddLocation(tripId: string) {
                       ...phase,
                       locations: [
                         ...(phase.locations || []),
-                        { id: crypto.randomUUID(), name, accommodations: [], trip_days: [] },
+                        { id: crypto.randomUUID(), name, accommodations: [] },
                       ],
                     }
                   : phase

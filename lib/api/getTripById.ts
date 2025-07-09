@@ -12,10 +12,7 @@ export async function getTripById(id: string): Promise<Trip | null> {
         locations (
           *,
           accommodations (*),
-          trip_days (
-            *,
-            activities (*)
-          )
+          activities (*)
         )
       ),
       journeys (*)
