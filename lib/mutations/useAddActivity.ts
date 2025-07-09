@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { addActivity } from "@/lib/api/addActivity";
 import type { ActivityType } from "@/lib/constants/activityTypes";
+
 import { useUser } from "@/hooks/useUser";
 
 export function useAddActivity(tripId: string) {

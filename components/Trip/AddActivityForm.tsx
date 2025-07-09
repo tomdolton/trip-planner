@@ -1,14 +1,8 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddActivity } from "@/lib/mutations/useAddActivity";
-import {
-  activityTypes,
-  activityTypeLabels,
-  activityTypeIcons,
-} from "@/lib/constants/activityTypes";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +21,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectTrigger,
@@ -35,6 +28,14 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+
+import {
+  activityTypes,
+  activityTypeLabels,
+  activityTypeIcons,
+} from "@/lib/constants/activityTypes";
+import { useAddActivity } from "@/lib/mutations/useAddActivity";
 
 const formSchema = z.object({
   name: z.string().min(1),

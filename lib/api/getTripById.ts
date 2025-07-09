@@ -1,5 +1,6 @@
-import { supabase } from "../supabase";
 import { Trip } from "@/types/trip";
+
+import { supabase } from "../supabase";
 
 export async function getTripById(id: string): Promise<Trip | null> {
   const { data, error } = await supabase

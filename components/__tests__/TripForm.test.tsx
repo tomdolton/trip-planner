@@ -1,8 +1,10 @@
 jest.mock("@/lib/mutations/useAddTrip");
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import TripForm from "../TripsDashboard/TripForm";
+
 import { useAddTrip } from "@/lib/mutations/useAddTrip";
+
+import TripForm from "../TripsDashboard/TripForm";
 
 jest.mock("sonner", () => ({
   toast: {

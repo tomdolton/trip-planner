@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import EditTripForm from "@/components/TripsDashboard/EditTripForm";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useTripDetail } from "@/lib/queries/useTripDetail";
+import { useState } from "react";
+
 import { AddPhaseForm } from "@/components/Trip/AddPhaseForm";
-import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
 import { TripHeader } from "@/components/Trip/TripHeader";
+import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
+import EditTripForm from "@/components/TripsDashboard/EditTripForm";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { useTripDetail } from "@/lib/queries/useTripDetail";
 
 export default function TripDetailPage() {
   const { id } = useParams();

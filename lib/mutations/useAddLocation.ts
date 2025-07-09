@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addLocationToPhase } from "@/lib/api/addLocationToPhase";
+
 import { Trip, TripPhase } from "@/types/trip";
+
+import { addLocationToPhase } from "@/lib/api/addLocationToPhase";
+
 import { useUser } from "@/hooks/useUser";
 
 export function useAddLocation(tripId: string) {

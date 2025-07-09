@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+
 import { Trip } from "@/types/trip";
+
+import { supabase } from "@/lib/supabase";
 
 export function useDeleteTrip() {
   const queryClient = useQueryClient();

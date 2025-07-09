@@ -1,7 +1,9 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import TripsList from "../TripsDashboard/TripsList";
-import { useTrips } from "@/lib/queries/useTrips";
+
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
+import { useTrips } from "@/lib/queries/useTrips";
+
+import TripsList from "../TripsDashboard/TripsList";
 
 jest.mock("@/lib/queries/useTrips");
 jest.mock("@/lib/mutations/useDeleteTrip");

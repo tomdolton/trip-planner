@@ -1,13 +1,13 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
-import "../styles/globals.css";
-import Navbar from "@/components/Layout/Navbar";
-import { Toaster } from "@/components/ui/sonner";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@/components/Layout/theme-provider";
+import { Geist, Geist_Mono } from "next/font/google";
 import { useState } from "react";
+import "../styles/globals.css";
+
+import Navbar from "@/components/Layout/Navbar";
+import { ThemeProvider } from "@/components/Layout/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

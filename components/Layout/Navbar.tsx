@@ -1,12 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
 import ModeToggle from "@/components/ui/ModeToggle";
 
-import { useUser } from "@/hooks/useUser";
 import { supabase } from "@/lib/supabase";
+
+import { useUser } from "@/hooks/useUser";
 
 export default function Navbar() {
   const pathname = usePathname();

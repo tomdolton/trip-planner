@@ -1,9 +1,10 @@
 "use client";
 
+import { TripPhase } from "@/types/trip";
+
 import { AddActivityForm } from "@/components/Trip/AddActivityForm";
 import { AddLocationForm } from "@/components/Trip/AddLocationForm";
 import { TripActivities } from "@/components/Trip/TripActivities";
-import { TripPhase } from "@/types/trip";
 
 interface TripPhaseSectionProps {
   phase: TripPhase;

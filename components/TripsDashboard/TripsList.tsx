@@ -1,9 +1,13 @@
 "use client";
 
+import { Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useTrips } from "@/lib/queries/useTrips";
-import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toast } from "sonner";
+
+import { Trip } from "@/types/trip";
+
+import EditTripForm from "@/components/TripsDashboard/EditTripForm";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -14,14 +18,13 @@ import {
   AlertDialogAction,
   AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import EditTripForm from "@/components/TripsDashboard/EditTripForm";
-import { Trip } from "@/types/trip";
-import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+
+import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
+import { useTrips } from "@/lib/queries/useTrips";
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
 export default function TripList() {

@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import TripsList from "@/components/TripsDashboard/TripsList";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+
 import TripForm from "@/components/TripsDashboard/TripForm";
+import TripsList from "@/components/TripsDashboard/TripsList";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function TripsPage() {
   const [open, setOpen] = useState(false);

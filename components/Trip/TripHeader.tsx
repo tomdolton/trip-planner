@@ -2,8 +2,11 @@
 
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 import { Trip } from "@/types/trip";
+
+import { Button } from "@/components/ui/button";
+
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
 interface TripHeaderProps {

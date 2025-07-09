@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import { TripFormValues } from "@/types/forms";
 import { toast } from "sonner";
+
+import { TripFormValues } from "@/types/forms";
+
+import { supabase } from "@/lib/supabase";
+
 import { useUser } from "@/hooks/useUser";
 
 export function useAddTrip() {

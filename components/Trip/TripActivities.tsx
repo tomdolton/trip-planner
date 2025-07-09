@@ -1,6 +1,7 @@
-import { groupActivitiesByDate } from "@/lib/utils/groupActivitiesByDate";
 import { Activity } from "@/types/trip";
+
 import { formatTimeRange } from "@/lib/utils/formatTimeRange";
+import { groupActivitiesByDate } from "@/lib/utils/groupActivitiesByDate";
 
 export function TripActivities({ activities }: { activities: Activity[] }) {
   const grouped = groupActivitiesByDate(activities);

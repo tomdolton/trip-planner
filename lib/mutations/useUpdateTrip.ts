@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import { Trip } from "@/types/trip";
+
 import { TripFormValues } from "@/types/forms";
+import { Trip } from "@/types/trip";
+
+import { supabase } from "@/lib/supabase";
 
 export function useUpdateTrip() {
   const queryClient = useQueryClient();

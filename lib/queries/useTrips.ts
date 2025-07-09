@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "../supabase";
+
 import { useUser } from "@/hooks/useUser";
+
+import { supabase } from "../supabase";
 
 export function useTrips() {
   const { user } = useUser();
