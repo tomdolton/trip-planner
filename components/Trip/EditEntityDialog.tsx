@@ -9,7 +9,7 @@ import { EditLocationDialog } from "./EditLocationDialog";
 
 import { closeDialog } from "@/store/uiDialogSlice";
 
-export function EditEntityDialog() {
+export function EditEntityDialog({ tripId }: { tripId: string }) {
   const { open, type, entity } = useSelector((state: RootState) => state.uiDialog);
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ export function EditEntityDialog() {
         location={entity}
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
+        tripId={tripId}
       />
     );
   }
@@ -30,6 +31,7 @@ export function EditEntityDialog() {
         accommodation={entity}
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
+        tripId={tripId}
       />
     );
   }
@@ -40,6 +42,7 @@ export function EditEntityDialog() {
         activity={entity}
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
+        tripId={tripId}
       />
     );
   }

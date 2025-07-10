@@ -42,10 +42,12 @@ export function EditLocationDialog({
   location,
   open,
   onOpenChange,
+  tripId,
 }: {
   location: Location;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  tripId: string;
 }) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -58,8 +60,8 @@ export function EditLocationDialog({
     },
   });
 
-  const updateMutation = useUpdateLocation(location.id);
-  const deleteMutation = useDeleteLocation(location.id);
+  const updateMutation = useUpdateLocation(tripId);
+  const deleteMutation = useDeleteLocation(tripId);
 
   function onSubmit(values: FormData) {
     updateMutation.mutate({ ...values, id: location.id }, { onSuccess: () => onOpenChange(false) });

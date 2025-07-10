@@ -55,10 +55,12 @@ export function EditActivityDialog({
   activity,
   open,
   onOpenChange,
+  tripId,
 }: {
   activity: Activity;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  tripId: string;
 }) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -72,8 +74,8 @@ export function EditActivityDialog({
     },
   });
 
-  const updateMutation = useUpdateActivity(activity.id);
-  const deleteMutation = useDeleteActivity(activity.id);
+  const updateMutation = useUpdateActivity(tripId);
+  const deleteMutation = useDeleteActivity(tripId);
 
   function onSubmit(values: FormData) {
     updateMutation.mutate({ ...values, id: activity.id }, { onSuccess: () => onOpenChange(false) });

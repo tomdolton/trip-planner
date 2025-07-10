@@ -18,7 +18,6 @@ export default function Navbar() {
 
   const navItems = [
     { name: "Trips", path: "/trips" },
-    { name: "New Trip", path: "/trips/new-trip" },
     { name: "Sign Up", path: "/signup" },
   ];
 

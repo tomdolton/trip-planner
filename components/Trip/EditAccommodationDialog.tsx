@@ -42,10 +42,12 @@ export function EditAccommodationDialog({
   accommodation,
   open,
   onOpenChange,
+  tripId,
 }: {
   accommodation: Accommodation;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  tripId: string;
 }) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -58,8 +60,8 @@ export function EditAccommodationDialog({
     },
   });
 
-  const updateMutation = useUpdateAccommodation(accommodation.id);
-  const deleteMutation = useDeleteAccommodation(accommodation.id);
+  const updateMutation = useUpdateAccommodation(tripId);
+  const deleteMutation = useDeleteAccommodation(tripId);
 
   function onSubmit(values: FormData) {
     updateMutation.mutate(

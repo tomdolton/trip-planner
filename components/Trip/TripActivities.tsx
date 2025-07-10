@@ -21,7 +21,7 @@ export function TripActivities({ activities }: { activities: Activity[] }) {
               <li
                 onClick={() => dispatch(openDialog({ type: "activity", entity: act }))}
                 key={act.id}
-                className="border p-2 rounded"
+                className="border p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="font-medium">{act.name}</div>
                 <p>{formatTimeRange(act.start_time, act.end_time)}</p>

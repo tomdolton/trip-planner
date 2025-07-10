@@ -31,7 +31,10 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
 
       {phase.locations?.map((loc) => (
         <div key={loc.id} className="mt-4 pl-4 border-l border-slate-300 dark:border-slate-700">
-          <div onClick={() => dispatch(openDialog({ type: "location", entity: loc }))}>
+          <div
+            onClick={() => dispatch(openDialog({ type: "location", entity: loc }))}
+            className="cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+          >
             <h3 className="text-lg font-semibold cursor-pointer">{loc.name}</h3>
           </div>
 
@@ -48,9 +51,9 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
               <div
                 onClick={() => dispatch(openDialog({ type: "accommodation", entity: acc }))}
                 key={acc.id}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
               >
-                <p className="text-sm text-muted-foreground cursor-pointer">
+                <p className="text-sm text-muted-foreground ">
                   🏨 {acc.name}{" "}
                   {acc.check_in && (
                     <span className="text-xs">

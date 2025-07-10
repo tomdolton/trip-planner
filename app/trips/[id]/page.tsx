@@ -63,7 +63,7 @@ export default function TripDetailPage() {
         </Dialog>
       )}
 
-      <EditEntityDialog />
+      <EditEntityDialog tripId={trip.id} />
     </div>
   );
 }
