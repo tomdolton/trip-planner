@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 import { AddPhaseForm } from "@/components/Trip/AddPhaseForm";
+import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripHeader } from "@/components/Trip/TripHeader";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
@@ -11,7 +12,6 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useTripDetail } from "@/lib/queries/useTripDetail";
-
 export default function TripDetailPage() {
   const { id } = useParams();
   const [editing, setEditing] = useState(false);
@@ -62,6 +62,8 @@ export default function TripDetailPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      <EditEntityDialog />
     </div>
   );
 }

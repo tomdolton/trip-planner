@@ -3,6 +3,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useState } from "react";
+import { Provider } from "react-redux";
+
+import { store } from "@/store";
 import "../styles/globals.css";
 
 import Navbar from "@/components/Layout/Navbar";
@@ -30,16 +33,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            <main>{children}</main>
-            <Toaster richColors closeButton position="top-right" />
-          </ThemeProvider>
+          <Provider store={store}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              <main>{children}</main>
+              <Toaster richColors closeButton position="top-right" />
+            </ThemeProvider>
+          </Provider>
         </QueryClientProvider>
       </body>
     </html>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useDispatch } from "react-redux";
+
 import { TripPhase } from "@/types/trip";
 
 import { AddAccommodationForm } from "@/components/Trip/AddAccommodationForm";
@@ -9,12 +11,16 @@ import { TripActivities } from "@/components/Trip/TripActivities";
 
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
+import { openDialog } from "@/store/uiDialogSlice";
+
 interface TripPhaseSectionProps {
   phase: TripPhase;
   tripId: string;
 }
 
 export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
+  const dispatch = useDispatch();
+
   return (
     <div
       key={phase.id}
@@ -25,7 +31,9 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
 
       {phase.locations?.map((loc) => (
         <div key={loc.id} className="mt-4 pl-4 border-l border-slate-300 dark:border-slate-700">
-          <h3 className="text-lg font-semibold">{loc.name}</h3>
+          <div onClick={() => dispatch(openDialog({ type: "location", entity: loc }))}>
+            <h3 className="text-lg font-semibold cursor-pointer">{loc.name}</h3>
+          </div>
 
           <div className="flex gap-4">
             <AddAccommodationForm tripId={tripId} locationId={loc.id} />
@@ -37,12 +45,20 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
           {/* Accommodations */}
           <div className="mt-2 space-y-2">
             {loc.accommodations?.map((acc) => (
-              <p key={acc.id} className="text-sm text-muted-foreground">
-                🏨 {acc.name}{" "}
-                {acc.check_in && (
-                  <span className="text-xs">({formatDateRange(acc.check_in, acc.check_out)})</span>
-                )}
-              </p>
+              <div
+                onClick={() => dispatch(openDialog({ type: "accommodation", entity: acc }))}
+                key={acc.id}
+                className="flex items-center gap-2"
+              >
+                <p className="text-sm text-muted-foreground cursor-pointer">
+                  🏨 {acc.name}{" "}
+                  {acc.check_in && (
+                    <span className="text-xs">
+                      ({formatDateRange(acc.check_in, acc.check_out)})
+                    </span>
+                  )}
+                </p>
+              </div>
             ))}
           </div>
 
