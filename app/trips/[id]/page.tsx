@@ -28,7 +28,7 @@ export default function TripDetailPage() {
     );
   }
 
-  if (isError) {
+  if (isError || !trip) {
     return <p className="text-center text-red-500">Trip not found.</p>;
   }
 

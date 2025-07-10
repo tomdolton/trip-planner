@@ -5,7 +5,7 @@ import { format, parseISO } from "date-fns";
  * @param startDate - Required ISO string (YYYY-MM-DD)
  * @param endDate - Optional ISO string (YYYY-MM-DD)
  */
-export function formatDateRange(startDate: string, endDate?: string): string {
+export function formatDateRange(startDate?: string, endDate?: string): string {
   if (!startDate) return "No date set";
 
   const formattedStart = format(parseISO(startDate), "dd MMM yyyy");
