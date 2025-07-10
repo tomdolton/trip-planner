@@ -69,7 +69,6 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
           <TripActivities activities={loc.activities ?? []} />
         </div>
       ))}
-
       {/* Add new location form */}
       <AddLocationForm tripId={tripId} phaseId={phase.id} />
     </div>
