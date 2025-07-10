@@ -12,8 +12,6 @@ interface TripPhaseSectionProps {
 }
 
 export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
-  const allActivities = phase.locations?.flatMap((loc) => loc.activities || []) ?? [];
-
   return (
     <div
       key={phase.id}
@@ -35,11 +33,11 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
               🏨 {acc.name}
             </p>
           ))}
+
+          {/* All activities in this phase */}
+          <TripActivities activities={loc.activities ?? []} />
         </div>
       ))}
-
-      {/* All activities in this phase */}
-      <TripActivities activities={allActivities} />
 
       {/* Add new location form */}
       <AddLocationForm tripId={tripId} phaseId={phase.id} />
