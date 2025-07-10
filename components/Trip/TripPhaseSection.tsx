@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 
 import { TripPhase } from "@/types/trip";
 
-import { AddAccommodationForm } from "@/components/Trip/AddAccommodationForm";
-import { AddActivityForm } from "@/components/Trip/AddActivityForm";
+import { AddAccommodationDialog } from "@/components/Trip/AddAccommodationDialog";
+import { AddActivityDialog } from "@/components/Trip/AddActivityDialog";
 import { AddLocationForm } from "@/components/Trip/AddLocationForm";
 import { TripActivities } from "@/components/Trip/TripActivities";
 
@@ -39,10 +39,10 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
           </div>
 
           <div className="flex gap-4">
-            <AddAccommodationForm tripId={tripId} locationId={loc.id} />
+            <AddAccommodationDialog tripId={tripId} locationId={loc.id} />
 
             {/* Add activity to this location */}
-            <AddActivityForm tripId={tripId} locationId={loc.id} />
+            <AddActivityDialog tripId={tripId} locationId={loc.id} />
           </div>
 
           {/* Accommodations */}

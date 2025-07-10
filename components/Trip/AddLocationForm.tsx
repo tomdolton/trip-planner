@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { locationFormSchema, LocationFormValues } from "@/types/forms";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,27 +16,34 @@ interface AddLocationFormProps {
 }
 
 export function AddLocationForm({ tripId, phaseId }: AddLocationFormProps) {
-  const [name, setName] = useState("");
+  const form = useForm<LocationFormValues>({
+    resolver: zodResolver(locationFormSchema),
+    defaultValues: {
+      name: "",
+      region: "",
+      notes: "",
+      lat: undefined,
+      lng: undefined,
+    },
+  });
   const { mutate: addLocation } = useAddLocation(tripId);
 
-  function handleAdd() {
-    if (!name.trim()) return;
-    addLocation({ phaseId, name });
-    setName("");
+  function onSubmit(values: LocationFormValues) {
+    addLocation({ phaseId, ...values });
+    form.reset();
   }
 
   return (
-    <div className="mt-4 flex gap-2 items-center">
+    <form className="mt-4 flex gap-2 items-center" onSubmit={form.handleSubmit(onSubmit)}>
       <Input
         type="text"
         className="w-full max-w-xs"
         placeholder="New location name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        {...form.register("name")}
       />
-      <Button size="sm" variant="secondary" onClick={handleAdd}>
+      <Button size="sm" variant="secondary" type="submit">
         + Add Location
       </Button>
-    </div>
+    </form>
   );
 }

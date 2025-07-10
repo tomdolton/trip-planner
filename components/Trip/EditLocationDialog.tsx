@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
+import { locationFormSchema, LocationFormValues } from "@/types/forms";
 import { Location } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
@@ -14,29 +14,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 import { useDeleteLocation } from "@/lib/mutations/useDeleteLocation";
 import { useUpdateLocation } from "@/lib/mutations/useUpdateLocation";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Location name is required"),
-  region: z.string().optional(),
-  notes: z.string().optional(),
-  lat: z.number().optional(),
-  lng: z.number().optional(),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { LocationFormFields } from "./LocationFormFields";
 
 export function EditLocationDialog({
   location,
@@ -49,8 +31,8 @@ export function EditLocationDialog({
   onOpenChange: (open: boolean) => void;
   tripId: string;
 }) {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<LocationFormValues>({
+    resolver: zodResolver(locationFormSchema),
     defaultValues: {
       name: location.name,
       region: location.region || "",
@@ -63,7 +45,7 @@ export function EditLocationDialog({
   const updateMutation = useUpdateLocation(tripId);
   const deleteMutation = useDeleteLocation(tripId);
 
-  function onSubmit(values: FormData) {
+  function onSubmit(values: LocationFormValues) {
     updateMutation.mutate({ ...values, id: location.id }, { onSuccess: () => onOpenChange(false) });
   }
 
@@ -82,86 +64,19 @@ export function EditLocationDialog({
         <DialogHeader>
           <DialogTitle>Edit Location</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-4">
-              <FormField
-                control={form.control}
-                name="lat"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Latitude</FormLabel>
-                    <FormControl>
-                      <Input type="number" step="any" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lng"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Longitude</FormLabel>
-                    <FormControl>
-                      <Input type="number" step="any" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button type="submit" disabled={updateMutation.isPending}>
-                Save
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={deleteMutation.isPending}
-              >
-                Delete
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <LocationFormFields form={form} onSubmit={onSubmit}>
+          <Button type="submit" disabled={updateMutation.isPending}>
+            Save
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={deleteMutation.isPending}
+          >
+            Delete
+          </Button>
+        </LocationFormFields>
       </DialogContent>
     </Dialog>
   );
