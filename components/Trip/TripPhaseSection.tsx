@@ -2,9 +2,12 @@
 
 import { TripPhase } from "@/types/trip";
 
+import { AddAccommodationForm } from "@/components/Trip/AddAccommodationForm";
 import { AddActivityForm } from "@/components/Trip/AddActivityForm";
 import { AddLocationForm } from "@/components/Trip/AddLocationForm";
 import { TripActivities } from "@/components/Trip/TripActivities";
+
+import { formatDateRange } from "@/lib/utils/formatDateRange";
 
 interface TripPhaseSectionProps {
   phase: TripPhase;
@@ -24,15 +27,24 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
         <div key={loc.id} className="mt-4 pl-4 border-l border-slate-300 dark:border-slate-700">
           <h3 className="text-lg font-semibold">{loc.name}</h3>
 
-          {/* Add activity to this location */}
-          <AddActivityForm tripId={tripId} locationId={loc.id} />
+          <div className="flex gap-4">
+            <AddAccommodationForm tripId={tripId} locationId={loc.id} />
+
+            {/* Add activity to this location */}
+            <AddActivityForm tripId={tripId} locationId={loc.id} />
+          </div>
 
           {/* Accommodations */}
-          {loc.accommodations?.map((acc) => (
-            <p key={acc.id} className="text-sm text-muted-foreground">
-              🏨 {acc.name}
-            </p>
-          ))}
+          <div className="mt-2 space-y-2">
+            {loc.accommodations?.map((acc) => (
+              <p key={acc.id} className="text-sm text-muted-foreground">
+                🏨 {acc.name}{" "}
+                {acc.check_in && (
+                  <span className="text-xs">({formatDateRange(acc.check_in, acc.check_out)})</span>
+                )}
+              </p>
+            ))}
+          </div>
 
           {/* All activities in this phase */}
           <TripActivities activities={loc.activities ?? []} />
