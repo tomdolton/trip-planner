@@ -36,6 +36,7 @@ const eslintConfig = async () => {
               { pattern: "@/components/**", group: "internal", position: "after" },
               { pattern: "@/lib/**", group: "internal", position: "after" },
               { pattern: "@/hooks/**", group: "internal", position: "after" },
+              { pattern: "@/store/**", group: "internal", position: "after" },
             ],
             alphabetize: { order: "asc", caseInsensitive: true },
             "newlines-between": "always",
