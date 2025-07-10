@@ -19,7 +19,6 @@ export function useUpdateAccommodation(tripId: string) {
       const previousTrip = queryClient.getQueryData<Trip>(["trip", tripId]);
 
       queryClient.setQueryData(["trip", tripId], (old: Trip | undefined) => {
-        console.log("Optimistic update running", old);
         if (!old?.trip_phases) return old;
         return {
           ...old,

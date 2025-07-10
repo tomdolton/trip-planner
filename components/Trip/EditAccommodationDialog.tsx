@@ -65,7 +65,13 @@ export function EditAccommodationDialog({
 
   function onSubmit(values: FormData) {
     updateMutation.mutate(
-      { ...values, id: accommodation.id },
+      {
+        ...values,
+        id: accommodation.id,
+        check_in: values.check_in || undefined,
+        check_out: values.check_out || undefined,
+        url: values.url || undefined,
+      },
       { onSuccess: () => onOpenChange(false) }
     );
   }
