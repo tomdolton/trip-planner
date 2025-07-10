@@ -45,6 +45,12 @@ const eslintConfig = async () => {
         "prettier/prettier": "error",
       },
     },
+    {
+      files: ["components/ui/**"],
+      rules: {
+        "import/order": "off",
+      },
+    },
   ];
 };
 
