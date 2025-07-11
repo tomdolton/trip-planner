@@ -34,9 +34,13 @@ export function useUpdateTrip() {
         queryClient.setQueryData(["trips"], context.previousTrips);
       }
     },
-    onSettled: () => {
-      // Invalidate the trips query to refetch data
+    onSettled: (_data, _error, variables) => {
+      // Invalidate the trips list
       queryClient.invalidateQueries({ queryKey: ["trips"] });
+      // Invalidate the trip detail
+      if (variables?.id) {
+        queryClient.invalidateQueries({ queryKey: ["trip", variables.id] });
+      }
     },
   });
 }

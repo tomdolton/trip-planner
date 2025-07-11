@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { Trip } from "@/types/trip";
 
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -73,6 +73,29 @@ export default function TripList() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>{trip.title}</span>
+                <ActionMenu>
+                  <ActionMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setEditingTrip(trip);
+                    }}
+                  >
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Edit
+                  </ActionMenuItem>
+                  <ActionMenuSeparator />
+                  <ActionMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setTripToDelete(trip);
+                    }}
+                    disabled={deleteTrip.isPending}
+                    className="text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </ActionMenuItem>
+                </ActionMenu>
               </CardTitle>
             </CardHeader>
 
@@ -80,41 +103,6 @@ export default function TripList() {
               <p>{formatDateRange(trip.start_date, trip.end_date)}</p>
               {trip.description && <p>{trip.description}</p>}
             </CardContent>
-
-            <CardFooter className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setEditingTrip(trip);
-                }}
-              >
-                <Pencil className="w-4 h-4 mr-1" />
-                Edit
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setTripToDelete(trip);
-                }}
-                disabled={deleteTrip.isPending}
-              >
-                {deleteTrip.isPending && tripToDelete?.id === trip.id ? (
-                  <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Deleting...
-                  </span>
-                ) : (
-                  <>
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Delete
-                  </>
-                )}
-              </Button>
-            </CardFooter>
           </Card>
         ))}
       </ul>
