@@ -1,12 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { accommodationFormSchema, AccommodationFormValues } from "@/types/forms";
 import { Accommodation } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
+import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import {
   Dialog,
   DialogTrigger,
@@ -44,6 +46,7 @@ export function EditAccommodationDialog({
 
   const updateMutation = useUpdateAccommodation(tripId);
   const deleteMutation = useDeleteAccommodation(tripId);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   function onSubmit(values: AccommodationFormValues) {
     updateMutation.mutate(
@@ -59,34 +62,47 @@ export function EditAccommodationDialog({
   }
 
   function handleDelete() {
-    if (confirm("Delete this accommodation?")) {
-      deleteMutation.mutate({ id: accommodation.id }, { onSuccess: () => onOpenChange(false) });
-    }
+    setShowDeleteDialog(true);
+  }
+
+  function confirmDelete() {
+    deleteMutation.mutate({ id: accommodation.id }, { onSuccess: () => onOpenChange(false) });
+    setShowDeleteDialog(false);
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <div className="cursor-pointer">{/* Render children in parent */}</div>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Accommodation</DialogTitle>
-        </DialogHeader>
-        <AccommodationFormFields form={form} onSubmit={onSubmit}>
-          <Button type="submit" disabled={updateMutation.isPending}>
-            Save
-          </Button>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={deleteMutation.isPending}
-          >
-            Delete
-          </Button>
-        </AccommodationFormFields>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogTrigger asChild>
+          <div className="cursor-pointer">{/* Render children in parent */}</div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Accommodation</DialogTitle>
+          </DialogHeader>
+          <AccommodationFormFields form={form} onSubmit={onSubmit}>
+            <Button type="submit" disabled={updateMutation.isPending}>
+              Save
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+            >
+              Delete
+            </Button>
+          </AccommodationFormFields>
+        </DialogContent>
+      </Dialog>
+      <ConfirmDeleteDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title={`Delete "${accommodation.name}"?`}
+        description="This action cannot be undone. All data associated with this accommodation will be permanently deleted."
+        onConfirm={confirmDelete}
+        loading={deleteMutation.isPending}
+      />
+    </>
   );
 }

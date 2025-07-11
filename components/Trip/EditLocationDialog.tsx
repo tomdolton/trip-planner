@@ -1,12 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { locationFormSchema, LocationFormValues } from "@/types/forms";
 import { Location } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
+import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import {
   Dialog,
   DialogTrigger,
@@ -44,40 +46,54 @@ export function EditLocationDialog({
 
   const updateMutation = useUpdateLocation(tripId);
   const deleteMutation = useDeleteLocation(tripId);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   function onSubmit(values: LocationFormValues) {
     updateMutation.mutate({ ...values, id: location.id }, { onSuccess: () => onOpenChange(false) });
   }
 
   function handleDelete() {
-    if (confirm("Delete this location?")) {
-      deleteMutation.mutate({ id: location.id }, { onSuccess: () => onOpenChange(false) });
-    }
+    setShowDeleteDialog(true);
+  }
+
+  function confirmDelete() {
+    deleteMutation.mutate({ id: location.id }, { onSuccess: () => onOpenChange(false) });
+    setShowDeleteDialog(false);
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <div className="cursor-pointer">{/* Render children in parent */}</div>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Location</DialogTitle>
-        </DialogHeader>
-        <LocationFormFields form={form} onSubmit={onSubmit}>
-          <Button type="submit" disabled={updateMutation.isPending}>
-            Save
-          </Button>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={deleteMutation.isPending}
-          >
-            Delete
-          </Button>
-        </LocationFormFields>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogTrigger asChild>
+          <div className="cursor-pointer">{/* Render children in parent */}</div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Location</DialogTitle>
+          </DialogHeader>
+          <LocationFormFields form={form} onSubmit={onSubmit}>
+            <Button type="submit" disabled={updateMutation.isPending}>
+              Save
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+            >
+              Delete
+            </Button>
+          </LocationFormFields>
+        </DialogContent>
+      </Dialog>
+      <ConfirmDeleteDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title={`Delete "${location.name}"?`}
+        description="This action cannot be undone. All data associated with this location will be permanently deleted."
+        onConfirm={confirmDelete}
+        loading={deleteMutation.isPending}
+      />
+    </>
   );
 }

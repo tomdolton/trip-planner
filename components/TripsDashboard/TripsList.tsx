@@ -8,18 +8,9 @@ import { toast } from "sonner";
 import { Trip } from "@/types/trip";
 
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogCancel,
-  AlertDialogAction,
-  AlertDialogDescription,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -134,25 +125,18 @@ export default function TripList() {
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={!!tripToDelete} onOpenChange={(open) => !open && setTripToDelete(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to delete <strong>{tripToDelete?.title}</strong>?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. All data associated with this trip will be permanently
-              deleted.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} disabled={deleteTrip.isPending}>
-              Yes, delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDeleteDialog
+        open={!!tripToDelete}
+        onOpenChange={(open) => !open && setTripToDelete(null)}
+        title={
+          <>
+            Are you sure you want to delete <strong>{tripToDelete?.title}</strong>?
+          </>
+        }
+        description="This action cannot be undone. All data associated with this trip will be permanently deleted."
+        onConfirm={confirmDelete}
+        loading={deleteTrip.isPending}
+      />
     </>
   );
 }
