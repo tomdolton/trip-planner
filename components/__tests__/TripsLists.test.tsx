@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
 import { useTrips } from "@/lib/queries/useTrips";
@@ -56,13 +57,19 @@ describe("TripsList", () => {
 
   it("renders trip and calls delete mutation on confirm", async () => {
     render(<TripsList />);
+    const user = userEvent.setup();
 
-    fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+    // Open the action menu (three dots button)
+    const menuButton = screen.getByRole("button", { name: /open actions/i });
+    await user.click(menuButton);
 
-    // Wait for alert dialog
+    // Click the Delete menu item
+    const deleteMenuItem = await screen.findByText(/delete/i);
+    await user.click(deleteMenuItem);
+
+    // Click the confirm button in the dialog
     const confirmButton = await screen.findByRole("button", { name: /yes, delete/i });
-
-    fireEvent.click(confirmButton);
+    await user.click(confirmButton);
 
     await waitFor(() => {
       expect(mutateMock).toHaveBeenCalledWith("trip1", expect.any(Object));
