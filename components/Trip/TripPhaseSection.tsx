@@ -2,13 +2,15 @@
 
 import { useDispatch } from "react-redux";
 
-import { TripPhase } from "@/types/trip";
+import { TripPhase, Trip } from "@/types/trip";
 
 import { AddAccommodationDialog } from "@/components/Trip/AddAccommodationDialog";
 import { AddActivityDialog } from "@/components/Trip/AddActivityDialog";
 import { AddLocationForm } from "@/components/Trip/AddLocationForm";
+import { Journey } from "@/components/Trip/Journey";
 import { TripActivities } from "@/components/Trip/TripActivities";
 
+import { useAddJourney } from "@/lib/mutations/useAddJourney";
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
 import { openDialog } from "@/store/uiDialogSlice";
@@ -16,10 +18,25 @@ import { openDialog } from "@/store/uiDialogSlice";
 interface TripPhaseSectionProps {
   phase: TripPhase;
   tripId: string;
+  journeys?: Journey[];
 }
 
-export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
+export function TripPhaseSection({ phase, tripId, journeys }: TripPhaseSectionProps) {
   const dispatch = useDispatch();
+  const addJourney = useAddJourney(tripId);
+
+  // Helper to find journey between two locations
+  function findJourney(fromId: string, toId: string) {
+    // Use journeys prop instead of phase.journeys
+    return journeys?.find(
+      (j) => j.departure_location_id === fromId && j.arrival_location_id === toId
+    );
+  }
+
+  // Handler to add journey (you'll need to implement mutation)
+  function handleAddJourney(journeyData: Omit<Journey, "id">) {
+    addJourney.mutate(journeyData);
+  }
 
   return (
     <div
@@ -29,7 +46,7 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
       <h2 className="text-xl font-bold">{phase.title}</h2>
       {phase.description && <p className="text-muted-foreground">{phase.description}</p>}
 
-      {phase.locations?.map((loc) => (
+      {phase.locations?.map((loc, idx) => (
         <div key={loc.id} className="mt-4 pl-4 border-l border-slate-300 dark:border-slate-700">
           <div
             onClick={() => dispatch(openDialog({ type: "location", entity: loc }))}
@@ -67,6 +84,15 @@ export function TripPhaseSection({ phase, tripId }: TripPhaseSectionProps) {
 
           {/* All activities in this phase */}
           <TripActivities activities={loc.activities ?? []} />
+          {idx < (phase.locations?.length ?? 0) - 1 && (
+            <Journey
+              fromLocation={loc}
+              toLocation={phase.locations?.[idx + 1]}
+              tripId={tripId}
+              journey={findJourney(loc.id, phase.locations?.[idx + 1]?.id ?? "")}
+              onAddJourney={handleAddJourney}
+            />
+          )}
         </div>
       ))}
       {/* Add new location form */}

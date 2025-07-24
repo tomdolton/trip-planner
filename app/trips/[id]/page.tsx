@@ -25,6 +25,10 @@ export default function TripDetailPage() {
   const { data: trip, isLoading, isError } = useTripDetail(id as string);
   const deleteTrip = useDeleteTrip();
 
+  function getAllLocations(trip: Trip): Location[] {
+    return trip.trip_phases?.flatMap((phase) => phase.locations ?? []) ?? [];
+  }
+
   if (isLoading) {
     return (
       <div className="p-8">
@@ -68,9 +72,22 @@ export default function TripDetailPage() {
         <AddPhaseForm tripId={trip.id} />
       </div>
 
-      {trip?.trip_phases?.map((phase) => (
-        <TripPhaseSection key={phase.id} phase={phase} tripId={trip.id} />
-      ))}
+      {trip.trip_phases?.length ? (
+        trip.trip_phases.map((phase) => (
+          <TripPhaseSection
+            key={phase.id}
+            phase={phase}
+            tripId={trip.id}
+            journeys={trip.journeys}
+          />
+        ))
+      ) : (
+        <TripPhaseSection
+          phase={{ id: "no-phase", title: "All Locations", locations: getAllLocations(trip) }}
+          tripId={trip.id}
+          journeys={trip.journeys}
+        />
+      )}
 
       {Array.isArray(trip?.journeys) && trip.journeys.length > 0 && (
         <div className="mt-6 border-t pt-4">
