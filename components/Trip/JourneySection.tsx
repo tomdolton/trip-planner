@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { JourneyDetails } from "./JourneyDetails";
 import { JourneyForm } from "./JourneyForm";
 
-export function Journey({
+export function JourneySection({
   fromLocation,
   toLocation,
   tripId,

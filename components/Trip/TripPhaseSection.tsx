@@ -2,12 +2,12 @@
 
 import { useDispatch } from "react-redux";
 
-import { TripPhase, Trip } from "@/types/trip";
+import { TripPhase, Journey } from "@/types/trip";
 
 import { AddAccommodationDialog } from "@/components/Trip/AddAccommodationDialog";
 import { AddActivityDialog } from "@/components/Trip/AddActivityDialog";
 import { AddLocationForm } from "@/components/Trip/AddLocationForm";
-import { Journey } from "@/components/Trip/Journey";
+import { JourneySection } from "@/components/Trip/JourneySection";
 import { TripActivities } from "@/components/Trip/TripActivities";
 
 import { useAddJourney } from "@/lib/mutations/useAddJourney";
@@ -84,12 +84,12 @@ export function TripPhaseSection({ phase, tripId, journeys }: TripPhaseSectionPr
 
           {/* All activities in this phase */}
           <TripActivities activities={loc.activities ?? []} />
-          {idx < (phase.locations?.length ?? 0) - 1 && (
-            <Journey
+          {idx < (phase.locations?.length ?? 0) - 1 && phase.locations?.[idx + 1] && (
+            <JourneySection
               fromLocation={loc}
-              toLocation={phase.locations?.[idx + 1]}
+              toLocation={phase.locations[idx + 1]}
               tripId={tripId}
-              journey={findJourney(loc.id, phase.locations?.[idx + 1]?.id ?? "")}
+              journey={findJourney(loc.id, phase.locations[idx + 1].id)}
               onAddJourney={handleAddJourney}
             />
           )}
