@@ -4,6 +4,8 @@ import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import type { Trip, TripPhase, Location } from "@/types/trip";
+
 import { AddPhaseForm } from "@/components/Trip/AddPhaseForm";
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripHeader } from "@/components/Trip/TripHeader";
@@ -26,7 +28,7 @@ export default function TripDetailPage() {
   const deleteTrip = useDeleteTrip();
 
   function getAllLocations(trip: Trip): Location[] {
-    return trip.trip_phases?.flatMap((phase) => phase.locations ?? []) ?? [];
+    return trip.trip_phases?.flatMap((phase: TripPhase) => phase.locations ?? []) ?? [];
   }
 
   if (isLoading) {
@@ -83,7 +85,12 @@ export default function TripDetailPage() {
         ))
       ) : (
         <TripPhaseSection
-          phase={{ id: "no-phase", title: "All Locations", locations: getAllLocations(trip) }}
+          phase={{
+            id: "no-phase",
+            trip_id: trip.id,
+            title: "All Locations",
+            locations: getAllLocations(trip),
+          }}
           tripId={trip.id}
           journeys={trip.journeys}
         />
