@@ -2,10 +2,10 @@ import { format, parse } from "date-fns";
 
 /**
  * Formats a time string (HH:mm or HH:mm:ss) into 12-hour time.
- * Returns '–' if no valid time is provided.
+ * Returns '-' if no valid time is provided.
  */
 export function formatTime(time: string | undefined | null): string {
-  if (!time) return "–";
+  if (!time) return "-";
 
   try {
     const parsed = parse(time, "HH:mm:ss", new Date());
@@ -16,20 +16,20 @@ export function formatTime(time: string | undefined | null): string {
 
     return format(parsed, "h:mmaaa");
   } catch {
-    return "–";
+    return "-";
   }
 }
 
 /**
  * Formats a start and end time as a range.
- * e.g. "1:00 PM – 3:30 PM" or "1:00 PM" if only start
+ * e.g. "1:00 PM - 3:30 PM" or "1:00 PM" if only start
  */
 export function formatTimeRange(start?: string | null, end?: string | null): string {
   const formattedStart = formatTime(start);
   const formattedEnd = formatTime(end);
 
-  if (!start) return "–";
-  if (!end || formattedEnd === "–") return formattedStart;
+  if (!start) return "-";
+  if (!end || formattedEnd === "-") return formattedStart;
 
-  return `${formattedStart} – ${formattedEnd}`;
+  return `${formattedStart} - ${formattedEnd}`;
 }

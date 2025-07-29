@@ -16,5 +16,5 @@ export function formatDateRange(startDate?: string, endDate?: string): string {
 
   const formattedEnd = format(parseISO(endDate), "dd MMM yyyy");
 
-  return `${formattedStart} – ${formattedEnd}`;
+  return `${formattedStart} - ${formattedEnd}`;
 }
