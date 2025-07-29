@@ -47,3 +47,5 @@ export const journeyModeIcons: Record<JourneyMode, string> = {
 };
 
 export function getJourneyModeIcon(mode: JourneyMode): string {
+  return journeyModeIcons[mode] || "❓";
+}
