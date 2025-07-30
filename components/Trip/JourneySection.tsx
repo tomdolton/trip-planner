@@ -1,14 +1,13 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useState } from "react";
 
 import { Journey as JourneyType, Location } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 
+import { AddJourneyDialog } from "./AddJourneyDialog";
 import { JourneyDetails } from "./JourneyDetails";
-import { JourneyForm } from "./JourneyForm";
 
 export function JourneySection({
   fromLocation,
@@ -23,38 +22,22 @@ export function JourneySection({
   journey?: JourneyType;
   onAddJourney: (data: Omit<JourneyType, "id">) => void;
 }) {
-  const [showForm, setShowForm] = useState(false);
-
-  function handleAddJourney(data: Omit<JourneyType, "id">) {
-    onAddJourney(data);
-    setShowForm(false);
-  }
-
   if (journey) {
-    return <JourneyDetails journey={journey} />;
+    return <JourneyDetails journey={journey} tripId={tripId} />;
   }
 
   return (
     <div className="flex items-center justify-center my-4">
-      {showForm ? (
-        <JourneyForm
-          fromLocation={fromLocation}
-          toLocation={toLocation}
-          tripId={tripId}
-          onAddJourney={handleAddJourney}
-          onCancel={() => setShowForm(false)}
-        />
-      ) : (
-        <Button
-          variant="outline"
-          size="icon"
-          className="rounded-full"
-          onClick={() => setShowForm(true)}
-          aria-label="Add journey"
-        >
+      <AddJourneyDialog
+        fromLocation={fromLocation}
+        toLocation={toLocation}
+        tripId={tripId}
+        onAddJourney={onAddJourney}
+      >
+        <Button variant="outline" size="icon" className="rounded-full" aria-label="Add journey">
           <Plus />
         </Button>
-      )}
+      </AddJourneyDialog>
     </div>
   );
 }

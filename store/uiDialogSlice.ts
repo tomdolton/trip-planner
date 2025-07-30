@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { Activity, Accommodation, Location } from "@/types/trip";
 
-type DialogType = "activity" | "accommodation" | "location" | null;
+type DialogType = "activity" | "accommodation" | "location" | "journey" | null;
 
 export type EntityType = Activity | Accommodation | Location | null;
 
