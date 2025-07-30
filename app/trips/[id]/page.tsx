@@ -96,17 +96,6 @@ export default function TripDetailPage() {
         />
       )}
 
-      {Array.isArray(trip?.journeys) && trip.journeys.length > 0 && (
-        <div className="mt-6 border-t pt-4">
-          <h2 className="text-xl font-bold">Journeys</h2>
-          {trip.journeys.map((j) => (
-            <p key={j.id} className="text-sm text-muted-foreground">
-              ✈️ {j.mode} from {j.departure_location_id} to {j.arrival_location_id}
-            </p>
-          ))}
-        </div>
-      )}
-
       {trip && (
         <Dialog open={editing} onOpenChange={(open) => setEditing(open)}>
           <DialogContent>
