@@ -25,12 +25,12 @@ export function JourneyDetails({ journey, tripId }: JourneyDetailsProps) {
   const deleteJourney = useDeleteJourney(tripId);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  function handleEdit(e: React.MouseEvent) {
+  function handleEdit(e: Event) {
     e.stopPropagation();
     dispatch(openDialog({ type: "journey", entity: journey }));
   }
 
-  function handleDelete(e: React.MouseEvent) {
+  function handleDelete(e: Event) {
     e.stopPropagation();
     setShowDeleteDialog(true);
   }
