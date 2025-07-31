@@ -17,7 +17,10 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   // Different nav items based on auth status
-  const loggedInNavItems = [{ name: "Trips", path: "/trips" }];
+  const loggedInNavItems = [
+    { name: "Trips", path: "/trips" },
+    { name: "Account", path: "/account-settings" },
+  ];
 
   const loggedOutNavItems: { name: string; path: string }[] = [
     // Add any public nav items here if needed
