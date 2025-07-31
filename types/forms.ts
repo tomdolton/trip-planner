@@ -42,8 +42,16 @@ export const journeyFormSchema = z.object({
   notes: z.string().optional(),
 });
 
+export const tripPhaseFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  start_date: z.string().optional().or(z.literal("")),
+  end_date: z.string().optional().or(z.literal("")),
+});
+
 export type TripFormValues = z.infer<typeof tripSchema>;
 export type ActivityFormValues = z.infer<typeof activityFormSchema>;
 export type AccommodationFormValues = z.infer<typeof accommodationFormSchema>;
 export type LocationFormValues = z.infer<typeof locationFormSchema>;
 export type JourneyFormValues = z.infer<typeof journeyFormSchema>;
+export type TripPhaseFormValues = z.infer<typeof tripPhaseFormSchema>;

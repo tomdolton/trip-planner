@@ -34,7 +34,7 @@ export function TripPhaseSection({ phase, tripId, journeys }: TripPhaseSectionPr
       key={phase.id}
       className="mt-6 bg-slate-200/30 dark:bg-gray-800/30 rounded-lg p-4 border border-slate-300/30 dark:border-slate-700/30"
     >
-      <PhaseHeader title={phase.title} description={phase.description} />
+      <PhaseHeader phase={phase} tripId={tripId} />
 
       {phase.locations?.map((loc, idx) => {
         const nextLocation = phase.locations?.[idx + 1];

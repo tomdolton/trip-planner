@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { Activity, Accommodation, Location, Journey } from "@/types/trip";
+import type { Activity, Accommodation, Location, Journey, TripPhase } from "@/types/trip";
 
-type DialogType = "activity" | "accommodation" | "location" | "journey" | null;
+type DialogType = "location" | "accommodation" | "activity" | "journey" | "trip_phase" | null;
 
-export type EntityType = Activity | Accommodation | Location | Journey | null;
+export type EntityType = Activity | Accommodation | Location | Journey | TripPhase | null;
 
 interface DialogState {
   open: boolean;

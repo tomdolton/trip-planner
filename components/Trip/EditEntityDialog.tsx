@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "@/store";
-import { isAccommodation, isActivity, isLocation, isJourney } from "@/types/guards";
+import { isAccommodation, isActivity, isLocation, isJourney, isTripPhase } from "@/types/guards";
 
 import { closeDialog } from "@/store/uiDialogSlice";
 
@@ -9,6 +9,7 @@ import { EditAccommodationDialog } from "./EditAccommodationDialog";
 import { EditActivityDialog } from "./EditActivityDialog";
 import { EditJourneyDialog } from "./EditJourneyDialog";
 import { EditLocationDialog } from "./EditLocationDialog";
+import { EditTripPhaseDialog } from "./EditTripPhaseDialog";
 
 export function EditEntityDialog({ tripId }: { tripId: string }) {
   const { open, type, entity } = useSelector((state: RootState) => state.uiDialog);
@@ -53,6 +54,17 @@ export function EditEntityDialog({ tripId }: { tripId: string }) {
     return (
       <EditJourneyDialog
         journey={entity}
+        open={open}
+        onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
+        tripId={tripId}
+      />
+    );
+  }
+
+  if (type === "trip_phase" && isTripPhase(entity)) {
+    return (
+      <EditTripPhaseDialog
+        phase={entity}
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
         tripId={tripId}

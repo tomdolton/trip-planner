@@ -1,4 +1,4 @@
-import type { Activity, Accommodation, Location, Journey } from "@/types/trip";
+import type { Activity, Accommodation, Location, Journey, TripPhase } from "@/types/trip";
 
 export function isActivity(entity: unknown): entity is Activity {
   return (
@@ -20,4 +20,8 @@ export function isLocation(entity: unknown): entity is Location {
 
 export function isJourney(entity: unknown): entity is Journey {
   return entity !== null && typeof entity === "object" && "mode" in entity && "trip_id" in entity;
+}
+
+export function isTripPhase(entity: unknown): entity is TripPhase {
+  return entity !== null && typeof entity === "object" && "trip_id" in entity && "title" in entity;
 }

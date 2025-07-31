@@ -88,7 +88,7 @@ export function JourneyDetails({ journey, tripId }: JourneyDetailsProps) {
 
           {/* Action Menu - positioned at top right */}
           <div className="absolute top-2 right-2">
-            <ActionMenu side="left">
+            <ActionMenu>
               <ActionMenuItem onSelect={handleEdit}>
                 <Pencil className="w-4 h-4 mr-2" />
                 Edit
