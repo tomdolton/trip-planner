@@ -96,8 +96,12 @@ export default function AccountPage() {
       if (profileError) throw profileError;
 
       toast.success("Profile updated successfully!");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -136,8 +140,12 @@ export default function AccountPage() {
 
       toast.success("Password updated successfully!");
       passwordForm.reset();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }
