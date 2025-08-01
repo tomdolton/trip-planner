@@ -10,6 +10,8 @@ import { supabase } from "@/lib/supabase";
 
 import { useUser } from "@/hooks/useUser";
 
+import { VenLogo } from "../Icons/VenLogo";
+
 export default function Navbar() {
   const pathname = usePathname();
   const { user } = useUser();
@@ -30,9 +32,10 @@ export default function Navbar() {
 
   return (
     <header className="w-full px-6 py-4 shadow-sm border-b bg-background">
-      <nav className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Trip Planner
+      <nav className="max-w-6xl mx-auto flex justify-between items-center font-display">
+        <Link href="/" className="flex items-center">
+          <VenLogo className="inline-block mr-2" />
+          <span className="border-l pl-2 mt-6">Trip Planner</span>
         </Link>
 
         <div className="flex gap-4 items-center">
@@ -41,7 +44,7 @@ export default function Navbar() {
               key={item.name}
               href={item.path}
               className={`text-sm font-medium transition-colors ${
-                isActive(item.path) ? "text-primary" : "text-muted-foreground"
+                isActive(item.path) ? "underline" : ""
               }`}
             >
               {item.name}

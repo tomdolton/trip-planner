@@ -11,10 +11,10 @@ export default function TripsPage() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen p-6 sm:p-10 gap-10 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center justify-start min-h-screen p-6 sm:p-10 gap-10">
       <div className="flex w-full max-w-6xl justify-between items-center">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold font-serif">Trips</h1>
+          <h1 className="text-3xl font-bold ">Trips</h1>
           <p className="text-muted-foreground">Plan and manage your trips</p>
         </div>
 

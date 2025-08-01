@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import { useState } from "react";
 import { Provider } from "react-redux";
 
@@ -12,14 +12,16 @@ import Navbar from "@/components/Layout/Navbar";
 import { ThemeProvider } from "@/components/Layout/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const outfit = Outfit({
+  variable: "--font-display",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -31,7 +33,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} antialiased font-sans`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
             <ThemeProvider
@@ -41,7 +43,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Navbar />
-              <main>{children}</main>
+              <main className="">{children}</main>
               <Toaster richColors closeButton position="top-right" />
             </ThemeProvider>
           </Provider>
