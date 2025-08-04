@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Info, Plus, ChevronDown, FolderPlus, MapPin } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -9,6 +9,13 @@ import { Trip } from "@/types/trip";
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
@@ -29,9 +36,9 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
         Back to trips
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_352px] gap-6">
         {/* Left Card - Trip Details */}
-        <Card className="lg:col-span-2">
+        <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-6 lg:gap-10">
               {/* Placeholder Image */}
@@ -87,13 +94,45 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
         {/* Right Card - Start Your Trip */}
         <Card>
           <CardContent className="p-6 flex flex-col items-start gap-3 h-full">
-            <h2 className="text-lg lg:text-xl font-semibold text-accent-foreground">
-              Start your trip
-            </h2>
+            <div className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Phases let you organise and make sense of longer or multi-focus trips</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <h2 className="text-lg lg:text-xl font-semibold text-accent-foreground">
+                Start your trip
+              </h2>
+            </div>
             <p className="text-sm text-muted-foreground">
               Break your trip into phases, or start by adding locations first.
             </p>
-            <Button className="mt-auto ms-auto">Create New</Button>
+
+            {/* Create New Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="mt-auto ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
+                  <Plus className="w-4 h-4" />
+                  Create New
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-40">
+                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer">
+                  <FolderPlus className="w-4 h-4" />
+                  <span>Phase</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer  border-t">
+                  <MapPin className="w-4 h-4" />
+                  <span>Location</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardContent>
         </Card>
       </div>
