@@ -19,6 +19,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
+import { TripImage } from "./TripImage";
+
 interface TripHeaderProps {
   trip: Trip;
   onEditClick: () => void;
@@ -41,11 +43,12 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-6 lg:gap-10">
-              {/* Placeholder Image */}
-              <div className="flex-shrink-0 hidden sm:block">
-                <div className="w-32 h-32 lg:w-40 lg:h-40 bg-muted rounded-lg flex items-center justify-center">
-                  <span className="text-muted-foreground text-sm">Image</span>
-                </div>
+              <div className="flex-shrink-0">
+                <TripImage
+                  title={trip.title}
+                  description={trip.description}
+                  className="h-24 w-32 lg:w-90 lg:h-42 rounded-xl overflow-hidden"
+                />
               </div>
 
               {/* Trip Details */}
