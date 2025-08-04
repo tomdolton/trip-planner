@@ -7,17 +7,24 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type ActionMenuProps = {
   children: React.ReactNode;
   side?: "top" | "right" | "bottom" | "left";
+  className?: string;
 };
 
-export function ActionMenu({ children, side = "bottom" }: ActionMenuProps) {
+export function ActionMenu({ children, side = "bottom", className }: ActionMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8 p-0" aria-label="Open actions">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn("h-8 w-8 p-0", className)}
+          aria-label="Open actions"
+        >
           <MoreHorizontal className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>

@@ -63,8 +63,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full px-6 py-4 bg-background">
-      <nav className="max-w-6xl mx-auto flex justify-between items-center font-display">
+    <header className="container py-4 bg-background">
+      <nav className=" flex justify-between items-center font-display">
         <Link href="/" className="flex items-center">
           <VenLogo className="inline-block mr-2" />
           <span className="border-l pl-2 mt-6">Trip Planner</span>

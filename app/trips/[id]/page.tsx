@@ -63,7 +63,7 @@ export default function TripDetailPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 space-y-6">
+    <div className="container py-8 space-y-6">
       <TripHeader
         trip={trip}
         onEditClick={() => setEditing(true)}

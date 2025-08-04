@@ -43,7 +43,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Navbar />
-              <main className="">{children}</main>
+              <main>{children}</main>
               <Toaster richColors closeButton position="top-right" />
             </ThemeProvider>
           </Provider>
