@@ -39,8 +39,6 @@ export function EditLocationDialog({
       name: location.name,
       region: location.region || "",
       notes: location.notes || "",
-      lat: location.lat ?? undefined,
-      lng: location.lng ?? undefined,
     },
   });
 
@@ -55,8 +53,6 @@ export function EditLocationDialog({
         name: values.name,
         region: values.region,
         notes: values.notes,
-        lat: values.lat,
-        lng: values.lng,
       },
       { onSuccess: () => onOpenChange(false) }
     );

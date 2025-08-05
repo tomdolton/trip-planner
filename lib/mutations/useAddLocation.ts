@@ -13,8 +13,6 @@ export function useAddLocation(tripId: string) {
       name: string;
       region?: string;
       notes?: string;
-      lat?: number;
-      lng?: number;
     }) => {
       const { data, error } = await supabase
         .from("locations")
@@ -25,8 +23,6 @@ export function useAddLocation(tripId: string) {
             name: values.name,
             region: values.region || null,
             notes: values.notes || null,
-            lat: values.lat || null,
-            lng: values.lng || null,
           },
         ])
         .select()
@@ -54,8 +50,6 @@ export function useAddLocation(tripId: string) {
           name: values.name,
           region: values.region,
           notes: values.notes,
-          lat: values.lat,
-          lng: values.lng,
           accommodations: [],
           activities: [],
         };

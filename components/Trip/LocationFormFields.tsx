@@ -109,33 +109,6 @@ export function LocationFormFields({
           )}
         />
 
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name="lat"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Latitude</FormLabel>
-                <FormControl>
-                  <Input type="number" step="any" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lng"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Longitude</FormLabel>
-                <FormControl>
-                  <Input type="number" step="any" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-
         <div className="flex gap-2">{children}</div>
       </form>
     </Form>

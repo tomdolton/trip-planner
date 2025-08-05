@@ -31,9 +31,6 @@ export function AddLocationDialog({
   const mutation = useAddLocation(tripId);
 
   // Determine if we should show the phase selector
-  // Show it when:
-  // 1. No specific phaseId is provided (coming from TripHeader)
-  // 2. AND there are phases available to choose from
   const showPhaseSelector = !phaseId && phases.length > 0;
 
   const form = useForm<LocationFormValues>({
@@ -42,9 +39,7 @@ export function AddLocationDialog({
       name: "",
       region: "",
       notes: "",
-      lat: undefined,
-      lng: undefined,
-      phaseId: phaseId || "no-phase", // Default to "no-phase" instead of empty string
+      phaseId: phaseId || "no-phase",
     },
   });
 
@@ -60,8 +55,6 @@ export function AddLocationDialog({
         name: values.name,
         region: values.region,
         notes: values.notes,
-        lat: values.lat,
-        lng: values.lng,
         phaseId: actualPhaseId,
       },
       {

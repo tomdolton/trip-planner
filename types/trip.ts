@@ -32,14 +32,35 @@ export interface Location {
   id: string;
   trip_id: string;
   trip_phase_id?: string;
-  name: string;
+  name: string; // User-customizable name (e.g., "Our hotel in Paris")
   region?: string;
   notes?: string;
   order?: number;
-  lat?: number;
-  lng?: number;
+  place_id?: string; // Reference to places table
+  place?: Place; // Populated via join - contains lat/lng
   accommodations?: Accommodation[];
   activities?: Activity[];
+}
+
+export interface Place {
+  id: string;
+  name: string; // Official place name (e.g., "Hotel Ritz Paris")
+  description?: string;
+  lat: number;
+  lng: number;
+  google_place_id?: string;
+  place_types?: string[];
+  formatted_address?: string;
+  phone_number?: string;
+  website?: string;
+  rating?: number;
+  price_level?: number;
+  opening_hours?: string;
+  photos?: string[];
+  is_google_place: boolean;
+  user_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Activity {

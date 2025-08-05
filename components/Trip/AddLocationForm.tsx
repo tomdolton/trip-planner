@@ -22,8 +22,6 @@ export function AddLocationForm({ tripId, phaseId }: AddLocationFormProps) {
       name: "",
       region: "",
       notes: "",
-      lat: undefined,
-      lng: undefined,
     },
   });
   const { mutate: addLocation } = useAddLocation(tripId);
@@ -34,8 +32,6 @@ export function AddLocationForm({ tripId, phaseId }: AddLocationFormProps) {
       name: values.name,
       region: values.region,
       notes: values.notes,
-      lat: values.lat,
-      lng: values.lng,
     });
     form.reset();
   }
