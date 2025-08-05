@@ -8,18 +8,31 @@ export function useAddTripPhase(tripId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (title: string) => {
+    mutationFn: async (values: {
+      title: string;
+      description?: string;
+      start_date?: string;
+      end_date?: string;
+    }) => {
       const { data, error } = await supabase
         .from("trip_phases")
-        .insert([{ title, trip_id: tripId }])
+        .insert([
+          {
+            title: values.title,
+            description: values.description || null,
+            start_date: values.start_date || null,
+            end_date: values.end_date || null,
+            trip_id: tripId,
+          },
+        ])
         .select()
         .single();
 
       if (error) throw new Error(error.message);
       return data;
     },
-    onMutate: async (title) => {
-      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+    onMutate: async (values) => {
+      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["trip", tripId] });
 
       // Snapshot the previous value
@@ -28,16 +41,17 @@ export function useAddTripPhase(tripId: string) {
       // Optimistically update to the new value
       queryClient.setQueryData(["trip", tripId], (old: Trip | undefined) => {
         if (!old) return old;
-        // Add the new phase to the trip phases
-        // Using a temporary ID for optimistic UI
         return {
           ...old,
           trip_phases: [
             ...(old?.trip_phases ?? []),
             {
               id: `temp-${Math.random()}`,
-              title,
-              description: null,
+              trip_id: tripId,
+              title: values.title,
+              description: values.description,
+              start_date: values.start_date,
+              end_date: values.end_date,
               locations: [],
             },
           ],

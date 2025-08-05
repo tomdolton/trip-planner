@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 import type { Trip, TripPhase, Location } from "@/types/trip";
 
-import { AddPhaseForm } from "@/components/Trip/AddPhaseForm";
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripHeader } from "@/components/Trip/TripHeader";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
@@ -52,7 +51,7 @@ export default function TripDetailPage() {
     deleteTrip.mutate(trip.id, {
       onSuccess: () => {
         toast.success("Trip deleted");
-        router.push("/trips"); // Use Next.js router for redirect
+        router.push("/trips");
       },
       onError: (err) =>
         toast.error("Failed to delete trip", {
@@ -69,10 +68,6 @@ export default function TripDetailPage() {
         onEditClick={() => setEditing(true)}
         onDeleteClick={handleDeleteClick}
       />
-
-      <div className="mt-8">
-        <AddPhaseForm tripId={trip.id} />
-      </div>
 
       {trip.trip_phases?.length ? (
         trip.trip_phases.map((phase) => (

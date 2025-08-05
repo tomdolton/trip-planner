@@ -3,6 +3,7 @@
 import { ChevronLeft, Info, Plus, ChevronDown, FolderPlus, MapPin } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 import { Trip } from "@/types/trip";
 
@@ -19,6 +20,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
+import { AddTripPhaseDialog } from "./AddTripPhaseDialog";
 import { TripImage } from "./TripImage";
 
 interface TripHeaderProps {
@@ -28,6 +30,8 @@ interface TripHeaderProps {
 }
 
 export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps) {
+  const [showAddPhaseDialog, setShowAddPhaseDialog] = useState(false);
+
   return (
     <div className="space-y-4">
       <Link
@@ -126,11 +130,14 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-40">
-                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer">
+                <DropdownMenuItem
+                  className="flex items-center gap-2 py-2 cursor-pointer"
+                  onSelect={() => setShowAddPhaseDialog(true)}
+                >
                   <FolderPlus className="w-4 h-4" />
                   <span>Phase</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer  border-t">
+                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer border-t">
                   <MapPin className="w-4 h-4" />
                   <span>Location</span>
                 </DropdownMenuItem>
@@ -139,6 +146,13 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Trip Phase Dialog */}
+      <AddTripPhaseDialog
+        tripId={trip.id}
+        open={showAddPhaseDialog}
+        onOpenChange={setShowAddPhaseDialog}
+      />
     </div>
   );
 }
