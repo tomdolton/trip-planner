@@ -4,8 +4,6 @@ import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { Trip, TripPhase, Location } from "@/types/trip";
-
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripHeader } from "@/components/Trip/TripHeader";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
@@ -25,10 +23,6 @@ export default function TripDetailPage() {
 
   const { data: trip, isLoading, isError } = useTripDetail(id as string);
   const deleteTrip = useDeleteTrip();
-
-  function getAllLocations(trip: Trip): Location[] {
-    return trip.trip_phases?.flatMap((phase: TripPhase) => phase.locations ?? []) ?? [];
-  }
 
   if (isLoading) {
     return (
@@ -61,6 +55,12 @@ export default function TripDetailPage() {
     setShowDeleteDialog(false);
   };
 
+  // Get locations not assigned to any phase from the dedicated field
+  const unassignedLocations = trip.unassigned_locations ?? [];
+
+  // Show ALL phases, even if they're empty
+  const allPhases = trip.trip_phases ?? [];
+
   return (
     <div className="container py-8 space-y-6">
       <TripHeader
@@ -69,26 +69,33 @@ export default function TripDetailPage() {
         onDeleteClick={handleDeleteClick}
       />
 
-      {trip.trip_phases?.length ? (
-        trip.trip_phases.map((phase) => (
-          <TripPhaseSection
-            key={phase.id}
-            phase={phase}
-            tripId={trip.id}
-            journeys={trip.journeys}
-          />
-        ))
-      ) : (
+      {/* Always show unassigned locations section if there are any */}
+      {unassignedLocations.length > 0 && (
         <TripPhaseSection
           phase={{
             id: "no-phase",
             trip_id: trip.id,
-            title: "All Locations",
-            locations: getAllLocations(trip),
+            title: "Locations",
+            description: "Locations not assigned to any phase",
+            locations: unassignedLocations,
           }}
           tripId={trip.id}
           journeys={trip.journeys}
+          isNoPhaseSection={true}
         />
+      )}
+
+      {/* Show all phases (including empty ones) */}
+      {allPhases.map((phase) => (
+        <TripPhaseSection key={phase.id} phase={phase} tripId={trip.id} journeys={trip.journeys} />
+      ))}
+
+      {/* Show empty state only if no phases AND no unassigned locations */}
+      {allPhases.length === 0 && unassignedLocations.length === 0 && (
+        <div className="text-center py-12 text-muted-foreground">
+          <h3 className="text-lg font-medium mb-2">No content yet</h3>
+          <p>Start by adding a phase or location to your trip using the Create New button above.</p>
+        </div>
       )}
 
       {trip && (

@@ -20,6 +20,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
+import { AddLocationDialog } from "./AddLocationDialog";
 import { AddTripPhaseDialog } from "./AddTripPhaseDialog";
 import { TripImage } from "./TripImage";
 
@@ -31,6 +32,7 @@ interface TripHeaderProps {
 
 export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps) {
   const [showAddPhaseDialog, setShowAddPhaseDialog] = useState(false);
+  const [showAddLocationDialog, setShowAddLocationDialog] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -137,7 +139,10 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                   <FolderPlus className="w-4 h-4" />
                   <span>Phase</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 py-2 cursor-pointer border-t">
+                <DropdownMenuItem
+                  className="flex items-center gap-2 py-2 cursor-pointer border-t"
+                  onSelect={() => setShowAddLocationDialog(true)}
+                >
                   <MapPin className="w-4 h-4" />
                   <span>Location</span>
                 </DropdownMenuItem>
@@ -152,6 +157,14 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
         tripId={trip.id}
         open={showAddPhaseDialog}
         onOpenChange={setShowAddPhaseDialog}
+      />
+
+      {/* Add Location Dialog with phase selection */}
+      <AddLocationDialog
+        tripId={trip.id}
+        phases={trip.trip_phases || []}
+        open={showAddLocationDialog}
+        onOpenChange={setShowAddLocationDialog}
       />
     </div>
   );

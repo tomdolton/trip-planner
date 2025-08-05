@@ -2,57 +2,96 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Trip, TripPhase } from "@/types/trip";
 
-import { addLocationToPhase } from "@/lib/api/addLocationToPhase";
-
-import { useUser } from "@/hooks/useUser";
+import { supabase } from "@/lib/supabase";
 
 export function useAddLocation(tripId: string) {
   const queryClient = useQueryClient();
-  const { user } = useUser();
-  const userId = user?.id;
 
   return useMutation({
-    mutationFn: ({ phaseId, name }: { phaseId: string; name: string }) =>
-      // Call the API to add the location to the specified phase
-      addLocationToPhase(phaseId, name, tripId, userId),
+    mutationFn: async (values: {
+      phaseId?: string;
+      name: string;
+      region?: string;
+      notes?: string;
+      lat?: number;
+      lng?: number;
+    }) => {
+      const { data, error } = await supabase
+        .from("locations")
+        .insert([
+          {
+            trip_id: tripId,
+            trip_phase_id: values.phaseId || null,
+            name: values.name,
+            region: values.region || null,
+            notes: values.notes || null,
+            lat: values.lat || null,
+            lng: values.lng || null,
+          },
+        ])
+        .select()
+        .single();
 
-    onMutate: async ({ phaseId, name }) => {
-      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      if (error) throw new Error(error.message);
+      return data;
+    },
+
+    onMutate: async (values) => {
+      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["trip", tripId] });
 
-      // Snapshot the previous trip data
-      const prevTrip = queryClient.getQueryData(["trip", tripId]);
+      // Snapshot the previous value
+      const prevData = queryClient.getQueryData(["trip", tripId]);
 
       // Optimistically update to the new value
-      queryClient.setQueryData(["trip", tripId], (old: Trip) => {
+      queryClient.setQueryData(["trip", tripId], (old: Trip | undefined) => {
+        if (!old) return old;
+
+        const newLocation = {
+          id: `temp-${Math.random()}`,
+          trip_id: tripId,
+          trip_phase_id: values.phaseId,
+          name: values.name,
+          region: values.region,
+          notes: values.notes,
+          lat: values.lat,
+          lng: values.lng,
+          accommodations: [],
+          activities: [],
+        };
+
+        // If no phaseId, add to unassigned_locations
+        if (!values.phaseId) {
+          return {
+            ...old,
+            unassigned_locations: [...(old.unassigned_locations || []), newLocation],
+          };
+        }
+
+        // Otherwise, add to the specific phase
         return {
           ...old,
           trip_phases: old.trip_phases
             ? old.trip_phases.map((phase: TripPhase) =>
-                phase.id === phaseId
+                phase.id === values.phaseId
                   ? {
                       ...phase,
-                      locations: [
-                        ...(phase.locations || []),
-                        { id: crypto.randomUUID(), name, accommodations: [] },
-                      ],
+                      locations: [...(phase.locations || []), newLocation],
                     }
                   : phase
               )
             : [],
         };
       });
-      // Return the previous trip data for rollback in case of error
-      return { prevTrip };
+
+      return { prevData };
     },
 
-    onError: (_, __, context) => {
-      // Rollback to the previous trip data
-      queryClient.setQueryData(["trip", tripId], context?.prevTrip);
+    onError: (_err, _newLocation, context) => {
+      queryClient.setQueryData(["trip", tripId], context?.prevData);
     },
 
     onSettled: () => {
-      // Invalidate the trip query to refetch the latest data
       queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
     },
   });

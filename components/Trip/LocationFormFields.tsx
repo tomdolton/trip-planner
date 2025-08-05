@@ -1,6 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 
 import { LocationFormValues } from "@/types/forms";
+import { TripPhase } from "@/types/trip";
 
 import {
   Form,
@@ -11,17 +12,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
+interface LocationFormFieldsProps {
+  form: UseFormReturn<LocationFormValues>;
+  onSubmit: (values: LocationFormValues) => void;
+  children?: React.ReactNode;
+  phases?: TripPhase[];
+  showPhaseSelector?: boolean;
+}
 
 export function LocationFormFields({
   form,
   onSubmit,
   children,
-}: {
-  form: UseFormReturn<LocationFormValues>;
-  onSubmit: (values: LocationFormValues) => void;
-  children?: React.ReactNode;
-}) {
+  phases = [],
+  showPhaseSelector = false,
+}: LocationFormFieldsProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -30,26 +44,57 @@ export function LocationFormFields({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Location Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="Enter location name" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {showPhaseSelector && phases.length > 0 && (
+          <FormField
+            control={form.control}
+            name="phaseId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Trip Phase</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a phase (optional)" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="no-phase">No phase (unassigned)</SelectItem>
+                    {phases.map((phase) => (
+                      <SelectItem key={phase.id} value={phase.id}>
+                        {phase.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name="region"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Region</FormLabel>
+              <FormLabel>Region/Area</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="e.g., Downtown, Old Town" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="notes"
@@ -57,11 +102,13 @@ export function LocationFormFields({
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea {...field} placeholder="Any additional notes about this location" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <div className="flex gap-4">
           <FormField
             control={form.control}
@@ -88,6 +135,7 @@ export function LocationFormFields({
             )}
           />
         </div>
+
         <div className="flex gap-2">{children}</div>
       </form>
     </Form>

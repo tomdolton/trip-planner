@@ -16,10 +16,16 @@ export async function getTripById(id: string): Promise<Trip | null> {
           activities (*)
         )
       ),
-      journeys (*)
+      journeys (*),
+      unassigned_locations:locations!trip_id (
+        *,
+        accommodations (*),
+        activities (*)
+      )
     `
     )
     .eq("id", id)
+    .is("unassigned_locations.trip_phase_id", null)
     .single();
 
   if (error) throw new Error(error.message);

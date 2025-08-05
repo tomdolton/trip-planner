@@ -30,8 +30,9 @@ export const locationFormSchema = z.object({
   name: z.string().min(1, "Location name is required"),
   region: z.string().optional(),
   notes: z.string().optional(),
-  lat: z.number().optional(),
-  lng: z.number().optional(),
+  lat: z.coerce.number().optional().or(z.literal("")),
+  lng: z.coerce.number().optional().or(z.literal("")),
+  phaseId: z.string().optional(),
 });
 
 export const journeyFormSchema = z.object({
