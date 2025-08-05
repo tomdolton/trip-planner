@@ -49,7 +49,17 @@ export function EditLocationDialog({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   function onSubmit(values: LocationFormValues) {
-    updateMutation.mutate({ ...values, id: location.id }, { onSuccess: () => onOpenChange(false) });
+    updateMutation.mutate(
+      {
+        id: location.id,
+        name: values.name,
+        region: values.region,
+        notes: values.notes,
+        lat: values.lat,
+        lng: values.lng,
+      },
+      { onSuccess: () => onOpenChange(false) }
+    );
   }
 
   function handleDelete() {

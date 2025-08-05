@@ -60,8 +60,8 @@ export function AddLocationDialog({
         name: values.name,
         region: values.region,
         notes: values.notes,
-        lat: values.lat === "" ? undefined : values.lat,
-        lng: values.lng === "" ? undefined : values.lng,
+        lat: values.lat,
+        lng: values.lng,
         phaseId: actualPhaseId,
       },
       {

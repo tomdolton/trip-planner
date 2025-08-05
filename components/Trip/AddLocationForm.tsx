@@ -29,7 +29,14 @@ export function AddLocationForm({ tripId, phaseId }: AddLocationFormProps) {
   const { mutate: addLocation } = useAddLocation(tripId);
 
   function onSubmit(values: LocationFormValues) {
-    addLocation({ phaseId, ...values });
+    addLocation({
+      phaseId,
+      name: values.name,
+      region: values.region,
+      notes: values.notes,
+      lat: values.lat,
+      lng: values.lng,
+    });
     form.reset();
   }
 
