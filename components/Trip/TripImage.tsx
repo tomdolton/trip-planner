@@ -81,9 +81,9 @@ export function TripImage({ trip, className, showAttribution = true }: TripImage
 
       {/* Attribution Overlay */}
       {showAttribution && imageData.photographerName && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg">
+        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs py-1 px-3 transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs opacity-90">
+            <span>
               Photo by{" "}
               <Link
                 href={imageData.photographerUrl}
