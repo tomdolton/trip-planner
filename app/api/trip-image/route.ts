@@ -1,11 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 interface UnsplashImage {
   id: string;
   urls: {
@@ -54,6 +49,12 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
   }
 
   try {
+    // Initialize Supabase client inside the function
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     const currentHash = getSearchHash(title, description || undefined);
 
     // Check if we already have this image
@@ -143,7 +144,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
   }
 }
 
-// Keep your existing createSearchQuery function
 function createSearchQuery(title: string, description?: string): string {
   const text = `${title} ${description || ""}`.toLowerCase();
 
