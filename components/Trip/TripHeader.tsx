@@ -45,9 +45,9 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
             <div className="flex items-center gap-6 lg:gap-10">
               <div className="flex-shrink-0">
                 <TripImage
-                  title={trip.title}
-                  description={trip.description}
+                  trip={trip}
                   className="h-24 w-32 lg:w-90 lg:h-42 rounded-xl overflow-hidden"
+                  showAttribution={true}
                 />
               </div>
 
@@ -103,7 +103,7 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                   <TooltipTrigger asChild>
                     <Info className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent>
                     <p>Phases let you organise and make sense of longer or multi-focus trips</p>
                   </TooltipContent>
                 </Tooltip>

@@ -1,28 +1,83 @@
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 interface UnsplashImage {
   id: string;
   urls: {
     small: string;
     regular: string;
-    thumb: string;
+    full: string;
+    raw: string;
+  };
+  links: {
+    html: string;
+    download: string;
+    download_location: string;
   };
   alt_description?: string;
   user: {
     name: string;
+    username: string;
+    links: {
+      html: string;
+    };
   };
 }
 
-export async function GET(request: NextRequest) {
+interface ApiResponse {
+  imageUrl?: string;
+  downloadUrl?: string;
+  photographerName?: string;
+  photographerUrl?: string;
+  unsplashUrl?: string;
+  altDescription?: string;
+  error?: string;
+}
+
+function getSearchHash(title: string, description?: string): string {
+  return btoa(`${title}-${description || ""}`).slice(0, 20);
+}
+
+export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse>> {
   const searchParams = request.nextUrl.searchParams;
   const title = searchParams.get("title");
   const description = searchParams.get("description");
+  const tripId = searchParams.get("tripId");
 
-  if (!title) {
-    return NextResponse.json({ error: "Title is required" }, { status: 400 });
+  if (!title || !tripId) {
+    return NextResponse.json({ error: "Title and tripId are required" }, { status: 400 });
   }
 
   try {
+    const currentHash = getSearchHash(title, description || undefined);
+
+    // Check if we already have this image
+    const { data: trip } = await supabase
+      .from("trips")
+      .select(
+        "image_search_hash, unsplash_image_url, unsplash_photographer_name, unsplash_photographer_url, unsplash_alt_description, unsplash_image_id"
+      )
+      .eq("id", tripId)
+      .single();
+
+    // If hash matches and we have an image URL, return cached data
+    if (trip?.image_search_hash === currentHash && trip.unsplash_image_url) {
+      return NextResponse.json({
+        imageUrl: trip.unsplash_image_url,
+        photographerName: trip.unsplash_photographer_name,
+        photographerUrl: trip.unsplash_photographer_url,
+        altDescription: trip.unsplash_alt_description,
+        unsplashUrl: `https://unsplash.com/photos/${trip.unsplash_image_id || ""}`,
+        downloadUrl: "", // No download tracking for cached images
+      });
+    }
+
+    // Fetch new image from Unsplash
     const searchQuery = createSearchQuery(title, description || undefined);
 
     const response = await fetch(
@@ -42,17 +97,53 @@ export async function GET(request: NextRequest) {
 
     if (data.results && data.results.length > 0) {
       const image: UnsplashImage = data.results[0];
-      return NextResponse.json({ imageUrl: image.urls.small });
+
+      const imageData = {
+        imageUrl: image.urls.regular,
+        downloadUrl: image.links.download_location,
+        photographerName: image.user.name,
+        photographerUrl: image.user.links.html,
+        unsplashUrl: image.links.html,
+        altDescription: image.alt_description || `${title} trip`,
+      };
+
+      // Save image data to database
+      await supabase
+        .from("trips")
+        .update({
+          image_search_hash: currentHash,
+          unsplash_image_url: imageData.imageUrl,
+          unsplash_photographer_name: imageData.photographerName,
+          unsplash_photographer_url: imageData.photographerUrl,
+          unsplash_image_id: image.id,
+          unsplash_alt_description: imageData.altDescription,
+        })
+        .eq("id", tripId);
+
+      return NextResponse.json(imageData);
     }
 
-    // No results found
-    return NextResponse.json({ imageUrl: null });
+    // No results found - clear any existing image data
+    await supabase
+      .from("trips")
+      .update({
+        image_search_hash: currentHash,
+        unsplash_image_url: null,
+        unsplash_photographer_name: null,
+        unsplash_photographer_url: null,
+        unsplash_image_id: null,
+        unsplash_alt_description: null,
+      })
+      .eq("id", tripId);
+
+    return NextResponse.json({});
   } catch (error) {
     console.error("Error fetching trip image:", error);
     return NextResponse.json({ error: "Failed to fetch image" }, { status: 500 });
   }
 }
 
+// Keep your existing createSearchQuery function
 function createSearchQuery(title: string, description?: string): string {
   const text = `${title} ${description || ""}`.toLowerCase();
 
@@ -129,7 +220,6 @@ function createSearchQuery(title: string, description?: string): string {
     }
 
     score += cleanWord.length > 4 ? 3 : 1;
-
     if (/^[A-Z]/.test(word)) score += 4;
 
     if (

@@ -8,6 +8,12 @@ export interface Trip {
   description?: string;
   trip_phases?: TripPhase[];
   journeys?: Journey[];
+  image_search_hash?: string;
+  unsplash_image_url?: string;
+  unsplash_photographer_name?: string;
+  unsplash_photographer_url?: string;
+  unsplash_image_id?: string;
+  unsplash_alt_description?: string;
 }
 
 export interface TripPhase {

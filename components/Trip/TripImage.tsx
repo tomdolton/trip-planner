@@ -1,17 +1,44 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+
+import { Trip } from "@/types/trip";
 
 import { useTripImage } from "@/hooks/useTripImage";
 
 interface TripImageProps {
-  title: string;
-  description?: string;
+  trip: Trip;
   className?: string;
+  showAttribution?: boolean;
 }
 
-export function TripImage({ title, description, className }: TripImageProps) {
-  const { imageUrl, loading, error } = useTripImage(title, description);
+export function TripImage({ trip, className, showAttribution = true }: TripImageProps) {
+  const { imageData, loading, error } = useTripImage(trip);
+
+  // Track download when image is displayed (only for new images)
+  useEffect(() => {
+    if (imageData?.downloadUrl) {
+      const trackDownload = async () => {
+        try {
+          await fetch("/api/track-download", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              downloadUrl: imageData.downloadUrl,
+            }),
+          });
+        } catch (error) {
+          console.error("Failed to track download:", error);
+        }
+      };
+
+      trackDownload();
+    }
+  }, [imageData?.downloadUrl]);
 
   if (loading) {
     return (
@@ -23,17 +50,16 @@ export function TripImage({ title, description, className }: TripImageProps) {
     );
   }
 
-  if (error || !imageUrl) {
+  if (error || !imageData) {
     return (
       <div className={`relative ${className}`}>
         <Image
           src="/images/trip-placeholder.jpg"
           alt="Trip placeholder"
           fill
-          sizes="100vw"
+          sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 160px"
           className="object-cover"
           placeholder="empty"
-          style={{ objectFit: "cover" }}
         />
       </div>
     );
@@ -41,16 +67,45 @@ export function TripImage({ title, description, className }: TripImageProps) {
 
   return (
     <div className={`relative ${className}`}>
-      <Image
-        src={imageUrl}
-        alt={`${title} trip`}
-        className="w-full h-full object-cover"
-        fill
-        sizes="100vw"
-        onError={() => {}}
-        placeholder="empty"
-        style={{ objectFit: "cover" }}
-      />
+      {/* Main Image */}
+      <Link href={imageData.unsplashUrl} target="_blank" rel="noopener noreferrer">
+        <Image
+          src={imageData.imageUrl}
+          alt={imageData.altDescription}
+          fill
+          sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 160px"
+          className="object-cover hover:opacity-95 transition-opacity"
+          placeholder="empty"
+        />
+      </Link>
+
+      {/* Attribution Overlay */}
+      {showAttribution && imageData.photographerName && (
+        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg">
+          <div className="flex items-center justify-between">
+            <span className="text-xs opacity-90">
+              Photo by{" "}
+              <Link
+                href={imageData.photographerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:opacity-80"
+              >
+                {imageData.photographerName}
+              </Link>{" "}
+              on{" "}
+              <Link
+                href="https://unsplash.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:opacity-80"
+              >
+                Unsplash
+              </Link>
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,13 +1,30 @@
 import { useState, useEffect } from "react";
 
-export function useTripImage(title: string, description?: string) {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+import { Trip } from "@/types/trip";
+
+interface UnsplashImageData {
+  imageUrl: string;
+  downloadUrl: string;
+  photographerName: string;
+  photographerUrl: string;
+  unsplashUrl: string;
+  altDescription: string;
+}
+
+function getSearchHash(title: string, description?: string): string {
+  return Buffer.from(`${title}-${description || ""}`)
+    .toString("base64")
+    .slice(0, 20);
+}
+
+export function useTripImage(trip: Trip) {
+  const [imageData, setImageData] = useState<UnsplashImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImage = async () => {
-      if (!title) {
+      if (!trip.title) {
         setLoading(false);
         return;
       }
@@ -16,9 +33,27 @@ export function useTripImage(title: string, description?: string) {
         setLoading(true);
         setError(null);
 
+        const currentHash = getSearchHash(trip.title, trip.description);
+
+        // Only fetch if we haven't searched this exact content before
+        if (trip.image_search_hash === currentHash && trip.unsplash_image_url) {
+          setImageData({
+            imageUrl: trip.unsplash_image_url,
+            downloadUrl: "", // No download tracking for cached images
+            photographerName: trip.unsplash_photographer_name || "",
+            photographerUrl: trip.unsplash_photographer_url || "",
+            unsplashUrl: `https://unsplash.com/photos/${trip.unsplash_image_id || ""}`,
+            altDescription: trip.unsplash_alt_description || `${trip.title} trip`,
+          });
+          setLoading(false);
+          return;
+        }
+
+        // Fetch new image and update database
         const params = new URLSearchParams({
-          title,
-          ...(description && { description }),
+          title: trip.title,
+          tripId: trip.id,
+          ...(trip.description && { description: trip.description }),
         });
 
         const response = await fetch(`/api/trip-image?${params}`);
@@ -30,9 +65,15 @@ export function useTripImage(title: string, description?: string) {
         const data = await response.json();
 
         if (data.imageUrl) {
-          setImageUrl(data.imageUrl);
+          setImageData({
+            imageUrl: data.imageUrl,
+            downloadUrl: data.downloadUrl,
+            photographerName: data.photographerName,
+            photographerUrl: data.photographerUrl,
+            unsplashUrl: data.unsplashUrl,
+            altDescription: data.altDescription,
+          });
         }
-        // If no imageUrl in response, imageUrl remains null and TripImage will show fallback
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
@@ -41,7 +82,17 @@ export function useTripImage(title: string, description?: string) {
     };
 
     fetchImage();
-  }, [title, description]);
+  }, [
+    trip.title,
+    trip.description,
+    trip.id,
+    trip.image_search_hash,
+    trip.unsplash_image_url,
+    trip.unsplash_alt_description,
+    trip.unsplash_image_id,
+    trip.unsplash_photographer_name,
+    trip.unsplash_photographer_url,
+  ]);
 
-  return { imageUrl, loading, error };
+  return { imageData, loading, error };
 }
