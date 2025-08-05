@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { locationFormSchema, LocationFormValues } from "@/types/forms";
-import { TripPhase } from "@/types/trip";
+import { TripPhase, Place } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -30,7 +30,6 @@ export function AddLocationDialog({
 }: AddLocationDialogProps) {
   const mutation = useAddLocation(tripId);
 
-  // Determine if we should show the phase selector
   const showPhaseSelector = !phaseId && phases.length > 0;
 
   const form = useForm<LocationFormValues>({
@@ -43,11 +42,8 @@ export function AddLocationDialog({
     },
   });
 
-  function onSubmit(values: LocationFormValues) {
-    // Use the selected phaseId from the form if available, otherwise use the prop
+  function onSubmit(values: LocationFormValues & { place?: Place }) {
     const selectedPhaseId = values.phaseId || phaseId;
-
-    // Don't pass phaseId if it's the special "no-phase" id
     const actualPhaseId = selectedPhaseId === "no-phase" ? undefined : selectedPhaseId;
 
     mutation.mutate(
@@ -56,6 +52,7 @@ export function AddLocationDialog({
         region: values.region,
         notes: values.notes,
         phaseId: actualPhaseId,
+        placeId: values.place?.id, // Link to the place
       },
       {
         onSuccess: () => {
@@ -68,7 +65,7 @@ export function AddLocationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add Location</DialogTitle>
         </DialogHeader>

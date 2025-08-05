@@ -32,12 +32,12 @@ export interface Location {
   id: string;
   trip_id: string;
   trip_phase_id?: string;
+  place_id?: string; // Add place_id
   name: string; // User-customizable name (e.g., "Our hotel in Paris")
   region?: string;
   notes?: string;
   order?: number;
-  place_id?: string; // Reference to places table
-  place?: Place; // Populated via join - contains lat/lng
+  place?: Place; // Add place relationship
   accommodations?: Accommodation[];
   activities?: Activity[];
 }

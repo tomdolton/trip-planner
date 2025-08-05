@@ -13,6 +13,7 @@ export function useAddLocation(tripId: string) {
       name: string;
       region?: string;
       notes?: string;
+      placeId?: string;
     }) => {
       const { data, error } = await supabase
         .from("locations")
@@ -20,12 +21,18 @@ export function useAddLocation(tripId: string) {
           {
             trip_id: tripId,
             trip_phase_id: values.phaseId || null,
+            place_id: values.placeId || null,
             name: values.name,
             region: values.region || null,
             notes: values.notes || null,
           },
         ])
-        .select()
+        .select(
+          `
+          *,
+          place:places(*)
+        `
+        )
         .single();
 
       if (error) throw new Error(error.message);
@@ -47,6 +54,7 @@ export function useAddLocation(tripId: string) {
           id: `temp-${Math.random()}`,
           trip_id: tripId,
           trip_phase_id: values.phaseId,
+          place_id: values.placeId,
           name: values.name,
           region: values.region,
           notes: values.notes,
