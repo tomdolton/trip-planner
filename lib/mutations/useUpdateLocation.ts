@@ -6,7 +6,12 @@ export function useUpdateLocation(tripId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (values: { id: string; name: string; region?: string; notes?: string }) => {
+    mutationFn: async (values: {
+      id: string;
+      name: string;
+      region?: string; // Will be automatically set from Google Place data
+      notes?: string;
+    }) => {
       const { data, error } = await supabase
         .from("locations")
         .update({

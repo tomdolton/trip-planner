@@ -11,7 +11,7 @@ export function useAddLocation(tripId: string) {
     mutationFn: async (values: {
       phaseId?: string;
       name: string;
-      region?: string;
+      region?: string; // Will be automatically set from Google Place data
       notes?: string;
       placeId?: string;
     }) => {

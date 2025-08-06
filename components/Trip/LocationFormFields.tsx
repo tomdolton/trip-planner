@@ -55,10 +55,12 @@ export function LocationFormFields({
       // Auto-fill the location name with the place name
       form.setValue("name", googlePlace.name);
 
-      // Extract region from formatted_address
+      // Automatically extract and set region from formatted_address
       const addressParts = googlePlace.formatted_address.split(", ");
       if (addressParts.length > 1) {
-        form.setValue("region", addressParts[addressParts.length - 2] || "");
+        // Take the second-to-last part as the region (typically city/area)
+        const region = addressParts[addressParts.length - 2] || "";
+        form.setValue("region", region);
       }
     } catch (error) {
       console.error("Error saving place:", error);
@@ -159,20 +161,6 @@ export function LocationFormFields({
                 )}
               />
             )}
-
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region/Area</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="e.g., Downtown, Old Town" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}

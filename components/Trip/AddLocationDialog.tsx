@@ -36,7 +36,7 @@ export function AddLocationDialog({
     resolver: zodResolver(locationFormSchema),
     defaultValues: {
       name: "",
-      region: "",
+      region: "", // Will be automatically set when Google Place is selected
       notes: "",
       phaseId: phaseId || "no-phase",
     },

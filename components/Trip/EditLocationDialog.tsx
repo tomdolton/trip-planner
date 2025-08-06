@@ -37,7 +37,7 @@ export function EditLocationDialog({
     resolver: zodResolver(locationFormSchema),
     defaultValues: {
       name: location.name,
-      region: location.region || "",
+      region: location.region || "", // Keep current region value, but won't be editable in UI
       notes: location.notes || "",
     },
   });

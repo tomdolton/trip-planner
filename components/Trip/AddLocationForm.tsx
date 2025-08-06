@@ -20,7 +20,7 @@ export function AddLocationForm({ tripId, phaseId }: AddLocationFormProps) {
     resolver: zodResolver(locationFormSchema),
     defaultValues: {
       name: "",
-      region: "",
+      region: "", // Keep for database, but won't be shown in UI
       notes: "",
     },
   });
