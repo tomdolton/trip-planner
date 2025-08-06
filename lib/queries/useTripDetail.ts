@@ -51,10 +51,6 @@ export function useTripDetail(tripId: string) {
           (location: Location) => !phaseLocationIds.has(location.id)
         ) || [];
 
-      console.log("📊 Trip data loaded:", data);
-      console.log("📊 Phase location IDs:", Array.from(phaseLocationIds));
-      console.log("📊 Filtered unassigned locations:", data.unassigned_locations);
-
       return data as Trip;
     },
     enabled: !!tripId,

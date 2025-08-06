@@ -8,7 +8,7 @@ import { Trip, Location, TripPhase } from "@/types/trip";
 // Map styles for a clean, minimal look
 const mapContainerStyle = {
   width: "100%",
-  height: "400px",
+  height: "650px",
 };
 
 const mapOptions = {
@@ -77,13 +77,6 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
 
     const combined = [...phaseLocations, ...unassignedLocations];
 
-    // Debug logging
-    console.log("🗺️ All locations:", combined);
-    console.log(
-      "🗺️ Locations with coordinates:",
-      combined.filter((loc) => loc.place?.lat && loc.place?.lng)
-    );
-
     return combined;
   }, [trip.trip_phases, trip.unassigned_locations]);
 
@@ -94,10 +87,7 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
       (loc: MapLocation) => loc.place?.lat && loc.place?.lng
     );
 
-    console.log("🗺️ Locations with coords for center calculation:", locationsWithCoords);
-
     if (locationsWithCoords.length === 0) {
-      console.log("🗺️ No locations with coordinates, defaulting to London");
       return { lat: 51.5074, lng: -0.1278 }; // Default to London
     }
 
@@ -114,7 +104,6 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
       ) / locationsWithCoords.length;
 
     const center = { lat: avgLat, lng: avgLng };
-    console.log("🗺️ Calculated map center:", center);
 
     return center;
   }, [allLocations]);
@@ -125,8 +114,6 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
         (loc: MapLocation) => loc.place?.lat && loc.place?.lng
       );
 
-      console.log("🗺️ Map loaded, locations with coords:", locationsWithCoords);
-
       if (locationsWithCoords.length > 1) {
         // Auto-fit bounds to show all locations
         const bounds = new window.google.maps.LatLngBounds();
@@ -136,13 +123,11 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
           }
         });
         map.fitBounds(bounds);
-        console.log("🗺️ Bounds fitted to show all locations");
       } else if (locationsWithCoords.length === 1) {
         // Center on single location
         const location = locationsWithCoords[0];
         map.setCenter({ lat: location.place!.lat, lng: location.place!.lng });
         map.setZoom(12);
-        console.log("🗺️ Centered on single location:", location.place);
       }
     },
     [allLocations]
@@ -159,12 +144,6 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
     );
   }
 
-  // Debug what we're trying to render
-  const markersToRender = allLocations.filter(
-    (location) => location.place?.lat && location.place?.lng
-  );
-  console.log("🗺️ Markers to render:", markersToRender.length, markersToRender);
-
   return (
     <div className={className}>
       <GoogleMap
@@ -177,18 +156,11 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
         {allLocations.map((location: MapLocation) => {
           // Only show locations that have coordinates from their linked place
           if (!location.place?.lat || !location.place?.lng) {
-            console.log("🗺️ Skipping location without coordinates:", location.name, location.place);
             return null;
           }
 
           const markerColor =
             colorBy === "phase" ? getPhaseColor(location.phaseIndex) : getMarkerColor(location);
-
-          console.log("🗺️ Rendering marker for:", location.name, {
-            lat: location.place.lat,
-            lng: location.place.lng,
-            color: markerColor,
-          });
 
           return (
             <Marker

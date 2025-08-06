@@ -65,72 +65,99 @@ export default function TripDetailPage() {
   // Show ALL phases, even if they're empty
   const allPhases = trip.trip_phases ?? [];
 
+  // Determine if we should show the map
+  const shouldShowMap = allPhases.length > 0 || unassignedLocations.length > 0;
+
   return (
-    <div className="container mx-auto px-4 py-8 space-y-6">
-      <TripHeader
-        trip={trip}
-        onEditClick={() => setEditing(true)}
-        onDeleteClick={handleDeleteClick}
-      />
-
-      {/* Always show unassigned locations section if there are any */}
-      {unassignedLocations.length > 0 && (
-        <TripPhaseSection
-          phase={{
-            id: "no-phase",
-            trip_id: trip.id,
-            title: "Locations",
-            description: "Locations not assigned to any phase",
-            locations: unassignedLocations,
-          }}
-          tripId={trip.id}
-          journeys={trip.journeys}
-          isNoPhaseSection={true}
+    <div className="container py-8">
+      {/* Trip Header - Full Width */}
+      <div className="mb-6">
+        <TripHeader
+          trip={trip}
+          onEditClick={() => setEditing(true)}
+          onDeleteClick={handleDeleteClick}
         />
-      )}
+      </div>
 
-      {/* Show all phases (including empty ones) */}
-      {allPhases.map((phase) => (
-        <TripPhaseSection key={phase.id} phase={phase} tripId={trip.id} journeys={trip.journeys} />
-      ))}
+      {/* Grid Layout - Single column on mobile, two columns on large screens */}
+      <div
+        className={`grid gap-5 ${
+          shouldShowMap ? "grid-cols-1 md:grid-cols-[clamp(20rem,50%,52rem)_1fr]" : "grid-cols-1"
+        }`}
+      >
+        {/* Left Column: Trip Details */}
+        <div className="space-y-6">
+          {/* Always show unassigned locations section if there are any */}
+          {unassignedLocations.length > 0 && (
+            <TripPhaseSection
+              phase={{
+                id: "no-phase",
+                trip_id: trip.id,
+                title: "Locations",
+                description: "Locations not assigned to any phase",
+                locations: unassignedLocations,
+              }}
+              tripId={trip.id}
+              journeys={trip.journeys}
+              isNoPhaseSection={true}
+            />
+          )}
 
-      {/* Show empty state only if no phases AND no unassigned locations */}
-      {allPhases.length === 0 && unassignedLocations.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
-          <h3 className="text-lg font-medium mb-2">No content yet</h3>
-          <p>Start by adding a phase or location to your trip using the Create New button above.</p>
+          {/* Show all phases (including empty ones) */}
+          {allPhases.map((phase) => (
+            <TripPhaseSection
+              key={phase.id}
+              phase={phase}
+              tripId={trip.id}
+              journeys={trip.journeys}
+            />
+          ))}
+
+          {/* Show empty state only if no phases AND no unassigned locations */}
+          {allPhases.length === 0 && unassignedLocations.length === 0 && (
+            <div className="text-center py-12 text-muted-foreground">
+              <h3 className="text-lg font-medium mb-2">No content yet</h3>
+              <p>
+                Start by adding a phase or location to your trip using the Create New button above.
+              </p>
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Trip Map Section */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Trip Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <div className="lg:col-span-3">
-              <TripMap
-                trip={trip}
-                colorBy={mapColorBy}
-                onLocationClick={(location) => {
-                  // Optional: Show location details or open edit dialog
-                  console.log("Clicked location:", location);
-                }}
-                className="rounded-lg overflow-hidden"
-              />
-            </div>
-            <div className="lg:col-span-1">
-              <TripMapLegend
-                colorBy={mapColorBy}
-                onColorByChange={setMapColorBy}
-                phases={trip.trip_phases} // Fix: Use trip_phases instead of phases
-              />
-            </div>
+        {/* Right Column: Map - Only show if there are locations */}
+        {shouldShowMap && (
+          <div className="xl:sticky xl:top-8 xl:h-fit">
+            <Card className="p-4">
+              <CardHeader>
+                <CardTitle>Trip Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Map Controls */}
+                  <TripMapLegend
+                    colorBy={mapColorBy}
+                    onColorByChange={setMapColorBy}
+                    phases={trip.trip_phases}
+                  />
+
+                  {/* Map */}
+                  <TripMap
+                    trip={trip}
+                    colorBy={mapColorBy}
+                    onLocationClick={(location) => {
+                      // Optional: Show location details or open edit dialog
+                      console.log("Clicked location:", location);
+                    }}
+                    className="rounded-lg overflow-hidden"
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        )}
+      </div>
 
+      {/* Dialogs */}
       {trip && (
         <Dialog open={editing} onOpenChange={(open) => setEditing(open)}>
           <DialogContent>
