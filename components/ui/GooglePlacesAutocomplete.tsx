@@ -6,7 +6,6 @@ import debounce from "lodash.debounce";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Import the centralized type
 import { GooglePlaceResult } from "@/types/google-places";
 
 interface GooglePlacesAutocompleteProps {
@@ -15,6 +14,8 @@ interface GooglePlacesAutocompleteProps {
   className?: string;
   value?: string;
   onChange?: (value: string) => void;
+  autoFocus?: boolean;
+  "aria-invalid"?: boolean;
 }
 
 export function GooglePlacesAutocomplete({
@@ -23,6 +24,8 @@ export function GooglePlacesAutocomplete({
   className,
   value,
   onChange,
+  autoFocus,
+  "aria-invalid": ariaInvalid,
 }: GooglePlacesAutocompleteProps) {
   const [inputValue, setInputValue] = useState(value || "");
   const [suggestions, setSuggestions] = useState<GooglePlaceResult[]>([]);
@@ -94,6 +97,8 @@ export function GooglePlacesAutocomplete({
         onKeyDown={handleKeyDown}
         onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
         autoComplete="off"
+        autoFocus={autoFocus}
+        aria-invalid={ariaInvalid}
       />
 
       {isLoading && (

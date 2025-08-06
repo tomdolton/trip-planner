@@ -52,7 +52,7 @@ export function LocationFormFields({
       const place = await upsertPlace.mutateAsync(googlePlace);
       setSelectedPlace(place);
 
-      // Auto-fill the location name with the place name
+      // Auto-fill the location name with the place name and update form field
       form.setValue("name", googlePlace.name);
 
       // Automatically extract and set region from formatted_address
@@ -65,6 +65,9 @@ export function LocationFormFields({
 
       // Exit manual mode since a place was selected
       setIsManualMode(false);
+
+      // Clear any validation errors since we now have a valid name
+      form.clearErrors("name");
     } catch (error) {
       console.error("Error saving place:", error);
     }
@@ -79,13 +82,26 @@ export function LocationFormFields({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 md:space-y-6">
         {/* Name Field - Google Places Search or Manual Input */}
         {!isManualMode ? (
-          <div className="space-y-2">
-            <FormLabel>Name</FormLabel>
-            <GooglePlacesAutocomplete
-              onPlaceSelected={handlePlaceSelected}
-              placeholder="Search for a place..."
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <GooglePlacesAutocomplete
+                    onPlaceSelected={handlePlaceSelected}
+                    placeholder="Search for a place..."
+                    value={field.value}
+                    onChange={field.onChange}
+                    autoFocus={!!fieldState.error}
+                    aria-invalid={!!fieldState.error}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         ) : (
           <FormField
             control={form.control}
