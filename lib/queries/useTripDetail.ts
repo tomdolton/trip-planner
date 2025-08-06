@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Trip } from "@/types/trip";
+import { Trip, TripPhase, Location } from "@/types/trip";
 
 import { supabase } from "@/lib/supabase";
 
@@ -41,12 +41,14 @@ export function useTripDetail(tripId: string) {
 
       // Filter out locations from unassigned_locations that are already in phases
       const phaseLocationIds = new Set(
-        data.trip_phases?.flatMap((phase) => phase.locations?.map((loc) => loc.id) || []) || []
+        data.trip_phases?.flatMap(
+          (phase: TripPhase) => phase.locations?.map((loc: Location) => loc.id) || []
+        ) || []
       );
 
       data.unassigned_locations =
         data.unassigned_locations?.filter(
-          (location: { id: string }) => !phaseLocationIds.has(location.id)
+          (location: Location) => !phaseLocationIds.has(location.id)
         ) || [];
 
       console.log("📊 Trip data loaded:", data);
