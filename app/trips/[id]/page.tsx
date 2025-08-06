@@ -6,8 +6,11 @@ import { toast } from "sonner";
 
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripHeader } from "@/components/Trip/TripHeader";
+import { TripMap } from "@/components/Trip/TripMap";
+import { TripMapLegend } from "@/components/Trip/TripMapLegend";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,11 +20,12 @@ import { useTripDetail } from "@/lib/queries/useTripDetail";
 
 export default function TripDetailPage() {
   const router = useRouter();
-  const { id } = useParams();
+  const params = useParams();
   const [editing, setEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [mapColorBy, setMapColorBy] = useState<"type" | "phase">("type");
 
-  const { data: trip, isLoading, isError } = useTripDetail(id as string);
+  const { data: trip, isLoading, isError } = useTripDetail(params.id as string);
   const deleteTrip = useDeleteTrip();
 
   if (isLoading) {
@@ -62,7 +66,7 @@ export default function TripDetailPage() {
   const allPhases = trip.trip_phases ?? [];
 
   return (
-    <div className="container py-8 space-y-6">
+    <div className="container mx-auto px-4 py-8 space-y-6">
       <TripHeader
         trip={trip}
         onEditClick={() => setEditing(true)}
@@ -97,6 +101,35 @@ export default function TripDetailPage() {
           <p>Start by adding a phase or location to your trip using the Create New button above.</p>
         </div>
       )}
+
+      {/* Trip Map Section */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Trip Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className="lg:col-span-3">
+              <TripMap
+                trip={trip}
+                colorBy={mapColorBy}
+                onLocationClick={(location) => {
+                  // Optional: Show location details or open edit dialog
+                  console.log("Clicked location:", location);
+                }}
+                className="rounded-lg overflow-hidden"
+              />
+            </div>
+            <div className="lg:col-span-1">
+              <TripMapLegend
+                colorBy={mapColorBy}
+                onColorByChange={setMapColorBy}
+                phases={trip.trip_phases} // Fix: Use trip_phases instead of phases
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {trip && (
         <Dialog open={editing} onOpenChange={(open) => setEditing(open)}>
