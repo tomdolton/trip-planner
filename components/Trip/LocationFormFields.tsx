@@ -44,7 +44,7 @@ export function LocationFormFields({
   showPhaseSelector = false,
 }: LocationFormFieldsProps) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-  const [showManualEntry, setShowManualEntry] = useState(false);
+  const [isManualMode, setIsManualMode] = useState(false);
   const upsertPlace = useUpsertPlace();
 
   const handlePlaceSelected = async (googlePlace: GooglePlaceResult) => {
@@ -62,6 +62,9 @@ export function LocationFormFields({
         const region = addressParts[addressParts.length - 2] || "";
         form.setValue("region", region);
       }
+
+      // Exit manual mode since a place was selected
+      setIsManualMode(false);
     } catch (error) {
       console.error("Error saving place:", error);
     }
@@ -73,26 +76,58 @@ export function LocationFormFields({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        {/* Google Places Search */}
-        <div className="space-y-2">
-          <FormLabel>Search for a Place</FormLabel>
-          <GooglePlacesAutocomplete
-            onPlaceSelected={handlePlaceSelected}
-            placeholder="Search Google Places..."
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 md:space-y-6">
+        {/* Name Field - Google Places Search or Manual Input */}
+        {!isManualMode ? (
+          <div className="space-y-2">
+            <FormLabel>Name</FormLabel>
+            <GooglePlacesAutocomplete
+              onPlaceSelected={handlePlaceSelected}
+              placeholder="Search for a place..."
+            />
+          </div>
+        ) : (
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Enter location name manually"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      // Clear selected place when typing manually
+                      if (selectedPlace) {
+                        setSelectedPlace(null);
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
+        )}
 
-          {!selectedPlace && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowManualEntry(!showManualEntry)}
-            >
-              {showManualEntry ? "Use Google Places" : "Enter manually"}
-            </Button>
-          )}
-        </div>
+        {/* Manual Entry Toggle */}
+        {!selectedPlace && (
+          <div className="text-sm">
+            <div>
+              {!isManualMode && "Can't find it? "}
+
+              <button
+                type="button"
+                className="underline cursor-pointer font-medium"
+                onClick={() => setIsManualMode(!isManualMode)}
+              >
+                {isManualMode ? "Search for a place instead" : "Enter Location Manually"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Selected Place Card */}
         {selectedPlace && (
@@ -108,7 +143,12 @@ export function LocationFormFields({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={() => setSelectedPlace(null)}
+                  onClick={() => {
+                    setSelectedPlace(null);
+                    setIsManualMode(false);
+                    form.setValue("name", "");
+                    form.setValue("region", "");
+                  }}
                 >
                   Remove
                 </Button>
@@ -117,68 +157,50 @@ export function LocationFormFields({
           </Card>
         )}
 
-        {/* Manual Entry Fields */}
-        {(showManualEntry || !selectedPlace) && (
-          <>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Location Name</FormLabel>
+        {/* Phase Selector and Notes */}
+        {showPhaseSelector && phases.length > 0 && (
+          <FormField
+            control={form.control}
+            name="phaseId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Assign to Trip Phase</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <Input {...field} placeholder="Enter location name" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a phase (optional)" />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {showPhaseSelector && phases.length > 0 && (
-              <FormField
-                control={form.control}
-                name="phaseId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Trip Phase</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a phase (optional)" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="no-phase">No phase (unassigned)</SelectItem>
-                        {phases.map((phase) => (
-                          <SelectItem key={phase.id} value={phase.id}>
-                            {phase.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <SelectContent>
+                    <SelectItem value="no-phase">No phase (unassigned)</SelectItem>
+                    {phases.map((phase) => (
+                      <SelectItem key={phase.id} value={phase.id}>
+                        {phase.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="Any additional notes about this location" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
+          />
         )}
 
-        <div className="flex gap-2">{children}</div>
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea {...field} placeholder="Any additional details" className="min-h-24" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex gap-2 mt-5 md:mt-6">{children}</div>
       </form>
     </Form>
   );

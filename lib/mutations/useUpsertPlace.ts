@@ -23,7 +23,7 @@ export function useUpsertPlace() {
         .from("places")
         .select("*")
         .eq("google_place_id", googlePlace.place_id)
-        .single();
+        .maybeSingle();
 
       if (existingPlace) {
         // Update existing place with fresh data

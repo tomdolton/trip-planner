@@ -52,7 +52,7 @@ export function AddLocationDialog({
         region: values.region,
         notes: values.notes,
         phaseId: actualPhaseId,
-        placeId: values.place?.id, // Link to the place
+        placeId: values.place?.id,
       },
       {
         onSuccess: () => {
@@ -65,7 +65,7 @@ export function AddLocationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Location</DialogTitle>
         </DialogHeader>
