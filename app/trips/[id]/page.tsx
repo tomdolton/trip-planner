@@ -126,30 +126,35 @@ export default function TripDetailPage() {
 
         {/* Right Column: Map - Only show if there are locations */}
         {shouldShowMap && (
-          <div className="xl:sticky xl:top-8 xl:h-fit">
-            <Card className="p-4">
-              <CardHeader>
+          <div className="md:sticky md:top-8 md:h-fit">
+            <Card className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)]">
+              <CardHeader className="flex-shrink-0 p-6">
                 <CardTitle>Trip Overview</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Map Controls */}
-                  <TripMapLegend
-                    colorBy={mapColorBy}
-                    onColorByChange={setMapColorBy}
-                    phases={trip.trip_phases}
-                  />
+              <CardContent className="flex flex-col flex-1 min-h-0 p-6 pt-0">
+                <div className="flex flex-col h-full">
+                  {/* Map Controls - Fixed height */}
+                  <div className="flex-shrink-0 mb-4">
+                    <TripMapLegend
+                      colorBy={mapColorBy}
+                      onColorByChange={setMapColorBy}
+                      phases={trip.trip_phases}
+                    />
+                  </div>
 
-                  {/* Map */}
-                  <TripMap
-                    trip={trip}
-                    colorBy={mapColorBy}
-                    onLocationClick={(location) => {
-                      // Optional: Show location details or open edit dialog
-                      console.log("Clicked location:", location);
-                    }}
-                    className="rounded-lg overflow-hidden"
-                  />
+                  {/* Map - Takes remaining space */}
+                  <div className="flex-1 min-h-[300px]">
+                    <TripMap
+                      trip={trip}
+                      colorBy={mapColorBy}
+                      onLocationClick={(location) => {
+                        // Optional: Show location details or open edit dialog
+                        console.log("Clicked location:", location);
+                      }}
+                      height="100%"
+                      className="rounded-lg overflow-hidden h-full"
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>

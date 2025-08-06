@@ -5,20 +5,6 @@ import { useCallback, useMemo } from "react";
 
 import { Trip, Location, TripPhase } from "@/types/trip";
 
-// Map styles for a clean, minimal look
-const mapContainerStyle = {
-  width: "100%",
-  height: "650px",
-};
-
-const mapOptions = {
-  disableDefaultUI: false,
-  zoomControl: true,
-  streetViewControl: false,
-  mapTypeControl: false,
-  fullscreenControl: true,
-};
-
 // Enhanced location type for map display
 interface MapLocation extends Location {
   phaseIndex: number;
@@ -38,8 +24,28 @@ const getMarkerColor = (location: Location) => {
 
 // Alternative: Color coding by phase
 const getPhaseColor = (phaseIndex: number) => {
-  const colors = ["#3B82F6", "#EF4444", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899"];
+  // Handle unassigned locations (phaseIndex = -1)
+  if (phaseIndex === -1) {
+    return "#6B7280"; // Gray for unassigned
+  }
+
+  const colors = [
+    "#3B82F6", // Blue - Phase 0
+    "#EF4444", // Red - Phase 1
+    "#10B981", // Green - Phase 2
+    "#F59E0B", // Amber - Phase 3
+    "#8B5CF6", // Purple - Phase 4
+    "#EC4899", // Pink - Phase 5
+  ];
   return colors[phaseIndex % colors.length];
+};
+
+const mapOptions = {
+  disableDefaultUI: false,
+  zoomControl: true,
+  streetViewControl: false,
+  mapTypeControl: false,
+  fullscreenControl: true,
 };
 
 interface TripMapProps {
@@ -47,13 +53,30 @@ interface TripMapProps {
   colorBy?: "type" | "phase";
   onLocationClick?: (location: Location) => void;
   className?: string;
+  height?: string; // Add height prop
 }
 
-export function TripMap({ trip, colorBy = "type", onLocationClick, className }: TripMapProps) {
+export function TripMap({
+  trip,
+  colorBy = "type",
+  onLocationClick,
+  className,
+  height = "400px",
+}: TripMapProps) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
   });
+
+  // Dynamic map container style
+  const mapContainerStyle = useMemo(
+    () => ({
+      width: "100%",
+      height,
+      minHeight: "300px", // Ensure minimum height
+    }),
+    [height]
+  );
 
   // Get all locations from all phases plus unassigned locations
   const allLocations = useMemo(() => {
@@ -62,18 +85,23 @@ export function TripMap({ trip, colorBy = "type", onLocationClick, className }: 
         (phase: TripPhase, phaseIndex: number) =>
           phase.locations?.map((location: Location) => ({
             ...location,
-            phaseIndex,
+            phaseIndex, // This will be 0, 1, 2, etc.
             phaseName: phase.title,
           })) || []
       ) || [];
 
-    // Add unassigned locations
+    // Get IDs of locations that are already in phases
+    const phaseLocationIds = new Set(phaseLocations.map((loc) => loc.id));
+
+    // Add unassigned locations, but exclude ones that are already in phases
     const unassignedLocations: MapLocation[] =
-      trip.unassigned_locations?.map((location: Location) => ({
-        ...location,
-        phaseIndex: -1, // Special index for unassigned
-        phaseName: "Unassigned",
-      })) || [];
+      trip.unassigned_locations
+        ?.filter((location: Location) => !phaseLocationIds.has(location.id)) // Filter out duplicates
+        ?.map((location: Location) => ({
+          ...location,
+          phaseIndex: -1, // Special index for unassigned
+          phaseName: "Unassigned",
+        })) || [];
 
     const combined = [...phaseLocations, ...unassignedLocations];
 
