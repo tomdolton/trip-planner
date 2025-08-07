@@ -11,6 +11,7 @@ export function useUpdateLocation(tripId: string) {
       name: string;
       region?: string; // Will be automatically set from Google Place data
       notes?: string;
+      phaseId?: string;
     }) => {
       const { data, error } = await supabase
         .from("locations")
@@ -18,6 +19,7 @@ export function useUpdateLocation(tripId: string) {
           name: values.name,
           region: values.region || null,
           notes: values.notes || null,
+          trip_phase_id: values.phaseId || null,
         })
         .eq("id", values.id)
         .select()

@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "@/store";
 import { isAccommodation, isActivity, isLocation, isJourney, isTripPhase } from "@/types/guards";
+import { TripPhase } from "@/types/trip";
 
 import { closeDialog } from "@/store/uiDialogSlice";
 
@@ -11,7 +12,13 @@ import { EditJourneyDialog } from "./EditJourneyDialog";
 import { EditLocationDialog } from "./EditLocationDialog";
 import { EditTripPhaseDialog } from "./EditTripPhaseDialog";
 
-export function EditEntityDialog({ tripId }: { tripId: string }) {
+export function EditEntityDialog({
+  tripId,
+  phases = [],
+}: {
+  tripId: string;
+  phases?: TripPhase[];
+}) {
   const { open, type, entity } = useSelector((state: RootState) => state.uiDialog);
   const dispatch = useDispatch();
 
@@ -24,6 +31,7 @@ export function EditEntityDialog({ tripId }: { tripId: string }) {
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
         tripId={tripId}
+        phases={phases}
       />
     );
   }

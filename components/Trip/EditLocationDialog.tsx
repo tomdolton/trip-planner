@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { locationFormSchema, LocationFormValues } from "@/types/forms";
-import { Location } from "@/types/trip";
+import { Location, TripPhase } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
@@ -27,32 +27,41 @@ export function EditLocationDialog({
   open,
   onOpenChange,
   tripId,
+  phases = [],
 }: {
   location: Location;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   tripId: string;
+  phases?: TripPhase[];
 }) {
+  const updateMutation = useUpdateLocation(tripId);
+  const deleteMutation = useDeleteLocation(tripId);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const showPhaseSelector = phases.length > 0;
+
   const form = useForm<LocationFormValues>({
     resolver: zodResolver(locationFormSchema),
     defaultValues: {
       name: location.name,
       region: location.region || "", // Keep current region value, but won't be editable in UI
       notes: location.notes || "",
+      phaseId: location.trip_phase_id || "no-phase",
     },
   });
 
-  const updateMutation = useUpdateLocation(tripId);
-  const deleteMutation = useDeleteLocation(tripId);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
   function onSubmit(values: LocationFormValues) {
+    const selectedPhaseId = values.phaseId;
+    const actualPhaseId = selectedPhaseId === "no-phase" ? undefined : selectedPhaseId;
+
     updateMutation.mutate(
       {
         id: location.id,
         name: values.name,
         region: values.region,
         notes: values.notes,
+        phaseId: actualPhaseId,
       },
       { onSuccess: () => onOpenChange(false) }
     );
@@ -77,7 +86,12 @@ export function EditLocationDialog({
           <DialogHeader>
             <DialogTitle>Edit Location</DialogTitle>
           </DialogHeader>
-          <LocationFormFields form={form} onSubmit={onSubmit}>
+          <LocationFormFields
+            form={form}
+            onSubmit={onSubmit}
+            phases={phases}
+            showPhaseSelector={showPhaseSelector}
+          >
             <Button type="submit" disabled={updateMutation.isPending}>
               Save
             </Button>
