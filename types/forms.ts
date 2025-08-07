@@ -36,7 +36,9 @@ export const locationFormSchema = z.object({
 export const journeyFormSchema = z.object({
   provider: z.string().optional(),
   mode: z.string().min(1, "Transport mode is required"),
+  departure_date: z.string().optional(),
   departure_time: z.string().optional(),
+  arrival_date: z.string().optional(),
   arrival_time: z.string().optional(),
   notes: z.string().optional(),
 });

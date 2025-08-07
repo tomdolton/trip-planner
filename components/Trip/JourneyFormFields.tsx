@@ -2,6 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 
 import { JourneyFormValues } from "@/types/forms";
 
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormField,
@@ -33,13 +34,13 @@ export function JourneyFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
         <FormField
           control={form.control}
           name="provider"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Journey Name/Provider</FormLabel>
+              <FormLabel>Journey Name / Provider</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="e.g. British Airways, National Express" />
               </FormControl>
@@ -56,7 +57,7 @@ export function JourneyFormFields({
               <FormLabel>Transport Mode</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select transport mode" />
                   </SelectTrigger>
                 </FormControl>
@@ -76,33 +77,84 @@ export function JourneyFormFields({
           )}
         />
 
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name="departure_time"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Departure Date & Time</FormLabel>
-                <FormControl>
-                  <Input type="datetime-local" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="arrival_time"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Arrival Date & Time</FormLabel>
-                <FormControl>
-                  <Input type="datetime-local" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* Departure and Arrival Date/Time Section */}
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <FormField
+              control={form.control}
+              name="departure_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Departure Date</FormLabel>
+                  <FormControl>
+                    <DatePicker
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        // Auto-set arrival date to departure date if arrival date is empty
+                        if (value && !form.getValues("arrival_date")) {
+                          form.setValue("arrival_date", value);
+                        }
+                      }}
+                      placeholder="Select date"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="departure_time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Departure Time</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      {...field}
+                      className="bg-background [&::-webkit-calendar-picker-indicator]:hidden"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="arrival_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Arrival Date</FormLabel>
+                  <FormControl>
+                    <DatePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select date"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="arrival_time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Arrival Time</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      {...field}
+                      className="bg-background [&::-webkit-calendar-picker-indicator]:hidden"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <FormField
@@ -112,13 +164,17 @@ export function JourneyFormFields({
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea {...field} placeholder="Additional journey details..." />
+                <Textarea
+                  {...field}
+                  placeholder="Additional journey details"
+                  className="min-h-24"
+                />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <div className="flex gap-2">{children}</div>
+        <div className="flex gap-4">{children}</div>
       </form>
     </Form>
   );

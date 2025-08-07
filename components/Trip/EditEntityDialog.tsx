@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "@/store";
 import { isAccommodation, isActivity, isLocation, isJourney, isTripPhase } from "@/types/guards";
-import { TripPhase } from "@/types/trip";
+import { TripPhase, Trip } from "@/types/trip";
 
 import { closeDialog } from "@/store/uiDialogSlice";
 
@@ -15,9 +15,11 @@ import { EditTripPhaseDialog } from "./EditTripPhaseDialog";
 export function EditEntityDialog({
   tripId,
   phases = [],
+  trip,
 }: {
   tripId: string;
   phases?: TripPhase[];
+  trip?: Trip;
 }) {
   const { open, type, entity } = useSelector((state: RootState) => state.uiDialog);
   const dispatch = useDispatch();
@@ -59,12 +61,23 @@ export function EditEntityDialog({
   }
 
   if (type === "journey" && isJourney(entity)) {
+    // Find location names for the journey
+    const allLocations = [
+      ...(trip?.unassigned_locations || []),
+      ...(trip?.trip_phases?.flatMap((phase) => phase.locations || []) || []),
+    ];
+
+    const departureLocation = allLocations.find((loc) => loc.id === entity.departure_location_id);
+    const arrivalLocation = allLocations.find((loc) => loc.id === entity.arrival_location_id);
+
     return (
       <EditJourneyDialog
         journey={entity}
         open={open}
         onOpenChange={(v: boolean) => !v && dispatch(closeDialog())}
         tripId={tripId}
+        departureLocationName={departureLocation?.name}
+        arrivalLocationName={arrivalLocation?.name}
       />
     );
   }

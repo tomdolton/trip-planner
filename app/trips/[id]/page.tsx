@@ -184,7 +184,7 @@ export default function TripDetailPage() {
         loading={deleteTrip.isPending}
       />
 
-      <EditEntityDialog tripId={trip.id} phases={trip.trip_phases} />
+      <EditEntityDialog tripId={trip.id} phases={trip.trip_phases} trip={trip} />
     </div>
   );
 }

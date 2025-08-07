@@ -21,19 +21,38 @@ export function EditJourneyDialog({
   open,
   onOpenChange,
   tripId,
+  departureLocationName,
+  arrivalLocationName,
 }: {
   journey: Journey;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   tripId: string;
+  departureLocationName?: string;
+  arrivalLocationName?: string;
 }) {
+  // Helper function to split datetime string into date and time parts
+  const splitDateTime = (dateTime?: string) => {
+    if (!dateTime) return { date: "", time: "" };
+    const [date, time] = dateTime.split("T");
+    return {
+      date: date || "",
+      time: time ? time.substring(0, 5) : "", // Remove seconds
+    };
+  };
+
+  const departureDateTime = splitDateTime(journey.departure_time);
+  const arrivalDateTime = splitDateTime(journey.arrival_time);
+
   const form = useForm<JourneyFormValues>({
     resolver: zodResolver(journeyFormSchema),
     defaultValues: {
       provider: journey.provider || "",
       mode: journey.mode,
-      departure_time: journey.departure_time || "",
-      arrival_time: journey.arrival_time || "",
+      departure_date: departureDateTime.date,
+      departure_time: departureDateTime.time,
+      arrival_date: arrivalDateTime.date,
+      arrival_time: arrivalDateTime.time,
       notes: journey.notes || "",
     },
   });
@@ -43,7 +62,28 @@ export function EditJourneyDialog({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   function onSubmit(values: JourneyFormValues) {
-    updateMutation.mutate({ ...values, id: journey.id }, { onSuccess: () => onOpenChange(false) });
+    // Combine date and time fields into datetime strings for the database
+    const departureDateTime =
+      values.departure_date && values.departure_time
+        ? `${values.departure_date}T${values.departure_time}`
+        : undefined;
+
+    const arrivalDateTime =
+      values.arrival_date && values.arrival_time
+        ? `${values.arrival_date}T${values.arrival_time}`
+        : undefined;
+
+    updateMutation.mutate(
+      {
+        id: journey.id,
+        provider: values.provider,
+        mode: values.mode,
+        departure_time: departureDateTime,
+        arrival_time: arrivalDateTime,
+        notes: values.notes,
+      },
+      { onSuccess: () => onOpenChange(false) }
+    );
   }
 
   function handleDelete() {
@@ -60,7 +100,12 @@ export function EditJourneyDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Journey</DialogTitle>
+            <DialogTitle>Edit a Journey</DialogTitle>
+            {departureLocationName && arrivalLocationName && (
+              <p className="text-sm text-muted-foreground">
+                {departureLocationName} → {arrivalLocationName}
+              </p>
+            )}
           </DialogHeader>
           <JourneyFormFields form={form} onSubmit={onSubmit}>
             <Button type="submit" disabled={updateMutation.isPending}>

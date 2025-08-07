@@ -87,7 +87,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end mt-5 md:mt-6",
+        "flex flex-col-reverse gap-4 sm:flex-row sm:justify-end mt-5 md:mt-6",
         className
       )}
       {...props}
@@ -99,7 +99,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn("text-lg md:text-xl leading-none font-semibold", className)}
       {...props}
     />
   );
