@@ -18,7 +18,7 @@ export function AccommodationItem({ accommodation }: AccommodationItemProps) {
   return (
     <div
       onClick={() => dispatch(openDialog({ type: "accommodation", entity: accommodation }))}
-      className="flex items-center gap-2 cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+      className="flex items-center gap-2 cursor-pointer p-2 rounded"
     >
       <p className="text-sm text-muted-foreground">
         🏨 {accommodation.name}{" "}

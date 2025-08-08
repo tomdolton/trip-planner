@@ -164,10 +164,10 @@ export function TripMap({
   if (!isLoaded) {
     return (
       <div
-        className={`bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center ${className}`}
+        className={`bg-card rounded-lg flex items-center justify-center ${className}`}
         style={mapContainerStyle}
       >
-        <p className="text-muted-foreground">Loading map...</p>
+        <p className="text-card-foreground">Loading map...</p>
       </div>
     );
   }

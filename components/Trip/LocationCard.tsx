@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 
 import { Location, Journey } from "@/types/trip";
 
+import { Card, CardContent } from "@/components/ui/card";
+
 import { openDialog } from "@/store/uiDialogSlice";
 
 import { AccommodationsList } from "./AccommodationsList";
@@ -29,29 +31,33 @@ export function LocationCard({
   const dispatch = useDispatch();
 
   return (
-    <div className="mt-4 pl-4 border-l border-slate-300 dark:border-slate-700">
-      <div
-        onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-        className="cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-      >
-        <h3 className="text-lg font-semibold cursor-pointer">{location.name}</h3>
-      </div>
+    <Card className="mt-4">
+      <CardContent className="p-4">
+        <div className="pl-4 border-l border-border">
+          <div
+            onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
+            className="cursor-pointer p-2 rounded"
+          >
+            <h3 className="text-lg font-semibold cursor-pointer">{location.name}</h3>
+          </div>
 
-      <LocationActions tripId={tripId} locationId={location.id} />
+          <LocationActions tripId={tripId} locationId={location.id} />
 
-      <AccommodationsList accommodations={location.accommodations ?? []} />
+          <AccommodationsList accommodations={location.accommodations ?? []} />
 
-      <TripActivities activities={location.activities ?? []} />
+          <TripActivities activities={location.activities ?? []} />
 
-      {nextLocation && (
-        <JourneySection
-          fromLocation={location}
-          toLocation={nextLocation}
-          tripId={tripId}
-          journey={journey}
-          onAddJourney={onAddJourney}
-        />
-      )}
-    </div>
+          {nextLocation && (
+            <JourneySection
+              fromLocation={location}
+              toLocation={nextLocation}
+              tripId={tripId}
+              journey={journey}
+              onAddJourney={onAddJourney}
+            />
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

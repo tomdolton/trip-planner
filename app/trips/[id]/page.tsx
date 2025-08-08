@@ -39,7 +39,7 @@ export default function TripDetailPage() {
   }
 
   if (isError || !trip) {
-    return <p className="text-center text-red-500">Trip not found.</p>;
+    return <p className="text-center">Trip not found.</p>;
   }
 
   const handleDeleteClick = () => setShowDeleteDialog(true);

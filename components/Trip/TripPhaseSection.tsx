@@ -45,10 +45,7 @@ export function TripPhaseSection({
   const hasLocations = phase.locations && phase.locations.length > 0;
 
   return (
-    <div
-      key={phase.id}
-      className="mt-6 bg-slate-200/30 dark:bg-gray-800/30 rounded-lg p-4 border border-slate-300/30 dark:border-slate-700/30"
-    >
+    <div key={phase.id} className="bg-background rounded-lg p-4 border border-border">
       {/* Only show PhaseHeader for actual phases, not the no-phase section */}
       {!isNoPhaseSection && "order" in phase && (
         <PhaseHeader phase={phase as TripPhase} tripId={tripId} />

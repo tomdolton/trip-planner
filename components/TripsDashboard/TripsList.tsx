@@ -50,7 +50,7 @@ export default function TripList() {
   }
 
   if (isError) {
-    return <p className="text-center text-red-500">Failed to load trips.</p>;
+    return <p className="text-center text-destructive">Failed to load trips.</p>;
   }
 
   if (!trips || trips.length === 0) {

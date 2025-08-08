@@ -8,10 +8,8 @@ export default function Home() {
       <div className="flex flex-col gap-8 row-start-2 items-center ">
         <h1 className="text-4xl font-bold">Trip Planner</h1>
 
-        <Button asChild variant="outline" className="text-white">
-          <Link href="/trips" className="text-white">
-            View Trips
-          </Link>
+        <Button asChild variant="outline">
+          <Link href="/trips">View Trips</Link>
         </Button>
       </div>
     </div>

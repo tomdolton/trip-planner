@@ -10,7 +10,7 @@ interface TripMapLegendProps {
 
 export function TripMapLegend({ colorBy, onColorByChange, phases }: TripMapLegendProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border space-y-3">
+    <div className="p-4 rounded-lg border space-y-3">
       {/* Color coding toggle */}
       <div className="flex gap-2">
         <Button

@@ -109,7 +109,7 @@ export default function TripForm({ onSuccess }: TripFormProps) {
         <Button type="submit" disabled={addTrip.isPending}>
           {addTrip.isPending ? (
             <span className="flex items-center gap-2">
-              <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
+              <span className="h-4 w-4 animate-spin border border-border border-t-transparent rounded-full" />
               Saving...
             </span>
           ) : (
