@@ -92,17 +92,26 @@ export function EditLocationDialog({
             phases={phases}
             showPhaseSelector={showPhaseSelector}
           >
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={deleteMutation.isPending}
-            >
-              Delete
-            </Button>
+            <div className="flex justify-between w-full gap-4 md:gap-6">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={deleteMutation.isPending}
+                >
+                  Delete
+                </Button>
+
+                <Button type="submit" disabled={updateMutation.isPending}>
+                  Save
+                </Button>
+              </div>
+            </div>
           </LocationFormFields>
         </DialogContent>
       </Dialog>
