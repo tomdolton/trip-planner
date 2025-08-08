@@ -87,7 +87,7 @@ export function LocationFormFields({
             name="name"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel required>Name</FormLabel>
                 <FormControl>
                   <GooglePlacesAutocomplete
                     onPlaceSelected={handlePlaceSelected}
@@ -108,7 +108,7 @@ export function LocationFormFields({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel required>Name</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

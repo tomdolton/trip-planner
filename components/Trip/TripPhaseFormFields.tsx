@@ -24,13 +24,13 @@ export function TripPhaseFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phase Title</FormLabel>
+              <FormLabel required>Phase Title</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Enter phase title" />
               </FormControl>
@@ -81,8 +81,7 @@ export function TripPhaseFormFields({
             )}
           />
         </div>
-
-        <div className="flex gap-2">{children}</div>
+        <div className="flex gap-3 md:gap-6">{children}</div>
       </form>
     </Form>
   );

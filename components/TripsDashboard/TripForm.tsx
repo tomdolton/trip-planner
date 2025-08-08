@@ -55,7 +55,7 @@ export default function TripForm({ onSuccess }: TripFormProps) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Trip Title</FormLabel>
+              <FormLabel required>Trip Title</FormLabel>
               <FormControl>
                 <Input placeholder="Trip to Japan" disabled={addTrip.isPending} {...field} />
               </FormControl>
@@ -83,7 +83,7 @@ export default function TripForm({ onSuccess }: TripFormProps) {
           name="end_date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel required>End Date</FormLabel>
               <FormControl>
                 <Input type="date" disabled={addTrip.isPending} {...field} />
               </FormControl>
@@ -97,7 +97,7 @@ export default function TripForm({ onSuccess }: TripFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel required>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder="Anything else..." disabled={addTrip.isPending} {...field} />
               </FormControl>

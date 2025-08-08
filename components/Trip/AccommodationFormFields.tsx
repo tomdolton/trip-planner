@@ -24,13 +24,13 @@ export function AccommodationFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel required>Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -89,7 +89,7 @@ export function AccommodationFormFields({
             </FormItem>
           )}
         />
-        <div className="flex gap-2">{children}</div>
+        <div className="flex gap-3 md:gap-6">{children}</div>
       </form>
     </Form>
   );

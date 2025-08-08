@@ -50,7 +50,8 @@ export function AddTripPhaseDialog({ tripId, open, onOpenChange }: AddTripPhaseD
           <Button type="button" variant="outline" onClick={() => onOpenChange?.(false)}>
             Cancel
           </Button>
-          <Button type="submit" disabled={mutation.isPending}>
+
+          <Button type="submit" disabled={mutation.isPending} className="ms-auto">
             {mutation.isPending ? "Saving..." : "Save Trip Phase"}
           </Button>
         </TripPhaseFormFields>

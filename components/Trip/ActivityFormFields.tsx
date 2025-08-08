@@ -37,13 +37,13 @@ export function ActivityFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Activity Name</FormLabel>
+              <FormLabel required>Activity Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -56,7 +56,7 @@ export function ActivityFormFields({
           name="date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Date</FormLabel>
+              <FormLabel required>Date</FormLabel>
               <FormControl>
                 <Input type="date" {...field} />
               </FormControl>
@@ -129,7 +129,7 @@ export function ActivityFormFields({
             </FormItem>
           )}
         />
-        <div className="flex gap-2">{children}</div>
+        <div className="flex gap-3 md:gap-6">{children}</div>
       </form>
     </Form>
   );

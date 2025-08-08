@@ -37,24 +37,10 @@ export function JourneyFormFields({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="provider"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Journey Name / Provider</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g. British Airways, National Express" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="mode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Transport Mode</FormLabel>
+              <FormLabel required>Transport Mode</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
@@ -72,6 +58,20 @@ export function JourneyFormFields({
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="provider"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Journey Name / Provider</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="e.g. British Airways, National Express" />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

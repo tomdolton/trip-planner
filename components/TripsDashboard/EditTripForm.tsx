@@ -66,7 +66,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Trip Title</FormLabel>
+              <FormLabel required>Trip Title</FormLabel>
               <FormControl>
                 <Input disabled={updateTrip.isPending} {...field} />
               </FormControl>
@@ -80,7 +80,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
           name="start_date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel required>Start Date</FormLabel>
               <FormControl>
                 <Input type="date" disabled={updateTrip.isPending} {...field} />
               </FormControl>
@@ -94,7 +94,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
           name="end_date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel required>End Date</FormLabel>
               <FormControl>
                 <Input type="date" disabled={updateTrip.isPending} {...field} />
               </FormControl>
