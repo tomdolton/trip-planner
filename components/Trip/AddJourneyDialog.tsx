@@ -93,15 +93,12 @@ export function AddJourneyDialog({
           </p>
         </DialogHeader>
         <JourneyFormFields form={form} onSubmit={onSubmit}>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setDialogOpen(false)}
-            className="ms-auto"
-          >
+          <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
             Cancel
           </Button>
-          <Button type="submit">Save Journey</Button>
+          <Button type="submit" className="ms-auto">
+            Save Journey
+          </Button>
         </JourneyFormFields>
       </DialogContent>
     </Dialog>

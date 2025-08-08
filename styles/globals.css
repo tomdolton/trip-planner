@@ -48,7 +48,7 @@
   --popover-foreground: theme(colors.slate.800); /* #1E293B */
 
   --border: theme(colors.slate.200); /* #E2E8F0 */
-  --input: theme(colors.white); /* #FFFFFF */
+  --input: theme(colors.slate.200); /* #E2E8F0 */
 
   --muted: theme(colors.slate.50); /* #F8FAFC */
   --muted-foreground: theme(colors.slate.500); /* #62748E */

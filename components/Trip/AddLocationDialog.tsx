@@ -78,7 +78,8 @@ export function AddLocationDialog({
           <Button type="button" variant="outline" onClick={() => onOpenChange?.(false)}>
             Cancel
           </Button>
-          <Button type="submit" disabled={mutation.isPending}>
+
+          <Button type="submit" disabled={mutation.isPending} className="ms-auto">
             {mutation.isPending ? "Saving..." : "Save Location"}
           </Button>
         </LocationFormFields>

@@ -79,7 +79,7 @@ export function LocationFormFields({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 md:space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="md:space-y-6">
         {/* Name Field - Google Places Search or Manual Input */}
         {!isManualMode ? (
           <FormField
@@ -216,7 +216,7 @@ export function LocationFormFields({
           )}
         />
 
-        <div className="flex gap-2 mt-5 md:mt-6">{children}</div>
+        <div className="flex gap-3 md:gap-6 mt-6">{children}</div>
       </form>
     </Form>
   );

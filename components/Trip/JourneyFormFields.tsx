@@ -34,7 +34,7 @@ export function JourneyFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="provider"
@@ -174,7 +174,7 @@ export function JourneyFormFields({
           )}
         />
 
-        <div className="flex gap-4">{children}</div>
+        <div className="flex gap-3 md:gap-6 mt-6">{children}</div>
       </form>
     </Form>
   );

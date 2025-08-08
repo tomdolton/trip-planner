@@ -108,25 +108,23 @@ export function EditJourneyDialog({
             )}
           </DialogHeader>
           <JourneyFormFields form={form} onSubmit={onSubmit}>
-            <div className="flex justify-between w-full gap-4 md:gap-6">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
-              </Button>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
 
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={deleteMutation.isPending}
-                className="ms-auto"
-              >
-                Delete
-              </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+              className="ms-auto"
+            >
+              Delete
+            </Button>
 
-              <Button type="submit" disabled={updateMutation.isPending}>
-                Save Journey
-              </Button>
-            </div>
+            <Button type="submit" disabled={updateMutation.isPending}>
+              Save Journey
+            </Button>
           </JourneyFormFields>
         </DialogContent>
       </Dialog>
