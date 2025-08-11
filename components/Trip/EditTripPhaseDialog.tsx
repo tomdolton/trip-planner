@@ -59,7 +59,7 @@ export function EditTripPhaseDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Phase</DialogTitle>
+            <DialogTitle>Edit Trip Phase</DialogTitle>
           </DialogHeader>
           <TripPhaseFormFields form={form} onSubmit={onSubmit}>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

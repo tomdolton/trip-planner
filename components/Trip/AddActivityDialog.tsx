@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { activityFormSchema, ActivityFormValues } from "@/types/forms";
@@ -19,6 +20,7 @@ import { useAddActivity } from "@/lib/mutations/useAddActivity";
 import { ActivityFormFields } from "./ActivityFormFields";
 
 export function AddActivityDialog({ tripId, locationId }: { tripId: string; locationId: string }) {
+  const [open, setOpen] = useState(false);
   const form = useForm<ActivityFormValues>({
     resolver: zodResolver(activityFormSchema),
     defaultValues: {
@@ -37,13 +39,16 @@ export function AddActivityDialog({ tripId, locationId }: { tripId: string; loca
     mutation.mutate(
       { ...values, locationId },
       {
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+          form.reset();
+          setOpen(false);
+        },
       }
     );
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default">+ Add Activity</Button>
       </DialogTrigger>
@@ -52,8 +57,12 @@ export function AddActivityDialog({ tripId, locationId }: { tripId: string; loca
           <DialogTitle>Add Activity</DialogTitle>
         </DialogHeader>
         <ActivityFormFields form={form} onSubmit={onSubmit}>
-          <Button type="submit" disabled={mutation.isPending}>
-            Save Activity
+          <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+
+          <Button type="submit" disabled={mutation.isPending} className="ms-auto">
+            {mutation.isPending ? "Saving..." : "Save Activity"}
           </Button>
         </ActivityFormFields>
       </DialogContent>

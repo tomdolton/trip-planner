@@ -2,6 +2,8 @@ import { UseFormReturn } from "react-hook-form";
 
 import { ActivityFormValues } from "@/types/forms";
 
+import { ActivityIcon } from "@/components/ui/ActivityIcon";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormField,
@@ -20,11 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  activityTypes,
-  activityTypeLabels,
-  activityTypeIcons,
-} from "@/lib/constants/activityTypes";
+import { activityTypes, activityTypeLabels, ActivityType } from "@/lib/constants/activityTypes";
 
 export function ActivityFormFields({
   form,
@@ -45,12 +43,41 @@ export function ActivityFormFields({
             <FormItem>
               <FormLabel required>Activity Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="Enter activity name" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="activity_type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Activity Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {activityTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      <span className="flex items-center gap-2">
+                        <ActivityIcon activityType={type as ActivityType} />
+                        <span>{activityTypeLabels[type]}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="date"
@@ -58,7 +85,11 @@ export function ActivityFormFields({
             <FormItem>
               <FormLabel required>Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,33 +121,7 @@ export function ActivityFormFields({
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="activity_type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {activityTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      <span className="flex items-center gap-2">
-                        <span>{activityTypeIcons[type]}</span>
-                        <span>{activityTypeLabels[type]}</span>
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <FormField
           control={form.control}
           name="notes"
@@ -124,7 +129,7 @@ export function ActivityFormFields({
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea {...field} placeholder="Additional details" className="min-h-24" />
               </FormControl>
             </FormItem>
           )}

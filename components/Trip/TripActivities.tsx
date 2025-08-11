@@ -2,6 +2,8 @@ import { useDispatch } from "react-redux";
 
 import { Activity } from "@/types/trip";
 
+import { ActivityIcon } from "@/components/ui/ActivityIcon";
+
 import { formatTimeRange } from "@/lib/utils/formatTimeRange";
 import { groupActivitiesByDate } from "@/lib/utils/groupActivitiesByDate";
 
@@ -23,9 +25,14 @@ export function TripActivities({ activities }: { activities: Activity[] }) {
                 key={act.id}
                 className="border p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                <div className="font-medium">{act.name}</div>
-                <p>{formatTimeRange(act.start_time, act.end_time)}</p>
-                {act.notes && <div className="text-sm text-muted-foreground">{act.notes}</div>}
+                <div className="flex items-center gap-3">
+                  <ActivityIcon activityType={act.activity_type} />
+                  <div className="flex-1">
+                    <div className="font-medium">{act.name}</div>
+                    <p>{formatTimeRange(act.start_time, act.end_time)}</p>
+                    {act.notes && <div className="text-sm text-muted-foreground">{act.notes}</div>}
+                  </div>
+                </div>
               </li>
             ))}
           </ul>

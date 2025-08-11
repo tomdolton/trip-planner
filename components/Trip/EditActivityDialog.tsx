@@ -64,16 +64,22 @@ export function EditActivityDialog({
             <DialogTitle>Edit Activity</DialogTitle>
           </DialogHeader>
           <ActivityFormFields form={form} onSubmit={onSubmit}>
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
             </Button>
+
             <Button
               type="button"
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
+              className="ms-auto"
             >
               Delete
+            </Button>
+
+            <Button type="submit" disabled={updateMutation.isPending}>
+              Save
             </Button>
           </ActivityFormFields>
         </DialogContent>
