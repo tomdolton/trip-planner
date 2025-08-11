@@ -44,7 +44,7 @@ export function AddTripPhaseDialog({ tripId, open, onOpenChange }: AddTripPhaseD
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Trip Phase</DialogTitle>
+          <DialogTitle>Add a Trip Phase</DialogTitle>
         </DialogHeader>
         <TripPhaseFormFields form={form} onSubmit={onSubmit}>
           <Button type="button" variant="outline" onClick={() => onOpenChange?.(false)}>

@@ -2,6 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 
 import { TripPhaseFormValues } from "@/types/forms";
 
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormField,
@@ -39,20 +40,6 @@ export function TripPhaseFormFields({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} placeholder="Describe this phase of your trip" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <div className="flex gap-4">
           <FormField
             control={form.control}
@@ -61,7 +48,11 @@ export function TripPhaseFormFields({
               <FormItem className="flex-1">
                 <FormLabel>Start Date</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select start date"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,13 +65,35 @@ export function TripPhaseFormFields({
               <FormItem className="flex-1">
                 <FormLabel>End Date</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select end date"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  placeholder="Describe this phase of your trip"
+                  className="min-h-24"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="flex gap-3 md:gap-6">{children}</div>
       </form>
     </Form>

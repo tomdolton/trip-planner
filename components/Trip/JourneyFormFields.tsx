@@ -113,7 +113,7 @@ export function JourneyFormFields({
                     <Input
                       type="time"
                       {...field}
-                      className="bg-background [&::-webkit-calendar-picker-indicator]:hidden"
+                      className="[&::-webkit-calendar-picker-indicator]:hidden"
                     />
                   </FormControl>
                   <FormMessage />
@@ -147,7 +147,7 @@ export function JourneyFormFields({
                     <Input
                       type="time"
                       {...field}
-                      className="bg-background [&::-webkit-calendar-picker-indicator]:hidden"
+                      className="[&::-webkit-calendar-picker-indicator]:hidden"
                     />
                   </FormControl>
                   <FormMessage />
