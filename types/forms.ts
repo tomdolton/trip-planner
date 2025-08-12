@@ -32,13 +32,27 @@ export const activityFormSchema = z
     }
   );
 
-export const accommodationFormSchema = z.object({
-  name: z.string().min(1, "Accommodation name is required"),
-  check_in: z.string().optional(),
-  check_out: z.string().optional(),
-  url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  notes: z.string().optional(),
-});
+export const accommodationFormSchema = z
+  .object({
+    name: z.string().min(1, "Accommodation name is required"),
+    check_in: z.string().optional(),
+    check_out: z.string().optional(),
+    url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+    notes: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      // If both check_in and check_out are provided, ensure check_out is after check_in
+      if (data.check_in && data.check_out) {
+        return data.check_out >= data.check_in;
+      }
+      return true;
+    },
+    {
+      message: "Check-out date must be after check-in date",
+      path: ["check_out"],
+    }
+  );
 
 export const locationFormSchema = z.object({
   name: z.string().min(1, "Location name is required"),

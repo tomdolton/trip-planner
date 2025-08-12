@@ -2,6 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 
 import { AccommodationFormValues } from "@/types/forms";
 
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormField,
@@ -32,13 +33,13 @@ export function AccommodationFormFields({
             <FormItem>
               <FormLabel required>Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="Enter the name of your accommodation" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-3 md:gap-5">
           <FormField
             control={form.control}
             name="check_in"
@@ -46,8 +47,13 @@ export function AccommodationFormFields({
               <FormItem className="flex-1">
                 <FormLabel>Check-in</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Pick a date"
+                  />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -58,8 +64,13 @@ export function AccommodationFormFields({
               <FormItem className="flex-1">
                 <FormLabel>Check-out</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Pick a date"
+                  />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -84,7 +95,7 @@ export function AccommodationFormFields({
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea {...field} placeholder="Additional details" className="min-h-24" />
               </FormControl>
             </FormItem>
           )}

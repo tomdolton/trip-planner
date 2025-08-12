@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { accommodationFormSchema, AccommodationFormValues } from "@/types/forms";
@@ -25,6 +26,8 @@ export function AddAccommodationDialog({
   tripId: string;
   locationId: string;
 }) {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<AccommodationFormValues>({
     resolver: zodResolver(accommodationFormSchema),
     defaultValues: {
@@ -49,13 +52,21 @@ export function AddAccommodationDialog({
         url: values.url || undefined,
       },
       {
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+          form.reset();
+          setOpen(false);
+        },
       }
     );
   }
 
+  function handleCancel() {
+    form.reset();
+    setOpen(false);
+  }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary">+ Add Accommodation</Button>
       </DialogTrigger>
@@ -64,7 +75,11 @@ export function AddAccommodationDialog({
           <DialogTitle>Add Accommodation</DialogTitle>
         </DialogHeader>
         <AccommodationFormFields form={form} onSubmit={onSubmit}>
-          <Button type="submit" disabled={mutation.isPending}>
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+
+          <Button type="submit" disabled={mutation.isPending} className="ms-auto">
             Save Accommodation
           </Button>
         </AccommodationFormFields>

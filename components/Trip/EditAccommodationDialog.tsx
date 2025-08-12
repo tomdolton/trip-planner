@@ -65,6 +65,17 @@ export function EditAccommodationDialog({
     setShowDeleteDialog(true);
   }
 
+  function handleCancel() {
+    form.reset({
+      name: accommodation.name,
+      check_in: accommodation.check_in || "",
+      check_out: accommodation.check_out || "",
+      url: accommodation.url || "",
+      notes: accommodation.notes || "",
+    });
+    onOpenChange(false);
+  }
+
   function confirmDelete() {
     deleteMutation.mutate({ id: accommodation.id }, { onSuccess: () => onOpenChange(false) });
     setShowDeleteDialog(false);
@@ -81,16 +92,22 @@ export function EditAccommodationDialog({
             <DialogTitle>Edit Accommodation</DialogTitle>
           </DialogHeader>
           <AccommodationFormFields form={form} onSubmit={onSubmit}>
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save
+            <Button type="button" variant="outline" onClick={handleCancel}>
+              Cancel
             </Button>
+
             <Button
               type="button"
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
+              className="ms-auto"
             >
               Delete
+            </Button>
+
+            <Button type="submit" disabled={updateMutation.isPending}>
+              Save Accommodation
             </Button>
           </AccommodationFormFields>
         </DialogContent>
