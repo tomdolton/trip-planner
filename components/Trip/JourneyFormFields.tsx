@@ -22,6 +22,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { journeyModes, journeyModeLabels, journeyModeIcons } from "@/lib/constants/journeyModes";
+import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
 
 export function JourneyFormFields({
   form,
@@ -112,7 +113,8 @@ export function JourneyFormFields({
                   <FormControl>
                     <Input
                       type="time"
-                      {...field}
+                      value={formatTimeForDisplay(field.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       className="[&::-webkit-calendar-picker-indicator]:hidden"
                     />
                   </FormControl>
@@ -146,7 +148,8 @@ export function JourneyFormFields({
                   <FormControl>
                     <Input
                       type="time"
-                      {...field}
+                      value={formatTimeForDisplay(field.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       className="[&::-webkit-calendar-picker-indicator]:hidden"
                     />
                   </FormControl>

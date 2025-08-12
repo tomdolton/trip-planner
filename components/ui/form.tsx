@@ -97,7 +97,11 @@ function FormLabel({
     >
       {children}
 
-      {required && <span>*</span>}
+      {required && (
+        <span>
+          * <span className="sr-only">(required)</span>
+        </span>
+      )}
     </Label>
   );
 }

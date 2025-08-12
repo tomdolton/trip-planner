@@ -9,14 +9,28 @@ export const tripSchema = z.object({
   description: z.string().optional(),
 });
 
-export const activityFormSchema = z.object({
-  name: z.string().min(1),
-  date: z.string().min(1),
-  start_time: z.string().optional(),
-  end_time: z.string().optional(),
-  notes: z.string().optional(),
-  activity_type: z.enum(activityTypes),
-});
+export const activityFormSchema = z
+  .object({
+    name: z.string().min(1),
+    date: z.string().min(1),
+    start_time: z.string().optional(),
+    end_time: z.string().optional(),
+    notes: z.string().optional(),
+    activity_type: z.enum(activityTypes),
+  })
+  .refine(
+    (data) => {
+      // If both start_time and end_time are provided, ensure end_time is after start_time
+      if (data.start_time && data.end_time) {
+        return data.end_time >= data.start_time;
+      }
+      return true;
+    },
+    {
+      message: "End time must be after start time",
+      path: ["end_time"],
+    }
+  );
 
 export const accommodationFormSchema = z.object({
   name: z.string().min(1, "Accommodation name is required"),

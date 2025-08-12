@@ -36,7 +36,7 @@ export function DatePicker({
             className
           )}
         >
-          {selectedDate ? format(selectedDate, "MMM dd, yyyy") : placeholder}
+          {selectedDate ? format(selectedDate, "dd MMM yyyy") : placeholder}
           <ChevronDownIcon className="h-4 w-4" />
         </Button>
       </PopoverTrigger>

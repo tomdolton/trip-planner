@@ -23,6 +23,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { activityTypes, activityTypeLabels, ActivityType } from "@/lib/constants/activityTypes";
+import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
 
 export function ActivityFormFields({
   form,
@@ -103,8 +104,13 @@ export function ActivityFormFields({
               <FormItem className="flex-1">
                 <FormLabel>Start Time</FormLabel>
                 <FormControl>
-                  <Input type="time" {...field} />
+                  <Input
+                    type="time"
+                    value={formatTimeForDisplay(field.value)}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -115,8 +121,13 @@ export function ActivityFormFields({
               <FormItem className="flex-1">
                 <FormLabel>End Time</FormLabel>
                 <FormControl>
-                  <Input type="time" {...field} />
+                  <Input
+                    type="time"
+                    value={formatTimeForDisplay(field.value)}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
