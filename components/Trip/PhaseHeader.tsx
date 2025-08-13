@@ -1,12 +1,13 @@
 "use client";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { TripPhase } from "@/types/trip";
 
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
+import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 
 import { useDeleteTripPhase } from "@/lib/mutations/useDeleteTripPhase";
@@ -16,9 +17,10 @@ import { openDialog } from "@/store/uiDialogSlice";
 interface PhaseHeaderProps {
   phase: TripPhase;
   tripId: string;
+  onAddLocation?: () => void;
 }
 
-export function PhaseHeader({ phase, tripId }: PhaseHeaderProps) {
+export function PhaseHeader({ phase, tripId, onAddLocation }: PhaseHeaderProps) {
   const dispatch = useDispatch();
   const deleteTripPhase = useDeleteTripPhase(tripId);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -39,9 +41,14 @@ export function PhaseHeader({ phase, tripId }: PhaseHeaderProps) {
   return (
     <>
       <div className="flex items-center justify-between mb-4 group">
-        <div>
-          <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 lg:gap-11">
             <h2 className="text-xl font-bold">{phase.title}</h2>
+
+            <Button variant="outline" size="sm" onClick={onAddLocation} className="h-8 px-3">
+              <Plus className="w-4 h-4 mr-1" />
+              Location
+            </Button>
 
             <ActionMenu>
               <ActionMenuItem onSelect={handleEdit}>
