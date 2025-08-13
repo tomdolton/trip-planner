@@ -17,6 +17,7 @@ import { useDeleteTripPhase } from "@/lib/mutations/useDeleteTripPhase";
 import { openDialog } from "@/store/uiDialogSlice";
 
 import { AddLocationDialog } from "./AddLocationDialog";
+import { JourneySection } from "./JourneySection";
 import { LocationCard } from "./LocationCard";
 
 interface TripPhaseSectionProps {
@@ -125,21 +126,28 @@ export function TripPhaseSection({
             )}
 
             <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
-              {/* Show locations */}
+              {/* Show locations and journeys */}
               {hasLocations &&
                 phase.locations?.map((loc, idx) => {
                   const nextLocation = phase.locations?.[idx + 1];
                   const journey = nextLocation ? findJourney(loc.id, nextLocation.id) : undefined;
 
                   return (
-                    <LocationCard
-                      key={loc.id}
-                      location={loc}
-                      tripId={tripId}
-                      nextLocation={nextLocation}
-                      journey={journey}
-                      onAddJourney={handleAddJourney}
-                    />
+                    <div key={loc.id}>
+                      <LocationCard location={loc} tripId={tripId} />
+
+                      {/* Render journey as separate card between locations */}
+                      {nextLocation && (
+                        <JourneySection
+                          fromLocation={loc}
+                          toLocation={nextLocation}
+                          tripId={tripId}
+                          journey={journey}
+                          onAddJourney={handleAddJourney}
+                          phaseId={undefined}
+                        />
+                      )}
+                    </div>
                   );
                 })}
 
@@ -237,21 +245,28 @@ export function TripPhaseSection({
           )}
 
           <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
-            {/* Show locations if they exist */}
+            {/* Show locations and journeys if they exist */}
             {hasLocations &&
               phase.locations?.map((loc, idx) => {
                 const nextLocation = phase.locations?.[idx + 1];
                 const journey = nextLocation ? findJourney(loc.id, nextLocation.id) : undefined;
 
                 return (
-                  <LocationCard
-                    key={loc.id}
-                    location={loc}
-                    tripId={tripId}
-                    nextLocation={nextLocation}
-                    journey={journey}
-                    onAddJourney={handleAddJourney}
-                  />
+                  <div key={loc.id}>
+                    <LocationCard location={loc} tripId={tripId} />
+
+                    {/* Render journey as separate card between locations */}
+                    {nextLocation && (
+                      <JourneySection
+                        fromLocation={loc}
+                        toLocation={nextLocation}
+                        tripId={tripId}
+                        journey={journey}
+                        onAddJourney={handleAddJourney}
+                        phaseId={phase.id}
+                      />
+                    )}
+                  </div>
                 );
               })}
 
