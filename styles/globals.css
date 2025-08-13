@@ -37,6 +37,21 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  --color-icon-pink: theme(colors.pink.200);
+  --color-icon-orange: theme(colors.orange.200);
+  --color-icon-amber: theme(colors.amber.200);
+  --color-icon-green: theme(colors.green.200);
+  --color-icon-lime: theme(colors.lime.200);
+  --color-icon-teal: theme(colors.teal.200);
+  --color-icon-sky: theme(colors.teal.200);
+  --color-icon-fuchsia: theme(colors.fuchsia.200);
+  --color-icon-violet: theme(colors.violet.200);
+  --color-icon-red: theme(colors.red.200);
+  --color-icon-purple: theme(colors.purple.200);
+  --color-icon-slate: theme(colors.slate.200);
+  --color-icon-blue: theme(colors.blue.200);
+  --color-icon-indigo: theme(colors.indigo.200);
 }
 
 :root {

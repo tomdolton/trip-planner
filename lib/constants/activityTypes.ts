@@ -82,21 +82,21 @@ export const customSvgActivityTypes: ActivityType[] = ["relax"];
 
 // Background colors for the icon circles
 export const activityTypeColors: Record<ActivityType, string> = {
-  sightseeing: "#FCCEE8",
-  food: "#FFD6A8",
-  museum: "#FEE685",
-  hike: "#B9F8CF",
-  nature_gardens: "#D8F999",
-  beach: "#96F7E4",
-  water_activities: "#B8E6FE",
-  adventure_sports: "oklch(92.4% 0.12 95.746)",
-  shopping: "#F6CFFF",
-  travel: "#ffd6cc",
-  relax: "#DDD6FF",
-  event: "#FFC9C9",
-  nightlife: "#F3E8FF",
-  family_kids: "#FFFBEB",
-  other: "#E2E8F0",
+  sightseeing: "var(--color-icon-pink)",
+  food: "var(--color-icon-orange)",
+  museum: "var(--color-icon-amber)",
+  hike: "var(--color-icon-green)",
+  nature_gardens: "var(--color-icon-lime)",
+  beach: "var(--color-icon-teal)",
+  water_activities: "var(--color-icon-sky)",
+  adventure_sports: "var(--color-icon-blue)",
+  shopping: "var(--color-icon-purple)",
+  travel: "var(--color-icon-red)",
+  relax: "var(--color-icon-violet)",
+  event: "var(--color-icon-red)",
+  nightlife: "var(--color-icon-indigo)",
+  family_kids: "var(--color-icon-fuchsia)",
+  other: "var(--color-icon-slate)",
 };
 
 export function getActivityTypeIcon(type: ActivityType): string {
@@ -108,7 +108,7 @@ export function getActivityTypeLucideIcon(type: ActivityType): string {
 }
 
 export function getActivityTypeColor(type: ActivityType): string {
-  return activityTypeColors[type] || "#f0f0f0";
+  return activityTypeColors[type] || "var(--color-icon-slate)";
 }
 
 export function isCustomSvgActivityType(type: ActivityType): boolean {
