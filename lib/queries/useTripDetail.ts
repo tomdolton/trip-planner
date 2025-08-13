@@ -18,15 +18,15 @@ export function useTripDetail(tripId: string) {
             locations (
               *,
               place:places(*),
-              accommodations(*),
-              activities(*)
+              accommodations(*,place:places(*)),
+              activities(*,place:places(*))
             )
           ),
           unassigned_locations:locations!locations_trip_id_fkey (
             *,
             place:places(*),
-            accommodations(*),
-            activities(*)
+            accommodations(*,place:places(*)),
+            activities(*,place:places(*))
           ),
           journeys(*)
         `

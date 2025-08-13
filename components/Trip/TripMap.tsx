@@ -11,15 +11,29 @@ interface MapLocation extends Location {
   phaseName: string;
 }
 
-// Color coding by type - we'll determine type from the location's activities/accommodations
-const getMarkerColor = (location: Location) => {
-  if (location.accommodations && location.accommodations.length > 0) {
-    return "#3B82F6"; // Blue for accommodation
+// Enhanced marker type that can represent any map item
+interface MapMarker {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  type: "location" | "activity" | "accommodation";
+  phaseIndex: number;
+  phaseName: string;
+  parentLocation?: Location;
+}
+
+// Color coding for specific marker types
+const getMarkerColorByType = (type: "location" | "activity" | "accommodation") => {
+  switch (type) {
+    case "accommodation":
+      return "#3B82F6"; // Blue for accommodation
+    case "activity":
+      return "#EF4444"; // Red for activity
+    case "location":
+    default:
+      return "#10B981"; // Green for general location
   }
-  if (location.activities && location.activities.length > 0) {
-    return "#EF4444"; // Red for activity
-  }
-  return "#10B981"; // Green for general location
 };
 
 // Alternative: Color coding by phase
@@ -108,57 +122,90 @@ export function TripMap({
     return combined;
   }, [trip.trip_phases, trip.unassigned_locations]);
 
+  // Get all markers (locations, activities, accommodations) with coordinates
+  const allMarkers = useMemo(() => {
+    const markers: MapMarker[] = [];
+
+    allLocations.forEach((location) => {
+      // Add location marker if it has coordinates
+      if (location.place?.lat && location.place?.lng) {
+        markers.push({
+          id: `location-${location.id}`,
+          name: location.name,
+          lat: location.place.lat,
+          lng: location.place.lng,
+          type: "location",
+          phaseIndex: location.phaseIndex,
+          phaseName: location.phaseName,
+          parentLocation: location,
+        });
+      }
+
+      // Add activity markers
+      location.activities?.forEach((activity) => {
+        if (activity.place?.lat && activity.place?.lng) {
+          markers.push({
+            id: `activity-${activity.id}`,
+            name: activity.name,
+            lat: activity.place.lat,
+            lng: activity.place.lng,
+            type: "activity",
+            phaseIndex: location.phaseIndex,
+            phaseName: location.phaseName,
+            parentLocation: location,
+          });
+        }
+      });
+
+      // Add accommodation markers
+      location.accommodations?.forEach((accommodation) => {
+        if (accommodation.place?.lat && accommodation.place?.lng) {
+          markers.push({
+            id: `accommodation-${accommodation.id}`,
+            name: accommodation.name,
+            lat: accommodation.place.lat,
+            lng: accommodation.place.lng,
+            type: "accommodation",
+            phaseIndex: location.phaseIndex,
+            phaseName: location.phaseName,
+            parentLocation: location,
+          });
+        }
+      });
+    });
+
+    return markers;
+  }, [allLocations]);
+
   // Calculate map center and bounds
   const mapCenter = useMemo(() => {
-    // Only use locations that have coordinates from their linked place
-    const locationsWithCoords = allLocations.filter(
-      (loc: MapLocation) => loc.place?.lat && loc.place?.lng
-    );
-
-    if (locationsWithCoords.length === 0) {
+    if (allMarkers.length === 0) {
       return { lat: 51.5074, lng: -0.1278 }; // Default to London
     }
 
-    const avgLat =
-      locationsWithCoords.reduce(
-        (sum: number, loc: MapLocation) => sum + (loc.place?.lat || 0),
-        0
-      ) / locationsWithCoords.length;
+    const avgLat = allMarkers.reduce((sum, marker) => sum + marker.lat, 0) / allMarkers.length;
+    const avgLng = allMarkers.reduce((sum, marker) => sum + marker.lng, 0) / allMarkers.length;
 
-    const avgLng =
-      locationsWithCoords.reduce(
-        (sum: number, loc: MapLocation) => sum + (loc.place?.lng || 0),
-        0
-      ) / locationsWithCoords.length;
-
-    const center = { lat: avgLat, lng: avgLng };
-
-    return center;
-  }, [allLocations]);
+    return { lat: avgLat, lng: avgLng };
+  }, [allMarkers]);
 
   const onLoad = useCallback(
     (map: google.maps.Map) => {
-      const locationsWithCoords = allLocations.filter(
-        (loc: MapLocation) => loc.place?.lat && loc.place?.lng
-      );
-
-      if (locationsWithCoords.length > 1) {
-        // Auto-fit bounds to show all locations
+      if (allMarkers.length > 1) {
+        // Auto-fit bounds to show all markers
         const bounds = new window.google.maps.LatLngBounds();
-        locationsWithCoords.forEach((location: MapLocation) => {
-          if (location.place?.lat && location.place?.lng) {
-            bounds.extend({ lat: location.place.lat, lng: location.place.lng });
-          }
+        allMarkers.forEach((marker) => {
+          bounds.extend({ lat: marker.lat, lng: marker.lng });
         });
         map.fitBounds(bounds);
-      } else if (locationsWithCoords.length === 1) {
-        // Center on single location
-        const location = locationsWithCoords[0];
-        map.setCenter({ lat: location.place!.lat, lng: location.place!.lng });
+      } else if (allMarkers.length === 1) {
+        // Center on single marker
+        const marker = allMarkers[0];
+        map.setCenter({ lat: marker.lat, lng: marker.lng });
         map.setZoom(12);
       }
     },
-    [allLocations]
+    [allMarkers]
   );
 
   if (!isLoaded) {
@@ -181,21 +228,18 @@ export function TripMap({
         onLoad={onLoad}
         options={mapOptions}
       >
-        {allLocations.map((location: MapLocation) => {
-          // Only show locations that have coordinates from their linked place
-          if (!location.place?.lat || !location.place?.lng) {
-            return null;
-          }
-
+        {allMarkers.map((marker) => {
           const markerColor =
-            colorBy === "phase" ? getPhaseColor(location.phaseIndex) : getMarkerColor(location);
+            colorBy === "phase"
+              ? getPhaseColor(marker.phaseIndex)
+              : getMarkerColorByType(marker.type);
 
           return (
             <Marker
-              key={location.id}
-              position={{ lat: location.place.lat, lng: location.place.lng }}
-              title={`${location.name} (${location.phaseName})`}
-              onClick={() => onLocationClick?.(location)}
+              key={marker.id}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              title={`${marker.name} (${marker.phaseName})`}
+              onClick={() => onLocationClick?.(marker.parentLocation!)}
               icon={{
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 8,
