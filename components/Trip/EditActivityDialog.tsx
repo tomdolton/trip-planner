@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { activityFormSchema, ActivityFormValues } from "@/types/forms";
-import { Activity } from "@/types/trip";
+import { Activity, Place } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
@@ -43,8 +43,11 @@ export function EditActivityDialog({
   const deleteMutation = useDeleteActivity(tripId);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  function onSubmit(values: ActivityFormValues) {
-    updateMutation.mutate({ ...values, id: activity.id }, { onSuccess: () => onOpenChange(false) });
+  function onSubmit(values: ActivityFormValues & { place?: Place }) {
+    updateMutation.mutate(
+      { ...values, id: activity.id, place_id: values.place?.id },
+      { onSuccess: () => onOpenChange(false) }
+    );
   }
 
   function handleDelete() {

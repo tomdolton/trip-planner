@@ -1,6 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 
 import { ActivityFormValues } from "@/types/forms";
+import { Place } from "@/types/trip";
 
 import { ActivityIcon } from "@/components/ui/ActivityIcon";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -13,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PlaceSelectionField } from "@/components/ui/PlaceSelectionField";
+import { PlaceToggleButton } from "@/components/ui/PlaceToggleButton";
 import {
   Select,
   SelectTrigger,
@@ -20,10 +23,13 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { SelectedPlaceCard } from "@/components/ui/SelectedPlaceCard";
 import { Textarea } from "@/components/ui/textarea";
 
 import { activityTypes, activityTypeLabels, ActivityType } from "@/lib/constants/activityTypes";
 import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
+
+import { usePlaceSelection } from "@/hooks/usePlaceSelection";
 
 export function ActivityFormFields({
   form,
@@ -31,25 +37,47 @@ export function ActivityFormFields({
   children,
 }: {
   form: UseFormReturn<ActivityFormValues>;
-  onSubmit: (values: ActivityFormValues) => void;
+  onSubmit: (values: ActivityFormValues & { place?: Place }) => void;
   children?: React.ReactNode; // For custom action buttons
 }) {
+  const { selectedPlace, isManualMode, handlePlaceSelected, clearPlace, toggleManualMode } =
+    usePlaceSelection({
+      form,
+    });
+
+  const handleSubmit = (values: ActivityFormValues) => {
+    onSubmit({ ...values, place: selectedPlace || undefined });
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>Activity Name</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="Enter activity name" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        {/* Name Field - Google Places Search or Manual Input */}
+        <PlaceSelectionField
+          form={form}
+          isManualEntry={isManualMode}
+          onPlaceSelect={handlePlaceSelected}
+          label="Activity Name"
+          placeholder={
+            isManualMode ? "Enter activity name manually" : "Search for a place or activity..."
+          }
         />
+
+        {/* Manual Entry Toggle */}
+        {!selectedPlace && (
+          <div className="text-sm">
+            {!isManualMode && "Can't find it? "}
+            <PlaceToggleButton
+              isManualEntry={isManualMode}
+              onToggle={toggleManualMode}
+              searchText="Search for a place instead"
+              manualText="Enter Activity Manually"
+            />
+          </div>
+        )}
+
+        {/* Selected Place Card */}
+        {selectedPlace && <SelectedPlaceCard place={selectedPlace} onRemove={clearPlace} />}
 
         <FormField
           control={form.control}

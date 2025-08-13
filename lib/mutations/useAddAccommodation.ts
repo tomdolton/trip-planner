@@ -16,6 +16,7 @@ export function useAddAccommodation(tripId: string) {
       check_out?: string;
       notes?: string;
       url?: string;
+      place_id?: string;
     }) => {
       // if (!user?.id) throw new Error("User not logged in");
       return addAccommodation({ ...values, tripId });

@@ -8,6 +8,7 @@ export async function addAccommodation({
   check_out,
   notes,
   url,
+  place_id,
 }: {
   tripId: string;
   locationId: string;
@@ -16,6 +17,7 @@ export async function addAccommodation({
   check_out?: string;
   notes?: string;
   url?: string;
+  place_id?: string;
 }) {
   const { data, error } = await supabase
     .from("accommodations")
@@ -28,6 +30,7 @@ export async function addAccommodation({
         check_out,
         notes,
         url,
+        place_id,
       },
     ])
     .select()

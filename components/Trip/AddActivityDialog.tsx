@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { activityFormSchema, ActivityFormValues } from "@/types/forms";
+import { Place } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,9 +36,9 @@ export function AddActivityDialog({ tripId, locationId }: { tripId: string; loca
 
   const mutation = useAddActivity(tripId);
 
-  function onSubmit(values: ActivityFormValues) {
+  function onSubmit(values: ActivityFormValues & { place?: Place }) {
     mutation.mutate(
-      { ...values, locationId },
+      { ...values, locationId, placeId: values.place?.id },
       {
         onSuccess: () => {
           form.reset();

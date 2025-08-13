@@ -1,6 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 
 import { AccommodationFormValues } from "@/types/forms";
+import { Place } from "@/types/trip";
 
 import { DatePicker } from "@/components/ui/date-picker";
 import {
@@ -12,7 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PlaceSelectionField } from "@/components/ui/PlaceSelectionField";
+import { PlaceToggleButton } from "@/components/ui/PlaceToggleButton";
+import { SelectedPlaceCard } from "@/components/ui/SelectedPlaceCard";
 import { Textarea } from "@/components/ui/textarea";
+
+import { usePlaceSelection } from "@/hooks/usePlaceSelection";
 
 export function AccommodationFormFields({
   form,
@@ -20,25 +26,48 @@ export function AccommodationFormFields({
   children,
 }: {
   form: UseFormReturn<AccommodationFormValues>;
-  onSubmit: (values: AccommodationFormValues) => void;
+  onSubmit: (values: AccommodationFormValues & { place?: Place }) => void;
   children?: React.ReactNode;
 }) {
+  const { selectedPlace, isManualMode, handlePlaceSelected, clearPlace, toggleManualMode } =
+    usePlaceSelection({
+      form,
+    });
+
+  const handleSubmit = (values: AccommodationFormValues) => {
+    onSubmit({ ...values, place: selectedPlace || undefined });
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>Name</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="Enter the name of your accommodation" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        {/* Name Field - Google Places Search or Manual Input */}
+        <PlaceSelectionField
+          form={form}
+          isManualEntry={isManualMode}
+          onPlaceSelect={handlePlaceSelected}
+          label="Name"
+          placeholder={
+            isManualMode ? "Enter accommodation name manually" : "Search for accommodation..."
+          }
         />
+
+        {/* Manual Entry Toggle */}
+        {!selectedPlace && (
+          <div className="text-sm">
+            {!isManualMode && "Can't find it? "}
+            <PlaceToggleButton
+              isManualEntry={isManualMode}
+              onToggle={toggleManualMode}
+              searchText="Search for a place instead"
+              manualText="Enter Accommodation Manually"
+            />
+          </div>
+        )}
+
+        {/* Selected Place Card */}
+        {selectedPlace && <SelectedPlaceCard place={selectedPlace} onRemove={clearPlace} />}
+
         <div className="flex gap-3 md:gap-5">
           <FormField
             control={form.control}

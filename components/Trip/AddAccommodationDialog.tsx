@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { accommodationFormSchema, AccommodationFormValues } from "@/types/forms";
+import { Place } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +42,7 @@ export function AddAccommodationDialog({
 
   const mutation = useAddAccommodation(tripId);
 
-  function onSubmit(values: AccommodationFormValues) {
+  function onSubmit(values: AccommodationFormValues & { place?: Place }) {
     mutation.mutate(
       {
         locationId,
@@ -50,6 +51,7 @@ export function AddAccommodationDialog({
         check_out: values.check_out || undefined,
         notes: values.notes,
         url: values.url || undefined,
+        place_id: values.place?.id,
       },
       {
         onSuccess: () => {

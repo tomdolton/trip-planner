@@ -32,12 +32,12 @@ export interface Location {
   id: string;
   trip_id: string;
   trip_phase_id?: string;
-  place_id?: string; // Add place_id
+  place_id?: string;
   name: string; // User-customizable name (e.g., "Our hotel in Paris")
   region?: string;
   notes?: string;
   order?: number;
-  place?: Place; // Add place relationship
+  place?: Place;
   accommodations?: Accommodation[];
   activities?: Activity[];
 }
@@ -68,24 +68,27 @@ export interface Activity {
   trip_id: string;
   location_id: string;
   user_id: string;
+  place_id?: string;
   name: string;
   notes?: string;
   date: string;
   start_time?: string;
   end_time?: string;
-  place_id?: string;
   activity_type: ActivityType;
+  place?: Place;
 }
 
 export interface Accommodation {
   id: string;
   location_id: string;
   trip_id: string;
+  place_id?: string;
   name: string;
   url?: string;
   check_in?: string;
   check_out?: string;
   notes?: string;
+  place?: Place;
 }
 
 export interface Journey {

@@ -1,0 +1,54 @@
+import { Badge } from "./badge";
+import { Button } from "./button";
+import { Card, CardContent } from "./card";
+import { MapPin, X } from "lucide-react";
+import type { Place } from "@/types/trip";
+
+interface SelectedPlaceCardProps {
+  place: Place;
+  onRemove: () => void;
+}
+
+export function SelectedPlaceCard({ place, onRemove }: SelectedPlaceCardProps) {
+  return (
+    <Card className="w-full">
+      <CardContent className="p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <h3 className="font-medium text-sm truncate">{place.name}</h3>
+            </div>
+            {place.formatted_address && (
+              <p className="text-xs text-muted-foreground mb-2">{place.formatted_address}</p>
+            )}
+            {place.place_types && place.place_types.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {place.place_types.slice(0, 3).map((type: string) => (
+                  <Badge key={type} variant="secondary" className="text-xs px-2 py-0.5">
+                    {type.replace(/_/g, " ")}
+                  </Badge>
+                ))}
+                {place.place_types.length > 3 && (
+                  <Badge variant="outline" className="text-xs px-2 py-0.5">
+                    +{place.place_types.length - 3} more
+                  </Badge>
+                )}
+              </div>
+            )}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onRemove}
+            className="h-8 w-8 p-0 flex-shrink-0"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Remove place</span>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

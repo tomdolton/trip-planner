@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { accommodationFormSchema, AccommodationFormValues } from "@/types/forms";
-import { Accommodation } from "@/types/trip";
+import { Accommodation, Place } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
@@ -48,7 +48,7 @@ export function EditAccommodationDialog({
   const deleteMutation = useDeleteAccommodation(tripId);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  function onSubmit(values: AccommodationFormValues) {
+  function onSubmit(values: AccommodationFormValues & { place?: Place }) {
     updateMutation.mutate(
       {
         ...values,
@@ -56,6 +56,7 @@ export function EditAccommodationDialog({
         check_in: values.check_in || undefined,
         check_out: values.check_out || undefined,
         url: values.url || undefined,
+        place_id: values.place?.id,
       },
       { onSuccess: () => onOpenChange(false) }
     );
