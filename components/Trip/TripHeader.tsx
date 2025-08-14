@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-import { formatDateRange } from "@/lib/utils/formatDateRange";
+import { formatDateRange } from "@/lib/utils/dateTime";
 
 import { AddLocationDialog } from "./AddLocationDialog";
 import { AddTripPhaseDialog } from "./AddTripPhaseDialog";

@@ -1,5 +1,5 @@
 import { ActivityType } from "@/lib/constants/activityTypes";
-import { normalizeTime } from "@/lib/utils/normalizeTime";
+import { normaliseTime } from "@/lib/utils/dateTime";
 
 import { supabase } from "../supabase";
 
@@ -34,8 +34,8 @@ export async function addActivity({
         location_id: locationId,
         name,
         date,
-        start_time: normalizeTime(start_time),
-        end_time: normalizeTime(end_time),
+        start_time: normaliseTime(start_time),
+        end_time: normaliseTime(end_time),
         notes,
         place_id: placeId,
         activity_type,

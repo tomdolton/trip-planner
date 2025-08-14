@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Journey } from "@/types/trip";
 
 import { supabase } from "@/lib/supabase";
-import { normalizeTime } from "@/lib/utils/normalizeTime";
+import { normaliseTime } from "@/lib/utils/dateTime";
 
 export function useAddJourney(tripId: string) {
   const queryClient = useQueryClient();
@@ -12,8 +12,8 @@ export function useAddJourney(tripId: string) {
     mutationFn: async (data) => {
       const normalizedData = {
         ...data,
-        departure_time: data.departure_time ? normalizeTime(data.departure_time) : null,
-        arrival_time: data.arrival_time ? normalizeTime(data.arrival_time) : null,
+        departure_time: data.departure_time ? normaliseTime(data.departure_time) : null,
+        arrival_time: data.arrival_time ? normaliseTime(data.arrival_time) : null,
       };
       const { data: inserted, error } = await supabase
         .from("journeys")

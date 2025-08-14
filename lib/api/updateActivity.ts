@@ -1,6 +1,6 @@
 import { Activity } from "@/types/trip";
 
-import { normalizeTime } from "@/lib/utils/normalizeTime";
+import { normaliseTime } from "@/lib/utils/dateTime";
 
 import { supabase } from "../supabase";
 
@@ -10,8 +10,8 @@ export async function updateActivity(activity: Partial<Activity> & { id: string 
     .from("activities")
     .update({
       ...fields,
-      start_time: normalizeTime(start_time),
-      end_time: normalizeTime(end_time),
+      start_time: normaliseTime(start_time),
+      end_time: normaliseTime(end_time),
     })
     .eq("id", id)
     .select()

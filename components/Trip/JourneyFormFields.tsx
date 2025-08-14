@@ -23,7 +23,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { journeyModes, journeyModeLabels } from "@/lib/constants/journeyModes";
-import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
+import { formatTimeForDisplay } from "@/lib/utils/dateTime";
 
 import { JourneyIcon } from "./JourneyIcon";
 

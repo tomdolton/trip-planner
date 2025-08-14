@@ -12,8 +12,7 @@ import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 
 import { JourneyMode, journeyModeLabels } from "@/lib/constants/journeyModes";
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
-import { formatDateTime } from "@/lib/utils/formatDateTime";
-import { getDuration } from "@/lib/utils/getDuration";
+import { formatDateTime, getDuration } from "@/lib/utils/dateTime";
 import { isStartJourney, isEndJourney } from "@/lib/utils/journeyUtils";
 
 import { openDialog } from "@/store/uiDialogSlice";

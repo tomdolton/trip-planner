@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { Accommodation } from "@/types/trip";
 
-import { formatDateRange } from "@/lib/utils/formatDateRange";
+import { formatDateRange } from "@/lib/utils/dateTime";
 
 import { openDialog } from "@/store/uiDialogSlice";
 

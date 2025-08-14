@@ -27,7 +27,7 @@ import { SelectedPlaceCard } from "@/components/ui/SelectedPlaceCard";
 import { Textarea } from "@/components/ui/textarea";
 
 import { activityTypes, activityTypeLabels, ActivityType } from "@/lib/constants/activityTypes";
-import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
+import { formatTimeForDisplay } from "@/lib/utils/dateTime";
 
 import { usePlaceSelection } from "@/hooks/usePlaceSelection";
 

@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
 import { useTrips } from "@/lib/queries/useTrips";
-import { formatDateRange } from "@/lib/utils/formatDateRange";
+import { formatDateRange } from "@/lib/utils/dateTime";
 
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
