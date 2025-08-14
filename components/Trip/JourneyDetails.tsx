@@ -10,12 +10,14 @@ import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui
 import { Card, CardContent } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 
-import { journeyModeIcons, journeyModeLabels } from "@/lib/constants/journeyModes";
+import { JourneyMode, journeyModeLabels } from "@/lib/constants/journeyModes";
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
 import { formatDateTime } from "@/lib/utils/formatDateTime";
 import { getDuration } from "@/lib/utils/getDuration";
 
 import { openDialog } from "@/store/uiDialogSlice";
+
+import { JourneyTimeline } from "./JourneyTimeline";
 
 interface JourneyDetailsProps {
   journey: Journey;
@@ -53,21 +55,7 @@ export function JourneyDetails({
 
   return (
     <>
-      <div className="relative -mb-4 flex items-start pl-12 lg:pl-20">
-        {/* Journey Icon with vertical line - positioned at left edge */}
-        <div className="absolute top-0 bottom-0 left-0 flex flex-col items-center">
-          {/* Vertical line extending upward */}
-          <div className="w-0.5 h-full bg-border"></div>
-
-          {/* Journey Icon */}
-          <div className="flex-shrink-0 size-12 lg:size-20 bg-background border-2 border-border rounded-full flex items-center justify-center relative z-10">
-            {journeyModeIcons[journey.mode as keyof typeof journeyModeIcons]}
-          </div>
-
-          {/* Vertical line extending downward */}
-          <div className="w-0.5 h-full bg-border"></div>
-        </div>
-
+      <JourneyTimeline mode={journey.mode as JourneyMode}>
         {/* Journey Card - indented to the right */}
         <Card className="ml-4 md:ml-6 my-8 flex-1 bg-background border border-border shadow-none">
           <CardContent className="p-4">
@@ -136,7 +124,7 @@ export function JourneyDetails({
             </div>
           </CardContent>
         </Card>
-      </div>
+      </JourneyTimeline>
 
       <ConfirmDeleteDialog
         open={showDeleteDialog}

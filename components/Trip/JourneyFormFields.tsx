@@ -21,8 +21,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { journeyModes, journeyModeLabels, journeyModeIcons } from "@/lib/constants/journeyModes";
+import { journeyModes, journeyModeLabels } from "@/lib/constants/journeyModes";
 import { formatTimeForDisplay } from "@/lib/utils/normalizeTime";
+
+import { JourneyIcon } from "./JourneyIcon";
 
 export function JourneyFormFields({
   form,
@@ -52,7 +54,7 @@ export function JourneyFormFields({
                   {journeyModes.map((mode) => (
                     <SelectItem key={mode} value={mode}>
                       <span className="flex items-center gap-2">
-                        <span>{journeyModeIcons[mode]}</span>
+                        <JourneyIcon mode={mode} size={16} />
                         <span>{journeyModeLabels[mode]}</span>
                       </span>
                     </SelectItem>
