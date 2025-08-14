@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
 import { useUpdateJourney } from "@/lib/mutations/useUpdateJourney";
-import { combineDateTimeFields } from "@/lib/utils/journeyUtils";
+import { combineDateTimeFields, splitDateTime } from "@/lib/utils/journeyUtils";
 
 import { JourneyFormFields } from "./JourneyFormFields";
 
@@ -32,16 +32,6 @@ export function EditJourneyDialog({
   departureLocationName?: string;
   arrivalLocationName?: string;
 }) {
-  // Helper function to split datetime string into date and time parts
-  const splitDateTime = (dateTime?: string) => {
-    if (!dateTime) return { date: "", time: "" };
-    const [date, time] = dateTime.split("T");
-    return {
-      date: date || "",
-      time: time ? time.substring(0, 5) : "", // Remove seconds
-    };
-  };
-
   const departureDateTime = splitDateTime(journey.departure_time);
   const arrivalDateTime = splitDateTime(journey.arrival_time);
 

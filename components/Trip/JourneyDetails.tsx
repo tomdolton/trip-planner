@@ -14,6 +14,7 @@ import { JourneyMode, journeyModeLabels } from "@/lib/constants/journeyModes";
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
 import { formatDateTime } from "@/lib/utils/formatDateTime";
 import { getDuration } from "@/lib/utils/getDuration";
+import { isStartJourney, isEndJourney } from "@/lib/utils/journeyUtils";
 
 import { openDialog } from "@/store/uiDialogSlice";
 
@@ -54,15 +55,15 @@ export function JourneyDetails({
   const duration = getDuration(journey.departure_time, journey.arrival_time);
 
   // Determine if this is a start or end journey
-  const isStartJourney = journey.departure_location_id === null;
-  const isEndJourney = journey.arrival_location_id === null;
+  const isStart = isStartJourney(journey);
+  const isEnd = isEndJourney(journey);
 
   return (
     <>
       <JourneyTimeline
         mode={journey.mode as JourneyMode}
-        showUpwardLine={!isStartJourney}
-        showDownwardLine={!isEndJourney}
+        showUpwardLine={!isStart}
+        showDownwardLine={!isEnd}
       >
         {/* Journey Card - indented to the right */}
         <Card className="ml-4 md:ml-6 my-8 flex-1 border border-border shadow-none">

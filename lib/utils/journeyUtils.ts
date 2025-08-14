@@ -1,5 +1,5 @@
 import { JourneyFormValues } from "@/types/forms";
-import { TripPhase, Location } from "@/types/trip";
+import { TripPhase, Location, Journey } from "@/types/trip";
 
 /**
  * Combines date and time fields into datetime strings for the database
@@ -16,6 +16,43 @@ export function combineDateTimeFields(values: JourneyFormValues) {
       : undefined;
 
   return { departureDateTime, arrivalDateTime };
+}
+
+/**
+ * Splits a datetime string into separate date and time parts for form editing
+ */
+export function splitDateTime(dateTime?: string) {
+  if (!dateTime) return { date: "", time: "" };
+  const [date, time] = dateTime.split("T");
+  return {
+    date: date || "",
+    time: time ? time.substring(0, 5) : "", // Remove seconds
+  };
+}
+
+/**
+ * Gets display name for a location, handling null values for start/end journeys
+ */
+export function getLocationDisplayName(
+  location: Location | null | undefined,
+  fromLocation?: Location | null
+) {
+  if (!location) return fromLocation === null ? "Start" : "End";
+  return location.name;
+}
+
+/**
+ * Determines if a journey is a start journey (no departure location)
+ */
+export function isStartJourney(journey: Journey): boolean {
+  return journey.departure_location_id === null;
+}
+
+/**
+ * Determines if a journey is an end journey (no arrival location)
+ */
+export function isEndJourney(journey: Journey): boolean {
+  return journey.arrival_location_id === null;
 }
 
 /**

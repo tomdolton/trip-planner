@@ -7,6 +7,8 @@ import { Journey as JourneyType, Location } from "@/types/trip";
 
 import { Button } from "@/components/ui/button";
 
+import { getLocationDisplayName } from "@/lib/utils/journeyUtils";
+
 import { AddJourneyDialog } from "./AddJourneyDialog";
 import { AddLocationDialog } from "./AddLocationDialog";
 import { JourneyDetails } from "./JourneyDetails";
@@ -28,19 +30,13 @@ export function JourneySection({
 }) {
   const [showAddLocationDialog, setShowAddLocationDialog] = useState(false);
 
-  // Helper function to get display name for location
-  const getLocationDisplayName = (location: Location | null | undefined) => {
-    if (!location) return fromLocation === null ? "Start" : "End";
-    return location.name;
-  };
-
   if (journey) {
     return (
       <JourneyDetails
         journey={journey}
         tripId={tripId}
-        departureLocationName={getLocationDisplayName(fromLocation)}
-        arrivalLocationName={getLocationDisplayName(toLocation)}
+        departureLocationName={getLocationDisplayName(fromLocation, fromLocation)}
+        arrivalLocationName={getLocationDisplayName(toLocation, fromLocation)}
       />
     );
   }

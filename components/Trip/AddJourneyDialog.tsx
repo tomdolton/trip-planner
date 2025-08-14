@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { combineDateTimeFields } from "@/lib/utils/journeyUtils";
+import { combineDateTimeFields, getLocationDisplayName } from "@/lib/utils/journeyUtils";
 
 import { JourneyFormFields } from "./JourneyFormFields";
 
@@ -79,12 +79,6 @@ export function AddJourneyDialog({
     setDialogOpen(false);
   }
 
-  // Helper function to get display name for location
-  const getLocationDisplayName = (location: Location | null | undefined) => {
-    if (!location) return fromLocation === null ? "Start" : "End";
-    return location.name;
-  };
-
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -92,7 +86,8 @@ export function AddJourneyDialog({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            {getLocationDisplayName(fromLocation)} → {getLocationDisplayName(toLocation)}
+            {getLocationDisplayName(fromLocation, fromLocation)} →{" "}
+            {getLocationDisplayName(toLocation, fromLocation)}
           </p>
         </DialogHeader>
         <JourneyFormFields form={form} onSubmit={onSubmit}>
