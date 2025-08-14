@@ -34,7 +34,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
         <AccommodationsList accommodations={location.accommodations ?? []} />
 
-        <TripActivities activities={location.activities ?? []} />
+        <TripActivities activities={location.activities ?? []} tripId={tripId} />
       </CardContent>
     </Card>
   );
