@@ -15,6 +15,8 @@ export function useUpdateJourney(tripId: string) {
       departure_time?: string;
       arrival_time?: string;
       notes?: string;
+      departure_place_id?: string | null;
+      arrival_place_id?: string | null;
     }
   >({
     mutationFn: async ({ id, ...data }) => {

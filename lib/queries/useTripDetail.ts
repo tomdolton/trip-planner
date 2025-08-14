@@ -28,7 +28,7 @@ export function useTripDetail(tripId: string) {
             accommodations(*,place:places(*)),
             activities(*,place:places(*))
           ),
-          journeys(*)
+          journeys(*,departure_place:places!departure_place_id(*),arrival_place:places!arrival_place_id(*))
         `
         )
         .eq("id", tripId)

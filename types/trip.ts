@@ -106,6 +106,8 @@ export interface Journey {
   trip_id: string;
   departure_location_id: string | null;
   arrival_location_id: string | null;
+  departure_place_id?: string | null;
+  arrival_place_id?: string | null;
   departure_time?: string;
   arrival_time?: string;
   mode: string;
@@ -113,4 +115,6 @@ export interface Journey {
   provider?: string;
   created_at?: string;
   updated_at?: string;
+  departure_place?: Place;
+  arrival_place?: Place;
 }

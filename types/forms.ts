@@ -69,6 +69,8 @@ export const journeyFormSchema = z.object({
   arrival_date: z.string().optional(),
   arrival_time: z.string().optional(),
   notes: z.string().optional(),
+  departure_place_id: z.string().optional(),
+  arrival_place_id: z.string().optional(),
 });
 
 export const tripPhaseFormSchema = z.object({

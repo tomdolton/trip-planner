@@ -58,6 +58,8 @@ export function AddJourneyDialog({
       arrival_date: "",
       arrival_time: "",
       notes: "",
+      departure_place_id: "",
+      arrival_place_id: "",
     },
   });
 
@@ -69,13 +71,25 @@ export function AddJourneyDialog({
       trip_id: tripId,
       departure_location_id: fromLocation?.id || null,
       arrival_location_id: toLocation?.id || null,
+      departure_place_id: values.departure_place_id || null,
+      arrival_place_id: values.arrival_place_id || null,
       mode: values.mode,
       notes: values.notes || undefined,
       provider: values.provider || undefined,
       departure_time: departureDateTime,
       arrival_time: arrivalDateTime,
     });
-    form.reset();
+    form.reset({
+      provider: "",
+      mode: "",
+      departure_date: "",
+      departure_time: "",
+      arrival_date: "",
+      arrival_time: "",
+      notes: "",
+      departure_place_id: "",
+      arrival_place_id: "",
+    });
     setDialogOpen(false);
   }
 

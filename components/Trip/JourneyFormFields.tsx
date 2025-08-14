@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { JourneyPlaceField } from "@/components/ui/JourneyPlaceField";
 import {
   Select,
   SelectTrigger,
@@ -79,6 +80,43 @@ export function JourneyFormFields({
             </FormItem>
           )}
         />
+
+        {/* Places Section */}
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="departure_place_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Departure Location</FormLabel>
+                <FormControl>
+                  <JourneyPlaceField
+                    field={field}
+                    placeholder="Search for departure station, airport, etc."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="arrival_place_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Arrival Location</FormLabel>
+                <FormControl>
+                  <JourneyPlaceField
+                    field={field}
+                    placeholder="Search for arrival station, airport, etc."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* Departure and Arrival Date/Time Section */}
         <div className="space-y-4">

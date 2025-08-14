@@ -45,6 +45,8 @@ export function EditJourneyDialog({
       arrival_date: arrivalDateTime.date,
       arrival_time: arrivalDateTime.time,
       notes: journey.notes || "",
+      departure_place_id: journey.departure_place_id || "",
+      arrival_place_id: journey.arrival_place_id || "",
     },
   });
 
@@ -64,6 +66,8 @@ export function EditJourneyDialog({
         departure_time: departureDateTime,
         arrival_time: arrivalDateTime,
         notes: values.notes,
+        departure_place_id: values.departure_place_id || null,
+        arrival_place_id: values.arrival_place_id || null,
       },
       { onSuccess: () => onOpenChange(false) }
     );

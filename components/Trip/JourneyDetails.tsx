@@ -110,6 +110,9 @@ export function JourneyDetails({
                     {departureLocationName && (
                       <div className="text-xs">from {departureLocationName}</div>
                     )}
+                    {journey.departure_place && (
+                      <div className="text-xs text-blue-600">📍 {journey.departure_place.name}</div>
+                    )}
                   </div>
                 )}
 
@@ -118,6 +121,9 @@ export function JourneyDetails({
                     <span className="">Arrives: </span>
                     <span className="font-semibold">{formatDateTime(journey.arrival_time)}</span>
                     {arrivalLocationName && <div className="text-xs">at {arrivalLocationName}</div>}
+                    {journey.arrival_place && (
+                      <div className="text-xs text-blue-600">📍 {journey.arrival_place.name}</div>
+                    )}
                   </div>
                 )}
               </div>
