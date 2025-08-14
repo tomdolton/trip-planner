@@ -14,9 +14,13 @@ import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { useAddJourney } from "@/lib/mutations/useAddJourney";
 import { useDeleteTripPhase } from "@/lib/mutations/useDeleteTripPhase";
 
+import { useJourneyHelpers } from "@/hooks/useJourneyHelpers";
+
 import { openDialog } from "@/store/uiDialogSlice";
 
+import { AddJourneyDialog } from "./AddJourneyDialog";
 import { AddLocationDialog } from "./AddLocationDialog";
+import { JourneyDetails } from "./JourneyDetails";
 import { JourneySection } from "./JourneySection";
 import { LocationCard } from "./LocationCard";
 
@@ -27,6 +31,8 @@ interface TripPhaseSectionProps {
   tripId: string;
   journeys?: Journey[];
   isNoPhaseSection?: boolean;
+  allPhases?: TripPhase[];
+  phaseIndex?: number;
 }
 
 export function TripPhaseSection({
@@ -34,6 +40,8 @@ export function TripPhaseSection({
   tripId,
   journeys,
   isNoPhaseSection,
+  allPhases = [],
+  phaseIndex = 0,
 }: TripPhaseSectionProps) {
   const [showAddLocationDialog, setShowAddLocationDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -43,12 +51,18 @@ export function TripPhaseSection({
   const addJourney = useAddJourney(tripId);
   const deleteTripPhase = useDeleteTripPhase(tripId);
 
-  // Helper to find journey between two locations
-  function findJourney(fromId: string, toId: string) {
-    return journeys?.find(
-      (j) => j.departure_location_id === fromId && j.arrival_location_id === toId
-    );
-  }
+  // Use the journey helpers hook
+  const {
+    findJourney,
+    findCrossPhaseJourneyToNext,
+    getCrossPhaseJourneyLocationsToNext,
+    shouldShowCrossPhaseJourney,
+  } = useJourneyHelpers({
+    journeys,
+    allPhases,
+    currentPhase: phase,
+    phaseIndex,
+  });
 
   // Handler to add journey
   function handleAddJourney(journeyData: Omit<Journey, "id">) {
@@ -282,10 +296,50 @@ export function TripPhaseSection({
             {hasLocations && (
               <div className="mt-4">
                 <Button variant="outline" onClick={() => setShowAddLocationDialog(true)}>
-                  + Add Location
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Location
                 </Button>
               </div>
             )}
+
+            {/* Cross-phase Journey to next phase */}
+            {!isNoPhaseSection &&
+              hasLocations &&
+              shouldShowCrossPhaseJourney() &&
+              (() => {
+                const crossPhaseData = getCrossPhaseJourneyLocationsToNext();
+                const crossPhaseJourney = findCrossPhaseJourneyToNext();
+
+                if (!crossPhaseData) return null;
+
+                const { fromLocation, toLocation, nextPhase } = crossPhaseData;
+
+                return (
+                  <div className="mt-4">
+                    {crossPhaseJourney ? (
+                      <JourneyDetails
+                        journey={crossPhaseJourney}
+                        tripId={tripId}
+                        departureLocationName={fromLocation.name}
+                        arrivalLocationName={toLocation.name}
+                      />
+                    ) : (
+                      <AddJourneyDialog
+                        tripId={tripId}
+                        fromLocation={fromLocation}
+                        toLocation={toLocation}
+                        onAddJourney={handleAddJourney}
+                        title="Add Inter-Phase Journey"
+                      >
+                        <Button variant="outline" className="w-full">
+                          <Plus className="w-4 h-4 mr-1" />
+                          Journey to {nextPhase.title}
+                        </Button>
+                      </AddJourneyDialog>
+                    )}
+                  </div>
+                );
+              })()}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

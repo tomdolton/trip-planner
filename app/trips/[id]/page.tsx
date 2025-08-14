@@ -100,16 +100,20 @@ export default function TripDetailPage() {
               tripId={trip.id}
               journeys={trip.journeys}
               isNoPhaseSection={true}
+              allPhases={allPhases}
+              phaseIndex={-1}
             />
           )}
 
           {/* Show all phases (including empty ones) */}
-          {allPhases.map((phase) => (
+          {allPhases.map((phase, index) => (
             <TripPhaseSection
               key={phase.id}
               phase={phase}
               tripId={trip.id}
               journeys={trip.journeys}
+              allPhases={allPhases}
+              phaseIndex={index}
             />
           ))}
 

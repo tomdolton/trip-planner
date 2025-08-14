@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
 import { useUpdateJourney } from "@/lib/mutations/useUpdateJourney";
+import { combineDateTimeFields } from "@/lib/utils/journeyUtils";
 
 import { JourneyFormFields } from "./JourneyFormFields";
 
@@ -62,16 +63,8 @@ export function EditJourneyDialog({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   function onSubmit(values: JourneyFormValues) {
-    // Combine date and time fields into datetime strings for the database
-    const departureDateTime =
-      values.departure_date && values.departure_time
-        ? `${values.departure_date}T${values.departure_time}`
-        : undefined;
-
-    const arrivalDateTime =
-      values.arrival_date && values.arrival_time
-        ? `${values.arrival_date}T${values.arrival_time}`
-        : undefined;
+    // Use the utility function for date/time combination
+    const { departureDateTime, arrivalDateTime } = combineDateTimeFields(values);
 
     updateMutation.mutate(
       {

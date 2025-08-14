@@ -16,6 +16,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import { combineDateTimeFields } from "@/lib/utils/journeyUtils";
+
 import { JourneyFormFields } from "./JourneyFormFields";
 
 interface AddJourneyDialogProps {
@@ -26,6 +28,8 @@ interface AddJourneyDialogProps {
   children: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Optional title override for cross-phase journeys */
+  title?: string;
 }
 
 export function AddJourneyDialog({
@@ -36,6 +40,7 @@ export function AddJourneyDialog({
   children,
   open,
   onOpenChange,
+  title = "Add a Journey",
 }: AddJourneyDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
 
@@ -57,16 +62,8 @@ export function AddJourneyDialog({
   });
 
   function onSubmit(values: JourneyFormValues) {
-    // Combine date and time fields into datetime strings for the database
-    const departureDateTime =
-      values.departure_date && values.departure_time
-        ? `${values.departure_date}T${values.departure_time}`
-        : undefined;
-
-    const arrivalDateTime =
-      values.arrival_date && values.arrival_time
-        ? `${values.arrival_date}T${values.arrival_time}`
-        : undefined;
+    // Use the utility function for date/time combination
+    const { departureDateTime, arrivalDateTime } = combineDateTimeFields(values);
 
     onAddJourney({
       trip_id: tripId,
@@ -87,7 +84,7 @@ export function AddJourneyDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add a Journey</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <p className="text-sm text-muted-foreground">
             {fromLocation.name} → {toLocation.name}
           </p>

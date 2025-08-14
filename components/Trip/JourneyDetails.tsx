@@ -57,7 +57,7 @@ export function JourneyDetails({
     <>
       <JourneyTimeline mode={journey.mode as JourneyMode}>
         {/* Journey Card - indented to the right */}
-        <Card className="ml-4 md:ml-6 my-8 flex-1 bg-background border border-border shadow-none">
+        <Card className="ml-4 md:ml-6 my-8 flex-1 border border-border shadow-none">
           <CardContent className="p-4">
             <div
               onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
