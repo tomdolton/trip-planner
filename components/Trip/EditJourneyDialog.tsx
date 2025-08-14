@@ -94,9 +94,9 @@ export function EditJourneyDialog({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit a Journey</DialogTitle>
-            {departureLocationName && arrivalLocationName && (
+            {(departureLocationName || arrivalLocationName) && (
               <p className="text-sm text-muted-foreground">
-                {departureLocationName} → {arrivalLocationName}
+                {departureLocationName || "Start"} → {arrivalLocationName || "End"}
               </p>
             )}
           </DialogHeader>

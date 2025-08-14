@@ -54,9 +54,13 @@ export function TripPhaseSection({
   // Use the journey helpers hook
   const {
     findJourney,
+    findStartJourney,
+    findEndJourney,
     findCrossPhaseJourneyToNext,
     getCrossPhaseJourneyLocationsToNext,
     shouldShowCrossPhaseJourney,
+    shouldShowStartJourney,
+    shouldShowEndJourney,
   } = useJourneyHelpers({
     journeys,
     allPhases,
@@ -116,18 +120,44 @@ export function TripPhaseSection({
                 <div className="flex items-center gap-4 lg:gap-11">
                   <h2 className="text-xl font-bold">{phase.title}</h2>
 
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowAddLocationDialog(true);
-                    }}
-                    className="h-8 px-3"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Location
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowAddLocationDialog(true);
+                      }}
+                      className="h-8 px-3"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Location
+                    </Button>
+
+                    {/* Show start journey button in header */}
+                    {hasLocations &&
+                      shouldShowStartJourney() &&
+                      !findStartJourney() &&
+                      (() => {
+                        const firstLocation = phase.locations?.[0];
+                        if (!firstLocation) return null;
+
+                        return (
+                          <AddJourneyDialog
+                            tripId={tripId}
+                            fromLocation={null}
+                            toLocation={firstLocation}
+                            onAddJourney={handleAddJourney}
+                            title="Add Start Journey"
+                          >
+                            <Button variant="outline" size="sm" className="h-8 px-3">
+                              <Plus className="w-4 h-4 mr-1" />
+                              Start Journey
+                            </Button>
+                          </AddJourneyDialog>
+                        );
+                      })()}
+                  </div>
                 </div>
               </div>
             </div>
@@ -140,6 +170,29 @@ export function TripPhaseSection({
             )}
 
             <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
+              {/* Show start journey before first location if it exists */}
+              {hasLocations &&
+                shouldShowStartJourney() &&
+                (() => {
+                  const firstLocation = phase.locations?.[0];
+                  const startJourney = findStartJourney();
+
+                  if (!firstLocation || !startJourney) return null;
+
+                  return (
+                    <div className="mb-4">
+                      <JourneySection
+                        fromLocation={null}
+                        toLocation={firstLocation}
+                        tripId={tripId}
+                        journey={startJourney}
+                        onAddJourney={handleAddJourney}
+                        phaseId={undefined}
+                      />
+                    </div>
+                  );
+                })()}
+
               {/* Show locations and journeys */}
               {hasLocations &&
                 phase.locations?.map((loc, idx) => {
@@ -165,12 +218,60 @@ export function TripPhaseSection({
                   );
                 })}
 
-              {/* Show Add Location button when it has locations */}
+              {/* Show end journey after last location */}
+              {hasLocations &&
+                shouldShowEndJourney() &&
+                (() => {
+                  const lastLocation = phase.locations?.[phase.locations.length - 1];
+                  const endJourney = findEndJourney();
+
+                  if (!lastLocation) return null;
+
+                  return (
+                    <div className="mt-4">
+                      {endJourney ? (
+                        <JourneySection
+                          fromLocation={lastLocation}
+                          toLocation={null}
+                          tripId={tripId}
+                          journey={endJourney}
+                          onAddJourney={handleAddJourney}
+                          phaseId={undefined}
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })()}
+
+              {/* Show Add Location button when it has locations - with end journey button inline */}
               {hasLocations && (
-                <div className="mt-4">
+                <div className="mt-4 flex items-center gap-2">
                   <Button variant="outline" onClick={() => setShowAddLocationDialog(true)}>
                     + Add Location
                   </Button>
+
+                  {/* Show end journey button inline */}
+                  {shouldShowEndJourney() &&
+                    !findEndJourney() &&
+                    (() => {
+                      const lastLocation = phase.locations?.[phase.locations.length - 1];
+                      if (!lastLocation) return null;
+
+                      return (
+                        <AddJourneyDialog
+                          tripId={tripId}
+                          fromLocation={lastLocation}
+                          toLocation={null}
+                          onAddJourney={handleAddJourney}
+                          title="Add End Journey"
+                        >
+                          <Button variant="outline">
+                            <Plus className="w-4 h-4 mr-1" />
+                            End Journey
+                          </Button>
+                        </AddJourneyDialog>
+                      );
+                    })()}
                 </div>
               )}
             </AccordionContent>
@@ -216,18 +317,44 @@ export function TripPhaseSection({
               <div className="flex items-center gap-4 lg:gap-11">
                 <h2 className="text-xl font-bold">{phase.title}</h2>
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowAddLocationDialog(true);
-                  }}
-                  className="h-8 px-3"
-                >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Location
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowAddLocationDialog(true);
+                    }}
+                    className="h-8 px-3"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Location
+                  </Button>
+
+                  {/* Show start journey button in header */}
+                  {hasLocations &&
+                    shouldShowStartJourney() &&
+                    !findStartJourney() &&
+                    (() => {
+                      const firstLocation = phase.locations?.[0];
+                      if (!firstLocation) return null;
+
+                      return (
+                        <AddJourneyDialog
+                          tripId={tripId}
+                          fromLocation={null}
+                          toLocation={firstLocation}
+                          onAddJourney={handleAddJourney}
+                          title="Add Start Journey"
+                        >
+                          <Button variant="outline" size="sm" className="h-8 px-3">
+                            <Plus className="w-4 h-4 mr-1" />
+                            Start Journey
+                          </Button>
+                        </AddJourneyDialog>
+                      );
+                    })()}
+                </div>
               </div>
 
               {/* Action Menu for edit/delete */}
@@ -259,6 +386,29 @@ export function TripPhaseSection({
           )}
 
           <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
+            {/* Show start journey before first location if it exists */}
+            {hasLocations &&
+              shouldShowStartJourney() &&
+              (() => {
+                const firstLocation = phase.locations?.[0];
+                const startJourney = findStartJourney();
+
+                if (!firstLocation || !startJourney) return null;
+
+                return (
+                  <div className="mb-4">
+                    <JourneySection
+                      fromLocation={null}
+                      toLocation={firstLocation}
+                      tripId={tripId}
+                      journey={startJourney}
+                      onAddJourney={handleAddJourney}
+                      phaseId={phase.id}
+                    />
+                  </div>
+                );
+              })()}
+
             {/* Show locations and journeys if they exist */}
             {hasLocations &&
               phase.locations?.map((loc, idx) => {
@@ -284,6 +434,31 @@ export function TripPhaseSection({
                 );
               })}
 
+            {/* Show end journey after last location */}
+            {hasLocations &&
+              shouldShowEndJourney() &&
+              (() => {
+                const lastLocation = phase.locations?.[phase.locations.length - 1];
+                const endJourney = findEndJourney();
+
+                if (!lastLocation) return null;
+
+                return (
+                  <div className="mt-4">
+                    {endJourney ? (
+                      <JourneySection
+                        fromLocation={lastLocation}
+                        toLocation={null}
+                        tripId={tripId}
+                        journey={endJourney}
+                        onAddJourney={handleAddJourney}
+                        phaseId={phase.id}
+                      />
+                    ) : null}
+                  </div>
+                );
+              })()}
+
             {/* Show empty state for phases without locations */}
             {!hasLocations && (
               <div className="text-center py-8 text-muted-foreground">
@@ -292,38 +467,49 @@ export function TripPhaseSection({
               </div>
             )}
 
-            {/* Show Add Location button at bottom for phases with locations */}
+            {/* Show Add Location button at bottom for phases with locations - with end journey and cross-phase journey buttons inline */}
             {hasLocations && (
-              <div className="mt-4">
+              <div className="mt-4 flex items-center gap-2">
                 <Button variant="outline" onClick={() => setShowAddLocationDialog(true)}>
                   <Plus className="w-4 h-4 mr-1" />
                   Add Location
                 </Button>
-              </div>
-            )}
 
-            {/* Cross-phase Journey to next phase */}
-            {!isNoPhaseSection &&
-              hasLocations &&
-              shouldShowCrossPhaseJourney() &&
-              (() => {
-                const crossPhaseData = getCrossPhaseJourneyLocationsToNext();
-                const crossPhaseJourney = findCrossPhaseJourneyToNext();
+                {/* Show end journey button inline */}
+                {shouldShowEndJourney() &&
+                  !findEndJourney() &&
+                  (() => {
+                    const lastLocation = phase.locations?.[phase.locations.length - 1];
+                    if (!lastLocation) return null;
 
-                if (!crossPhaseData) return null;
-
-                const { fromLocation, toLocation, nextPhase } = crossPhaseData;
-
-                return (
-                  <div className="mt-4">
-                    {crossPhaseJourney ? (
-                      <JourneyDetails
-                        journey={crossPhaseJourney}
+                    return (
+                      <AddJourneyDialog
                         tripId={tripId}
-                        departureLocationName={fromLocation.name}
-                        arrivalLocationName={toLocation.name}
-                      />
-                    ) : (
+                        fromLocation={lastLocation}
+                        toLocation={null}
+                        onAddJourney={handleAddJourney}
+                        title="Add End Journey"
+                      >
+                        <Button variant="outline">
+                          <Plus className="w-4 h-4 mr-1" />
+                          End Journey
+                        </Button>
+                      </AddJourneyDialog>
+                    );
+                  })()}
+
+                {/* Show cross-phase journey button inline */}
+                {!isNoPhaseSection &&
+                  shouldShowCrossPhaseJourney() &&
+                  (() => {
+                    const crossPhaseData = getCrossPhaseJourneyLocationsToNext();
+                    const crossPhaseJourney = findCrossPhaseJourneyToNext();
+
+                    if (!crossPhaseData || crossPhaseJourney) return null;
+
+                    const { fromLocation, toLocation, nextPhase } = crossPhaseData;
+
+                    return (
                       <AddJourneyDialog
                         tripId={tripId}
                         fromLocation={fromLocation}
@@ -331,12 +517,36 @@ export function TripPhaseSection({
                         onAddJourney={handleAddJourney}
                         title="Add Inter-Phase Journey"
                       >
-                        <Button variant="outline" className="w-full">
+                        <Button variant="outline">
                           <Plus className="w-4 h-4 mr-1" />
                           Journey to {nextPhase.title}
                         </Button>
                       </AddJourneyDialog>
-                    )}
+                    );
+                  })()}
+              </div>
+            )}
+
+            {/* Cross-phase Journey details if it exists */}
+            {!isNoPhaseSection &&
+              hasLocations &&
+              shouldShowCrossPhaseJourney() &&
+              (() => {
+                const crossPhaseData = getCrossPhaseJourneyLocationsToNext();
+                const crossPhaseJourney = findCrossPhaseJourneyToNext();
+
+                if (!crossPhaseData || !crossPhaseJourney) return null;
+
+                const { fromLocation, toLocation } = crossPhaseData;
+
+                return (
+                  <div className="mt-4">
+                    <JourneyDetails
+                      journey={crossPhaseJourney}
+                      tripId={tripId}
+                      departureLocationName={fromLocation.name}
+                      arrivalLocationName={toLocation.name}
+                    />
                   </div>
                 );
               })()}

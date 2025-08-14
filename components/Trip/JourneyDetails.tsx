@@ -53,9 +53,17 @@ export function JourneyDetails({
 
   const duration = getDuration(journey.departure_time, journey.arrival_time);
 
+  // Determine if this is a start or end journey
+  const isStartJourney = journey.departure_location_id === null;
+  const isEndJourney = journey.arrival_location_id === null;
+
   return (
     <>
-      <JourneyTimeline mode={journey.mode as JourneyMode}>
+      <JourneyTimeline
+        mode={journey.mode as JourneyMode}
+        showUpwardLine={!isStartJourney}
+        showDownwardLine={!isEndJourney}
+      >
         {/* Journey Card - indented to the right */}
         <Card className="ml-4 md:ml-6 my-8 flex-1 border border-border shadow-none">
           <CardContent className="p-4">

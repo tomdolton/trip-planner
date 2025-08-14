@@ -19,8 +19,8 @@ export function JourneySection({
   onAddJourney,
   phaseId,
 }: {
-  fromLocation: Location;
-  toLocation: Location;
+  fromLocation?: Location | null;
+  toLocation?: Location | null;
   tripId: string;
   journey?: JourneyType;
   onAddJourney: (data: Omit<JourneyType, "id">) => void;
@@ -28,13 +28,19 @@ export function JourneySection({
 }) {
   const [showAddLocationDialog, setShowAddLocationDialog] = useState(false);
 
+  // Helper function to get display name for location
+  const getLocationDisplayName = (location: Location | null | undefined) => {
+    if (!location) return fromLocation === null ? "Start" : "End";
+    return location.name;
+  };
+
   if (journey) {
     return (
       <JourneyDetails
         journey={journey}
         tripId={tripId}
-        departureLocationName={fromLocation.name}
-        arrivalLocationName={toLocation.name}
+        departureLocationName={getLocationDisplayName(fromLocation)}
+        arrivalLocationName={getLocationDisplayName(toLocation)}
       />
     );
   }

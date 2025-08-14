@@ -21,9 +21,33 @@ export function useJourneyHelpers({
     /**
      * Find journey between two locations
      */
-    function findJourney(fromId: string, toId: string) {
+    function findJourney(fromId: string | null, toId: string | null) {
       return journeys?.find(
         (j) => j.departure_location_id === fromId && j.arrival_location_id === toId
+      );
+    }
+
+    /**
+     * Find start journey for a phase (journey with null departure_location_id)
+     */
+    function findStartJourney() {
+      const firstLocation = getFirstLocationOfPhase(currentPhase);
+      if (!firstLocation) return null;
+
+      return journeys?.find(
+        (j) => j.departure_location_id === null && j.arrival_location_id === firstLocation.id
+      );
+    }
+
+    /**
+     * Find end journey for a phase (journey with null arrival_location_id)
+     */
+    function findEndJourney() {
+      const lastLocation = getLastLocationOfPhase(currentPhase);
+      if (!lastLocation) return null;
+
+      return journeys?.find(
+        (j) => j.departure_location_id === lastLocation.id && j.arrival_location_id === null
       );
     }
 
@@ -71,11 +95,35 @@ export function useJourneyHelpers({
       );
     }
 
+    /**
+     * Check if start journey should be shown
+     */
+    function shouldShowStartJourney() {
+      // Only show start journey for the first phase (index 0) or no-phase section (index -1)
+      return (
+        getFirstLocationOfPhase(currentPhase) !== null && (phaseIndex === 0 || phaseIndex === -1)
+      );
+    }
+
+    /**
+     * Check if end journey should be shown
+     */
+    function shouldShowEndJourney() {
+      // Only show end journey for the last phase or no-phase section (index -1)
+      const isLastPhase = allPhases && phaseIndex === allPhases.length - 1;
+      const isNoPhaseSection = phaseIndex === -1;
+      return getLastLocationOfPhase(currentPhase) !== null && (isLastPhase || isNoPhaseSection);
+    }
+
     return {
       findJourney,
+      findStartJourney,
+      findEndJourney,
       findCrossPhaseJourneyToNext,
       getCrossPhaseJourneyLocationsToNext,
       shouldShowCrossPhaseJourney,
+      shouldShowStartJourney,
+      shouldShowEndJourney,
     };
   }, [journeys, allPhases, currentPhase, phaseIndex]);
 

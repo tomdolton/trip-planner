@@ -9,6 +9,8 @@ interface JourneyTimelineProps {
   size?: "sm" | "lg";
   className?: string;
   children?: React.ReactNode;
+  showUpwardLine?: boolean;
+  showDownwardLine?: boolean;
 }
 
 export function JourneyTimeline({
@@ -16,6 +18,8 @@ export function JourneyTimeline({
   size = "lg",
   className = "",
   children,
+  showUpwardLine = true,
+  showDownwardLine = true,
 }: JourneyTimelineProps) {
   const iconName = getJourneyModeLucideIcon(mode);
   const IconComponent = LucideIcons[
@@ -28,11 +32,13 @@ export function JourneyTimeline({
   return (
     <div className={`relative -mb-4 flex items-start pl-12 lg:pl-20 ${className}`}>
       {/* Journey Icon with vertical line - positioned at left edge */}
-      <div className="absolute top-0 bottom-0 left-0 flex flex-col items-center">
+      <div className="absolute top-0 bottom-0 left-0 flex items-center justify-center">
         {/* Vertical line extending upward */}
-        <div className="w-0.5 h-full bg-border"></div>
+        {showUpwardLine && (
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 h-1/2 bg-border"></div>
+        )}
 
-        {/* Journey Icon */}
+        {/* Journey Icon - centered */}
         <div
           className={`flex-shrink-0 ${sizeClasses} bg-background border-2 border-border rounded-full flex items-center justify-center relative z-10`}
         >
@@ -42,7 +48,9 @@ export function JourneyTimeline({
         </div>
 
         {/* Vertical line extending downward */}
-        <div className="w-0.5 h-full bg-border"></div>
+        {showDownwardLine && (
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 h-1/2 bg-border"></div>
+        )}
       </div>
 
       {/* Content rendered to the right of the icon */}

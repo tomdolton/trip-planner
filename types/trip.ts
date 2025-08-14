@@ -94,8 +94,8 @@ export interface Accommodation {
 export interface Journey {
   id: string;
   trip_id: string;
-  departure_location_id: string;
-  arrival_location_id: string;
+  departure_location_id: string | null;
+  arrival_location_id: string | null;
   departure_time?: string;
   arrival_time?: string;
   mode: string;

@@ -21,8 +21,8 @@ import { combineDateTimeFields } from "@/lib/utils/journeyUtils";
 import { JourneyFormFields } from "./JourneyFormFields";
 
 interface AddJourneyDialogProps {
-  fromLocation: Location;
-  toLocation: Location;
+  fromLocation?: Location | null;
+  toLocation?: Location | null;
   tripId: string;
   onAddJourney: (data: Omit<Journey, "id">) => void;
   children: React.ReactNode;
@@ -67,8 +67,8 @@ export function AddJourneyDialog({
 
     onAddJourney({
       trip_id: tripId,
-      departure_location_id: fromLocation.id,
-      arrival_location_id: toLocation.id,
+      departure_location_id: fromLocation?.id || null,
+      arrival_location_id: toLocation?.id || null,
       mode: values.mode,
       notes: values.notes || undefined,
       provider: values.provider || undefined,
@@ -79,6 +79,12 @@ export function AddJourneyDialog({
     setDialogOpen(false);
   }
 
+  // Helper function to get display name for location
+  const getLocationDisplayName = (location: Location | null | undefined) => {
+    if (!location) return fromLocation === null ? "Start" : "End";
+    return location.name;
+  };
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -86,7 +92,7 @@ export function AddJourneyDialog({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            {fromLocation.name} → {toLocation.name}
+            {getLocationDisplayName(fromLocation)} → {getLocationDisplayName(toLocation)}
           </p>
         </DialogHeader>
         <JourneyFormFields form={form} onSubmit={onSubmit}>
