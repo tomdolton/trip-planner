@@ -15,6 +15,8 @@ export interface Trip {
   unsplash_photographer_url?: string;
   unsplash_image_id?: string;
   unsplash_alt_description?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface TripPhase {
@@ -26,6 +28,8 @@ export interface TripPhase {
   start_date?: string;
   end_date?: string;
   locations?: Location[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Location {
@@ -40,6 +44,8 @@ export interface Location {
   place?: Place;
   accommodations?: Accommodation[];
   activities?: Activity[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Place {
@@ -76,6 +82,8 @@ export interface Activity {
   end_time?: string;
   activity_type: ActivityType;
   place?: Place;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Accommodation {
@@ -89,6 +97,8 @@ export interface Accommodation {
   check_out?: string;
   notes?: string;
   place?: Place;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Journey {
@@ -101,4 +111,6 @@ export interface Journey {
   mode: string;
   notes?: string;
   provider?: string;
+  created_at?: string;
+  updated_at?: string;
 }
