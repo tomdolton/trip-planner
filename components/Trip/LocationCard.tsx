@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { Location } from "@/types/trip";
 
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
-import { Card, CardContent } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
+import { TripItemCard } from "@/components/ui/TripItemCard";
 
 import { useDeleteLocation } from "@/lib/mutations/useDeleteLocation";
 import { getLocationDateRange } from "@/lib/utils";
@@ -45,52 +45,50 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
   return (
     <>
-      <Card className="mt-4">
-        <CardContent className="p-4">
-          {/* Header with action menu */}
-          <div className="flex items-start justify-between mb-4">
-            <div
-              onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-              className="cursor-pointer p-2 rounded flex-1"
-            >
-              <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
-                <MapPin className="size-8" />
-              </span>
+      <TripItemCard className="mt-4 p-4">
+        {/* Header with action menu */}
+        <div className="flex items-start justify-between mb-4">
+          <div
+            onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
+            className="cursor-pointer p-2 rounded flex-1"
+          >
+            <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
+              <MapPin className="size-8" />
+            </span>
 
-              <h3 className="text-lg font-semibold cursor-pointer mb-3">{location.name}</h3>
+            <h3 className="text-lg font-semibold cursor-pointer mb-3">{location.name}</h3>
 
-              <div className="font-semibold text-muted-foreground">
-                {dateRange || "No dates scheduled"}
-              </div>
-
-              <p className="text-muted-foreground mt-3">{location.notes}</p>
+            <div className="font-semibold text-muted-foreground">
+              {dateRange || "No dates scheduled"}
             </div>
 
-            {/* Action Menu */}
-            <ActionMenu>
-              <ActionMenuItem onSelect={handleEdit}>
-                <Pencil className="w-4 h-4 mr-2" />
-                Edit
-              </ActionMenuItem>
-              <ActionMenuSeparator />
-              <ActionMenuItem
-                onSelect={handleDelete}
-                disabled={deleteLocation.isPending}
-                className="text-destructive"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
-              </ActionMenuItem>
-            </ActionMenu>
+            <p className="text-muted-foreground mt-3">{location.notes}</p>
           </div>
 
-          <LocationActions tripId={tripId} locationId={location.id} />
+          {/* Action Menu */}
+          <ActionMenu>
+            <ActionMenuItem onSelect={handleEdit}>
+              <Pencil className="w-4 h-4 mr-2" />
+              Edit
+            </ActionMenuItem>
+            <ActionMenuSeparator />
+            <ActionMenuItem
+              onSelect={handleDelete}
+              disabled={deleteLocation.isPending}
+              className="text-destructive"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
+            </ActionMenuItem>
+          </ActionMenu>
+        </div>
 
-          <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
+        <LocationActions tripId={tripId} locationId={location.id} />
 
-          <TripActivities activities={location.activities ?? []} tripId={tripId} />
-        </CardContent>
-      </Card>
+        <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
+
+        <TripActivities activities={location.activities ?? []} tripId={tripId} />
+      </TripItemCard>
 
       <ConfirmDeleteDialog
         open={showDeleteDialog}

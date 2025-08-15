@@ -14,6 +14,7 @@ import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui
 import { ActivityIcon } from "@/components/ui/ActivityIcon";
 import { Badge } from "@/components/ui/badge";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
+import { TripItemCard } from "@/components/ui/TripItemCard";
 
 import { useDeleteActivity } from "@/lib/mutations/useDeleteActivity";
 import { groupActivitiesByDate } from "@/lib/utils/data";
@@ -63,12 +64,9 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
             </AccordionTrigger>
 
             <AccordionContent className="px-4 pb-4">
-              <ul className="space-y-2">
+              <div className="space-y-2">
                 {acts.map((act) => (
-                  <li
-                    key={act.id}
-                    className="border p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
+                  <TripItemCard key={act.id} className="p-4 cursor-pointer" hoverEffect>
                     <div
                       onClick={() => dispatch(openDialog({ type: "activity", entity: act }))}
                       className="flex items-center gap-3"
@@ -100,9 +98,9 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                         </ActionMenuItem>
                       </ActionMenu>
                     </div>
-                  </li>
+                  </TripItemCard>
                 ))}
-              </ul>
+              </div>
             </AccordionContent>
           </AccordionItem>
         ))}
