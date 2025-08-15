@@ -63,8 +63,5 @@ export function useAddTripPhase(tripId: string) {
     onError: (_err, _newPhase, context) => {
       queryClient.setQueryData(["trip", tripId], context?.prevData);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
-    },
   });
 }

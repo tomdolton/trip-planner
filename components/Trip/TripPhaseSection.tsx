@@ -50,7 +50,6 @@ export function TripPhaseSection({
 }: TripPhaseSectionProps) {
   const [showAddLocationDialog, setShowAddLocationDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [accordionValue, setAccordionValue] = useState<string[]>([phase.id]);
 
   const dispatch = useDispatch();
   const addJourney = useAddJourney(tripId);
@@ -304,70 +303,63 @@ export function TripPhaseSection({
     );
   };
 
-  // Main accordion content
-  const AccordionContentSection = () => (
-    <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
-      <StartJourneySection />
-      <LocationsAndJourneys />
-      <EndJourneySection />
-
-      {/* Show empty state for phases without locations - only for regular phases */}
-      {!hasLocations && !isNoPhaseSection && (
-        <div className="text-center py-8 text-muted-foreground">
-          <p className="mb-4">No locations added to this phase yet.</p>
-          <Button onClick={() => setShowAddLocationDialog(true)}>Add First Location</Button>
-        </div>
-      )}
-
-      <BottomActionButtons />
-      <CrossPhaseJourneyDetails />
-    </AccordionContent>
-  );
-
   return (
-    <div className="bg-card rounded-lg border border-border">
-      <Accordion type="multiple" value={accordionValue} onValueChange={setAccordionValue}>
-        <AccordionItem value={phase.id} className="border-none">
-          <div className="flex items-center py-3.5 px-4 md:px-5 @container">
-            <AccordionTrigger
-              chevronAlign="left"
-              className="flex items-center gap-3 hover:no-underline mr-4 @lg:mr-8 cursor-pointer"
-            >
-              <h2 className="text-xl font-bold">{phase.title}</h2>
-            </AccordionTrigger>
+    <Accordion type="multiple" defaultValue={[phase.id]}>
+      <AccordionItem value={phase.id} className="border-none">
+        <div className="flex items-center py-3.5 px-4 md:px-5 @container">
+          <AccordionTrigger
+            chevronAlign="left"
+            className="mr-4 @lg:mr-8 hover:bg-transparent hover:no-underline p-0 focus:ring-0"
+          >
+            <h2 className="text-xl font-bold">{phase.title}</h2>
+          </AccordionTrigger>
 
-            <HeaderButtons />
+          <HeaderButtons />
 
-            {/* Action Menu for edit/delete - only for regular phases */}
-            {!isNoPhaseSection && "order" in phase && (
-              <ActionMenu className="ml-auto">
-                <ActionMenuItem onSelect={handleEdit}>
-                  <Pencil className="w-4 h-4 mr-2" />
-                  Edit
-                </ActionMenuItem>
-                <ActionMenuSeparator />
-                <ActionMenuItem
-                  onSelect={handleDelete}
-                  disabled={deleteTripPhase.isPending}
-                  className="text-destructive"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </ActionMenuItem>
-              </ActionMenu>
-            )}
+          {/* Action Menu for edit/delete - only for regular phases */}
+          {!isNoPhaseSection && "order" in phase && (
+            <ActionMenu className="ml-auto">
+              <ActionMenuItem onSelect={handleEdit}>
+                <Pencil className="w-4 h-4 mr-2" />
+                Edit
+              </ActionMenuItem>
+              <ActionMenuSeparator />
+              <ActionMenuItem
+                onSelect={handleDelete}
+                disabled={deleteTripPhase.isPending}
+                className="text-destructive"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </ActionMenuItem>
+            </ActionMenu>
+          )}
+        </div>
+
+        {/* Phase description */}
+        {phase.description && (
+          <div className="px-4 pb-2">
+            <p className="text-muted-foreground">{phase.description}</p>
           </div>
+        )}
 
-          {/* Phase description */}
-          {phase.description && (
-            <div className="px-4 pb-2">
-              <p className="text-muted-foreground">{phase.description}</p>
+        <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
+          <StartJourneySection />
+          <LocationsAndJourneys />
+          <EndJourneySection />
+
+          {/* Show empty state for phases without locations - only for regular phases */}
+          {!hasLocations && !isNoPhaseSection && (
+            <div className="text-center py-8 text-muted-foreground">
+              <p className="mb-4">No locations added to this phase yet.</p>
+              <Button onClick={() => setShowAddLocationDialog(true)}>Add First Location</Button>
             </div>
           )}
 
-          <AccordionContentSection />
-        </AccordionItem>
-      </Accordion>
+          <BottomActionButtons />
+          <CrossPhaseJourneyDetails />
+        </AccordionContent>
+      </AccordionItem>
 
       {/* Add Location Dialog */}
       <AddLocationDialog
@@ -388,6 +380,6 @@ export function TripPhaseSection({
           loading={deleteTripPhase.isPending}
         />
       )}
-    </div>
+    </Accordion>
   );
 }

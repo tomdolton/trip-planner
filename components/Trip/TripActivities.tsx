@@ -50,7 +50,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
       <Accordion type="multiple" defaultValue={Object.keys(grouped)} className="space-y-4">
         {Object.entries(grouped).map(([date, acts]) => (
           <AccordionItem key={date} value={date}>
-            <AccordionTrigger className="px-4 py-2 hover:no-underline cursor-pointer items-center gap-8">
+            <AccordionTrigger className="px-4 py-2 hover:bg-muted gap-8">
               <Badge variant="green">
                 <h3 className="text-xs font-medium">{formatDateWithDay(date)}</h3>
               </Badge>
@@ -61,6 +61,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                 {acts.length > 1 && `Activities`}
               </span>
             </AccordionTrigger>
+
             <AccordionContent className="px-4 pb-4">
               <ul className="space-y-2">
                 {acts.map((act) => (
