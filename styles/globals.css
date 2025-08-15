@@ -29,8 +29,10 @@
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
+  --color-secondary-hover: var(--secondary-hover);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
@@ -56,7 +58,7 @@
 
 :root {
   --background: theme(colors.slate.50); /* #F8FAFC */
-  --foreground: theme(colors.slate.800); /* #475569 */
+  --foreground: theme(colors.slate.800); /* #1E293B */
   --card: theme(colors.white); /* #FFFFFF */
   --card-foreground: theme(colors.slate.800); /* #1E293B */
   --popover: theme(colors.white); /* #FFFFFF */
@@ -73,9 +75,11 @@
 
   --primary: theme(colors.slate.700); /* #1E293B */
   --primary-foreground: theme(colors.slate.50); /* #F8FAFC */
-  --primary-hover: theme(colors.slate.900);
+  --primary-hover: theme(colors.slate.800);
+
   --secondary: theme(colors.slate.100); /* #F1F5F9 */
   --secondary-foreground: theme(colors.slate.800); /* #1D293D */
+  --secondary-hover: theme(colors.slate.200); /* #F1F5F9 */
 
   --accent: theme(colors.slate.50); /* #F8FAFC */
   --accent-foreground: theme(colors.slate.800); /* #1D293D */

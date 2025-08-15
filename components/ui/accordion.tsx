@@ -148,7 +148,7 @@ function AccordionTrigger({
     <button
       onClick={handleClick}
       className={cn(
-        "w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-t-lg",
+        "px-4 py-3 flex items-center gap-3 text-left hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-t-lg",
         chevronAlign === "left" ? "flex-row" : "flex-row",
         className
       )}
@@ -158,7 +158,7 @@ function AccordionTrigger({
       {chevronAlign === "left" && (
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 transition-transform duration-200",
+            "size-6 shrink-0 transition-transform duration-200",
             isOpen ? "rotate-180" : ""
           )}
         />
@@ -208,7 +208,7 @@ function AccordionContent({ className, children }: AccordionContentProps) {
       id={`accordion-content-${value}`}
       role="region"
       aria-labelledby={`accordion-trigger-${value}`}
-      className={cn("px-4 pb-4", className)}
+      className={cn("", className)}
     >
       {children}
     </div>

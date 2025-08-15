@@ -98,15 +98,13 @@ export function TripPhaseSection({
   const HeaderButtons = () => (
     <div className="flex items-center gap-4">
       <Button
-        variant="outline"
-        size="sm"
+        variant="secondary"
         onClick={(e) => {
           e.stopPropagation();
           setShowAddLocationDialog(true);
         }}
-        className="h-8 px-3"
       >
-        <Plus className="w-4 h-4 mr-1" />
+        <Plus className="size-5" />
         Location
       </Button>
 
@@ -126,8 +124,8 @@ export function TripPhaseSection({
               onAddJourney={handleAddJourney}
               title="Add Start Journey"
             >
-              <Button variant="outline" size="sm" className="h-8 px-3">
-                <Plus className="w-4 h-4 mr-1" />
+              <Button variant="secondary">
+                <Plus className="size-5" />
                 Start Journey
               </Button>
             </AddJourneyDialog>
@@ -222,7 +220,7 @@ export function TripPhaseSection({
 
     return (
       <div className="mt-4 flex items-center gap-2">
-        <Button variant="outline" onClick={() => setShowAddLocationDialog(true)}>
+        <Button variant="secondary" onClick={() => setShowAddLocationDialog(true)}>
           <Plus className="w-4 h-4 mr-1" />
           Add Location
         </Button>
@@ -242,7 +240,7 @@ export function TripPhaseSection({
                 onAddJourney={handleAddJourney}
                 title="Add End Journey"
               >
-                <Button variant="outline">
+                <Button variant="secondary">
                   <Plus className="w-4 h-4 mr-1" />
                   End Journey
                 </Button>
@@ -269,7 +267,7 @@ export function TripPhaseSection({
                 onAddJourney={handleAddJourney}
                 title="Add Inter-Phase Journey"
               >
-                <Button variant="outline">
+                <Button variant="secondary">
                   <Plus className="w-4 h-4 mr-1" />
                   Journey to {nextPhase.title}
                 </Button>
@@ -306,10 +304,10 @@ export function TripPhaseSection({
   return (
     <Accordion type="multiple" defaultValue={[phase.id]}>
       <AccordionItem value={phase.id} className="border-none">
-        <div className="flex items-center py-3.5 px-4 md:px-5 @container">
+        <div className="flex items-start py-3.5 px-5 @container">
           <AccordionTrigger
             chevronAlign="left"
-            className="mr-4 @lg:mr-8 hover:bg-transparent hover:no-underline p-0 focus:ring-0"
+            className="mr-4 @lg:mr-8 hover:bg-transparent hover:no-underline p-0 focus:ring-0 cursor-pointer"
           >
             <h2 className="text-xl font-bold">{phase.title}</h2>
           </AccordionTrigger>
@@ -338,7 +336,7 @@ export function TripPhaseSection({
 
         {/* Phase description */}
         {phase.description && (
-          <div className="px-4 pb-2">
+          <div className="px-5 pb-3.5">
             <p className="text-muted-foreground">{phase.description}</p>
           </div>
         )}
