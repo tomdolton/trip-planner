@@ -1,12 +1,16 @@
 "use client";
 
-import { MapPin } from "lucide-react";
+import { MapPin, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Location } from "@/types/trip";
 
+import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
 import { Card, CardContent } from "@/components/ui/card";
+import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 
+import { useDeleteLocation } from "@/lib/mutations/useDeleteLocation";
 import { getLocationDateRange } from "@/lib/utils";
 
 import { openDialog } from "@/store/uiDialogSlice";
@@ -22,34 +26,80 @@ interface LocationCardProps {
 
 export function LocationCard({ location, tripId }: LocationCardProps) {
   const dispatch = useDispatch();
+  const deleteLocation = useDeleteLocation(tripId);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const dateRange = getLocationDateRange(location);
 
+  function handleEdit() {
+    dispatch(openDialog({ type: "location", entity: location }));
+  }
+
+  function handleDelete() {
+    setShowDeleteDialog(true);
+  }
+
+  function confirmDelete() {
+    deleteLocation.mutate({ id: location.id });
+    setShowDeleteDialog(false);
+  }
+
   return (
-    <Card className="mt-4">
-      <CardContent className="p-4">
-        <div
-          onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-          className="cursor-pointer p-2 rounded mb-8"
-        >
-          <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
-            <MapPin className="size-8" />
-          </span>
+    <>
+      <Card className="mt-4">
+        <CardContent className="p-4">
+          {/* Header with action menu */}
+          <div className="flex items-start justify-between mb-4">
+            <div
+              onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
+              className="cursor-pointer p-2 rounded flex-1"
+            >
+              <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
+                <MapPin className="size-8" />
+              </span>
 
-          <h3 className="text-lg font-semibold cursor-pointer mb-3">{location.name}</h3>
+              <h3 className="text-lg font-semibold cursor-pointer mb-3">{location.name}</h3>
 
-          <div className="font-semibold text-muted-foreground">
-            {dateRange || "No dates scheduled"}
+              <div className="font-semibold text-muted-foreground">
+                {dateRange || "No dates scheduled"}
+              </div>
+
+              <p className="text-muted-foreground mt-3">{location.notes}</p>
+            </div>
+
+            {/* Action Menu */}
+            <ActionMenu>
+              <ActionMenuItem onSelect={handleEdit}>
+                <Pencil className="w-4 h-4 mr-2" />
+                Edit
+              </ActionMenuItem>
+              <ActionMenuSeparator />
+              <ActionMenuItem
+                onSelect={handleDelete}
+                disabled={deleteLocation.isPending}
+                className="text-destructive"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </ActionMenuItem>
+            </ActionMenu>
           </div>
 
-          <p className="text-muted-foreground mt-3">{location.notes}</p>
-
           <LocationActions tripId={tripId} locationId={location.id} />
-        </div>
 
-        <AccommodationsList accommodations={location.accommodations ?? []} />
+          <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
 
-        <TripActivities activities={location.activities ?? []} tripId={tripId} />
-      </CardContent>
-    </Card>
+          <TripActivities activities={location.activities ?? []} tripId={tripId} />
+        </CardContent>
+      </Card>
+
+      <ConfirmDeleteDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title={`Delete "${location.name}"?`}
+        description="This action cannot be undone. All data associated with this location will be permanently deleted."
+        onConfirm={confirmDelete}
+        loading={deleteLocation.isPending}
+      />
+    </>
   );
 }

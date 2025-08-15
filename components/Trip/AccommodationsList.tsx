@@ -4,9 +4,10 @@ import { AccommodationItem } from "./AccommodationItem";
 
 interface AccommodationsListProps {
   accommodations: Accommodation[];
+  tripId: string;
 }
 
-export function AccommodationsList({ accommodations }: AccommodationsListProps) {
+export function AccommodationsList({ accommodations, tripId }: AccommodationsListProps) {
   if (!accommodations || accommodations.length === 0) {
     return null;
   }
@@ -14,7 +15,7 @@ export function AccommodationsList({ accommodations }: AccommodationsListProps) 
   return (
     <div className="mt-2 space-y-2">
       {accommodations.map((acc) => (
-        <AccommodationItem key={acc.id} accommodation={acc} />
+        <AccommodationItem key={acc.id} accommodation={acc} tripId={tripId} />
       ))}
     </div>
   );
