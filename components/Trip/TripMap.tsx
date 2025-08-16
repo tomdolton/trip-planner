@@ -3,55 +3,46 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { useCallback, useMemo } from "react";
 
-import { Trip, Location, TripPhase } from "@/types/trip";
+import { Trip, Location } from "@/types/trip";
 
-// Enhanced location type for map display
 interface MapLocation extends Location {
   phaseIndex: number;
   phaseName: string;
 }
 
-// Enhanced marker type that can represent any map item
+type MarkerType =
+  | "location"
+  | "activity"
+  | "accommodation"
+  | "journey_departure"
+  | "journey_arrival";
 interface MapMarker {
   id: string;
   name: string;
   lat: number;
   lng: number;
-  type: "location" | "activity" | "accommodation";
+  type: MarkerType;
   phaseIndex: number;
   phaseName: string;
   parentLocation?: Location;
 }
 
 // Color coding for specific marker types
-const getMarkerColorByType = (type: "location" | "activity" | "accommodation") => {
+const getMarkerColorByType = (type: MarkerType) => {
   switch (type) {
     case "accommodation":
       return "#3B82F6"; // Blue for accommodation
     case "activity":
       return "#EF4444"; // Red for activity
     case "location":
-    default:
       return "#10B981"; // Green for general location
+    case "journey_departure":
+      return "#F59E0B"; // Amber for journey departure
+    case "journey_arrival":
+      return "#8B5CF6"; // Purple for journey arrival
+    default:
+      return "#6B7280";
   }
-};
-
-// Alternative: Color coding by phase
-const getPhaseColor = (phaseIndex: number) => {
-  // Handle unassigned locations (phaseIndex = -1)
-  if (phaseIndex === -1) {
-    return "#6B7280"; // Gray for unassigned
-  }
-
-  const colors = [
-    "#3B82F6", // Blue - Phase 0
-    "#EF4444", // Red - Phase 1
-    "#10B981", // Green - Phase 2
-    "#F59E0B", // Amber - Phase 3
-    "#8B5CF6", // Purple - Phase 4
-    "#EC4899", // Pink - Phase 5
-  ];
-  return colors[phaseIndex % colors.length];
 };
 
 const mapOptions = {
@@ -64,19 +55,12 @@ const mapOptions = {
 
 interface TripMapProps {
   trip: Trip;
-  colorBy?: "type" | "phase";
   onLocationClick?: (location: Location) => void;
   className?: string;
   height?: string; // Add height prop
 }
 
-export function TripMap({
-  trip,
-  colorBy = "type",
-  onLocationClick,
-  className,
-  height = "400px",
-}: TripMapProps) {
+export function TripMap({ trip, onLocationClick, className, height = "400px" }: TripMapProps) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
@@ -96,10 +80,10 @@ export function TripMap({
   const allLocations = useMemo(() => {
     const phaseLocations: MapLocation[] =
       trip.trip_phases?.flatMap(
-        (phase: TripPhase, phaseIndex: number) =>
+        (phase: { locations?: Location[]; title: string }, phaseIndex: number) =>
           phase.locations?.map((location: Location) => ({
             ...location,
-            phaseIndex, // This will be 0, 1, 2, etc.
+            phaseIndex,
             phaseName: phase.title,
           })) || []
       ) || [];
@@ -122,60 +106,168 @@ export function TripMap({
     return combined;
   }, [trip.trip_phases, trip.unassigned_locations]);
 
-  // Get all markers (locations, activities, accommodations) with coordinates
+  // Helper to create a marker
+  const createMarker = (
+    id: string,
+    name: string,
+    lat: number,
+    lng: number,
+    type: MarkerType,
+    phaseIndex: number,
+    phaseName: string,
+    parentLocation?: Location
+  ): MapMarker => ({ id, name, lat, lng, type, phaseIndex, phaseName, parentLocation });
+
   const allMarkers = useMemo(() => {
     const markers: MapMarker[] = [];
 
-    allLocations.forEach((location) => {
-      // Add location marker if it has coordinates
+    // Locations, activities, accommodations
+    for (const location of allLocations) {
       if (location.place?.lat && location.place?.lng) {
-        markers.push({
-          id: `location-${location.id}`,
-          name: location.name,
-          lat: location.place.lat,
-          lng: location.place.lng,
-          type: "location",
-          phaseIndex: location.phaseIndex,
-          phaseName: location.phaseName,
-          parentLocation: location,
-        });
+        markers.push(
+          createMarker(
+            `location-${location.id}`,
+            location.name,
+            location.place.lat,
+            location.place.lng,
+            "location",
+            location.phaseIndex,
+            location.phaseName,
+            location
+          )
+        );
       }
-
-      // Add activity markers
       location.activities?.forEach((activity) => {
         if (activity.place?.lat && activity.place?.lng) {
-          markers.push({
-            id: `activity-${activity.id}`,
-            name: activity.name,
-            lat: activity.place.lat,
-            lng: activity.place.lng,
-            type: "activity",
-            phaseIndex: location.phaseIndex,
-            phaseName: location.phaseName,
-            parentLocation: location,
-          });
+          markers.push(
+            createMarker(
+              `activity-${activity.id}`,
+              activity.name,
+              activity.place.lat,
+              activity.place.lng,
+              "activity",
+              location.phaseIndex,
+              location.phaseName,
+              location
+            )
+          );
         }
       });
-
-      // Add accommodation markers
       location.accommodations?.forEach((accommodation) => {
         if (accommodation.place?.lat && accommodation.place?.lng) {
-          markers.push({
-            id: `accommodation-${accommodation.id}`,
-            name: accommodation.name,
-            lat: accommodation.place.lat,
-            lng: accommodation.place.lng,
-            type: "accommodation",
-            phaseIndex: location.phaseIndex,
-            phaseName: location.phaseName,
-            parentLocation: location,
-          });
+          markers.push(
+            createMarker(
+              `accommodation-${accommodation.id}`,
+              accommodation.name,
+              accommodation.place.lat,
+              accommodation.place.lng,
+              "accommodation",
+              location.phaseIndex,
+              location.phaseName,
+              location
+            )
+          );
+        }
+      });
+    }
+
+    // Memoize locationIds for each phase
+    const phaseLocationIds: Array<Set<string>> = (trip.trip_phases || []).map(
+      (phase) => new Set((phase.locations || []).map((loc) => loc.id))
+    );
+
+    // Journey departure/arrival markers by phase
+    trip.trip_phases?.forEach((phase, phaseIndex) => {
+      const locationIds = phaseLocationIds[phaseIndex];
+      (trip.journeys || []).forEach((journey) => {
+        const isDepartureInPhase =
+          journey.departure_location_id && locationIds.has(journey.departure_location_id);
+        const isArrivalInPhase =
+          journey.arrival_location_id && locationIds.has(journey.arrival_location_id);
+        if (
+          isDepartureInPhase &&
+          journey.departure_place &&
+          journey.departure_place.lat &&
+          journey.departure_place.lng
+        ) {
+          markers.push(
+            createMarker(
+              `journey-departure-${journey.id}`,
+              journey.departure_place.name,
+              journey.departure_place.lat,
+              journey.departure_place.lng,
+              "journey_departure",
+              phaseIndex,
+              phase.title
+            )
+          );
+        }
+        if (
+          isArrivalInPhase &&
+          journey.arrival_place &&
+          journey.arrival_place.lat &&
+          journey.arrival_place.lng
+        ) {
+          markers.push(
+            createMarker(
+              `journey-arrival-${journey.id}`,
+              journey.arrival_place.name,
+              journey.arrival_place.lat,
+              journey.arrival_place.lng,
+              "journey_arrival",
+              phaseIndex,
+              phase.title
+            )
+          );
         }
       });
     });
 
+    // Unassigned journeys
+    (trip.journeys || []).forEach((journey) => {
+      // Only add if not already added above
+      if (
+        journey.departure_place &&
+        journey.departure_place.lat &&
+        journey.departure_place.lng &&
+        (!journey.departure_location_id ||
+          !phaseLocationIds.some((ids) => ids.has(journey.departure_location_id!)))
+      ) {
+        markers.push(
+          createMarker(
+            `journey-departure-${journey.id}`,
+            journey.departure_place.name,
+            journey.departure_place.lat,
+            journey.departure_place.lng,
+            "journey_departure",
+            -1,
+            "Unassigned"
+          )
+        );
+      }
+      if (
+        journey.arrival_place &&
+        journey.arrival_place.lat &&
+        journey.arrival_place.lng &&
+        (!journey.arrival_location_id ||
+          !phaseLocationIds.some((ids) => ids.has(journey.arrival_location_id!)))
+      ) {
+        markers.push(
+          createMarker(
+            `journey-arrival-${journey.id}`,
+            journey.arrival_place.name,
+            journey.arrival_place.lat,
+            journey.arrival_place.lng,
+            "journey_arrival",
+            -1,
+            "Unassigned"
+          )
+        );
+      }
+    });
+
     return markers;
-  }, [allLocations]);
+  }, [allLocations, trip.trip_phases, trip.journeys]);
 
   // Calculate map center and bounds
   const mapCenter = useMemo(() => {
@@ -229,11 +321,7 @@ export function TripMap({
         options={mapOptions}
       >
         {allMarkers.map((marker) => {
-          const markerColor =
-            colorBy === "phase"
-              ? getPhaseColor(marker.phaseIndex)
-              : getMarkerColorByType(marker.type);
-
+          const markerColor = getMarkerColorByType(marker.type);
           return (
             <Marker
               key={marker.id}

@@ -10,7 +10,7 @@ import { TripMap } from "@/components/Trip/TripMap";
 import { TripMapLegend } from "@/components/Trip/TripMapLegend";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,7 +23,6 @@ export default function TripDetailPage() {
   const params = useParams();
   const [editing, setEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [mapColorBy, setMapColorBy] = useState<"type" | "phase">("type");
 
   const { data: trip, isLoading, isError } = useTripDetail(params.id as string);
   const deleteTrip = useDeleteTrip();
@@ -82,7 +81,7 @@ export default function TripDetailPage() {
       {/* Grid Layout - Single column on mobile, two columns on large screens */}
       <div
         className={`grid gap-5 ${
-          shouldShowMap ? "grid-cols-1 md:grid-cols-[clamp(20rem,50%,52rem)_1fr]" : "grid-cols-1"
+          shouldShowMap ? "grid-cols-1 lg:grid-cols-[clamp(20rem,50%,52rem)_1fr]" : "grid-cols-1"
         }`}
       >
         {/* Left Column: Trip Details */}
@@ -130,27 +129,19 @@ export default function TripDetailPage() {
 
         {/* Right Column: Map - Only show if there are locations */}
         {shouldShowMap && (
-          <div className="md:sticky md:top-8 md:h-fit">
-            <Card className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)]">
-              <CardHeader className="flex-shrink-0 p-6">
-                <CardTitle>Trip Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col flex-1 min-h-0 p-6 pt-0">
+          <div
+            className="flex flex-col gap-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-32px)] lg:min-h-[calc(100vh-32px)] lg:justify-between lg:mb-4 lg:mt-4"
+            style={{
+              // 16px top and bottom margin, sticky, fit viewport
+              height: "auto",
+            }}
+          >
+            <Card className="flex flex-col flex-1 min-h-[300px] lg:min-h-0 lg:h-0 lg:grow">
+              <CardContent className="flex flex-col flex-1 min-h-0 p-4">
                 <div className="flex flex-col h-full">
-                  {/* Map Controls - Fixed height */}
-                  <div className="flex-shrink-0 mb-4">
-                    <TripMapLegend
-                      colorBy={mapColorBy}
-                      onColorByChange={setMapColorBy}
-                      phases={trip.trip_phases}
-                    />
-                  </div>
-
-                  {/* Map - Takes remaining space */}
-                  <div className="flex-1 min-h-[300px]">
+                  <div className="flex-1 min-h-[200px] lg:min-h-0">
                     <TripMap
                       trip={trip}
-                      colorBy={mapColorBy}
                       onLocationClick={(location) => {
                         // Optional: Show location details or open edit dialog
                         console.log("Clicked location:", location);
@@ -160,6 +151,11 @@ export default function TripDetailPage() {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+            <Card className="flex-shrink-0">
+              <CardContent className="p-6 max-h-[216px]">
+                <TripMapLegend />
               </CardContent>
             </Card>
           </div>
