@@ -1,5 +1,6 @@
 "use client";
 
+import { format } from "date-fns";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -7,17 +8,19 @@ import { useDispatch } from "react-redux";
 import { Journey } from "@/types/trip";
 
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
+import { TripItemCard } from "@/components/ui/TripItemCard";
 
 import { JourneyMode, journeyModeLabels } from "@/lib/constants/journeyModes";
 import { useDeleteJourney } from "@/lib/mutations/useDeleteJourney";
-import { formatDateTime, getDuration } from "@/lib/utils/dateTime";
+import { getDuration } from "@/lib/utils/dateTime";
 import { isStartJourney, isEndJourney } from "@/lib/utils/journeyUtils";
 
 import { openDialog } from "@/store/uiDialogSlice";
 
 import { JourneyTimeline } from "./JourneyTimeline";
+import { JourneyTimePlaceRow } from "./JourneyTimePlaceRow";
 
 interface JourneyDetailsProps {
   journey: Journey;
@@ -64,80 +67,80 @@ export function JourneyDetails({
         showUpwardLine={!isStart}
         showDownwardLine={!isEnd}
       >
-        {/* Journey Card - indented to the right */}
-        <Card className="ml-4 md:ml-6 my-8 flex-1 border border-border shadow-none">
-          <CardContent className="p-4">
-            <div
-              onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
-              className="cursor-pointer space-y-4"
-            >
-              {/* Journey Type and Provider */}
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-lg">
-                  Journey: {journeyModeLabels[journey.mode as keyof typeof journeyModeLabels]}
-                  {duration && (
-                    <span className="text-sm font-normal text-muted-foreground ml-4 lg:ml-15">
-                      Duration: {duration}
-                    </span>
-                  )}
-                </h3>
+        <TripItemCard
+          className="ml-4 md:ml-6 my-6 p-6 flex-1 relative cursor-pointer @container"
+          hoverEffect
+          onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
+        >
+          {/* Left: Main journey info */}
 
-                {/* Action Menu */}
-                <ActionMenu>
-                  <ActionMenuItem onSelect={handleEdit}>
-                    <Pencil className="w-4 h-4 mr-2" />
-                    Edit
-                  </ActionMenuItem>
-                  <ActionMenuSeparator />
-                  <ActionMenuItem
-                    onSelect={handleDelete}
-                    disabled={deleteJourney.isPending}
-                    className="text-destructive"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
-                  </ActionMenuItem>
-                </ActionMenu>
-              </div>
+          {/* Mode and route */}
+          <h3 className="font-semibold text-xl mb-3 pr-6">
+            <span className="text-muted-foreground me-2">
+              {journeyModeLabels[journey.mode as keyof typeof journeyModeLabels]}:
+            </span>
+            {departureLocationName} → {arrivalLocationName}
+          </h3>
 
-              {/* Departure and Arrival Information */}
-              <div className="flex flex-col lg:flex-row gap-4 text-sm text-muted-foreground">
-                {journey.departure_time && (
-                  <div>
-                    <span>Departs: </span>
-                    <span className="font-semibold">{formatDateTime(journey.departure_time)}</span>
-                    {departureLocationName && (
-                      <div className="text-xs">from {departureLocationName}</div>
-                    )}
-                    {journey.departure_place && (
-                      <div className="text-xs text-blue-600">📍 {journey.departure_place.name}</div>
-                    )}
-                  </div>
+          {/* Departure date */}
+          <div className="flex gap-3 text-muted-foreground text-sm font-medium mb-6">
+            {journey.departure_time && <span>{format(journey.departure_time, "d MMM y")}</span>}
+
+            {journey.departure_time && journey.provider && "|"}
+
+            {journey.provider && <span>{journey.provider}</span>}
+          </div>
+
+          <div className="flex flex-col @lg:flex-row justify-between gap-6">
+            <div className="flex items-start gap-6 shrink-0">
+              {/* Times and locations with vertical line */}
+              <div className="flex flex-col items-start justify-between gap-7 relative before:w-0.5 before:top-4 before:bottom-4 before:bg-border before:absolute before:left-2">
+                {/* Top: Departure */}
+                <JourneyTimePlaceRow
+                  time={journey.departure_time}
+                  placeName={journey.departure_place?.name}
+                />
+
+                {/* Duration badge */}
+                {duration && (
+                  <Badge variant="secondary" className="ml-9 font-normal text-xs">
+                    Duration: {duration}
+                  </Badge>
                 )}
 
-                {journey.arrival_time && (
-                  <div className="border-t-1 border-muted-foreground pt-2 lg:border-t-0 lg:pt-0 lg:border-l-1 lg:pl-4">
-                    <span className="">Arrives: </span>
-                    <span className="font-semibold">{formatDateTime(journey.arrival_time)}</span>
-                    {arrivalLocationName && <div className="text-xs">at {arrivalLocationName}</div>}
-                    {journey.arrival_place && (
-                      <div className="text-xs text-blue-600">📍 {journey.arrival_place.name}</div>
-                    )}
-                  </div>
-                )}
+                {/* Bottom: Arrival */}
+                <JourneyTimePlaceRow
+                  time={journey.arrival_time}
+                  placeName={journey.arrival_place?.name}
+                />
               </div>
-
-              {/* Provider and Notes */}
-              {(journey.provider || journey.notes) && (
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  {journey.provider && <div className="font-medium">{journey.provider}</div>}
-
-                  {journey.notes && <div>{journey.notes}</div>}
-                </div>
-              )}
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Right: Notes box */}
+            {journey.notes && (
+              <div className="border rounded-md p-4 text-muted-foreground text-sm flex-1">
+                {journey.notes}
+              </div>
+            )}
+          </div>
+
+          {/* Action Menu (top right) */}
+          <ActionMenu className="absolute top-4 right-4">
+            <ActionMenuItem onSelect={handleEdit}>
+              <Pencil className="w-4 h-4 mr-2" />
+              Edit
+            </ActionMenuItem>
+            <ActionMenuSeparator />
+            <ActionMenuItem
+              onSelect={handleDelete}
+              disabled={deleteJourney.isPending}
+              className="text-destructive"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
+            </ActionMenuItem>
+          </ActionMenu>
+        </TripItemCard>
       </JourneyTimeline>
 
       <ConfirmDeleteDialog

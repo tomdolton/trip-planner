@@ -72,7 +72,7 @@ export function JourneyFormFields({
           name="provider"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Journey Name / Provider</FormLabel>
+              <FormLabel>Provider / Booking Reference</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="e.g. British Airways, National Express" />
               </FormControl>
