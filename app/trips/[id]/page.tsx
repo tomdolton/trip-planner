@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
+import { TripFooter } from "@/components/Trip/TripFooter";
 import { TripHeader } from "@/components/Trip/TripHeader";
 import { TripMap } from "@/components/Trip/TripMap";
 import { TripMapLegend } from "@/components/Trip/TripMapLegend";
@@ -125,6 +126,8 @@ export default function TripDetailPage() {
               </p>
             </div>
           )}
+          {/* TripFooter: Continue your trip section at the bottom of the left column */}
+          <TripFooter trip={trip} />
         </div>
 
         {/* Right Column: Map - Only show if there are locations */}
