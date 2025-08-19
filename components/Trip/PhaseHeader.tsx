@@ -46,13 +46,14 @@ export function PhaseHeader({ phase, tripId, onAddLocation }: PhaseHeaderProps) 
             <h2 className="text-xl font-bold">{phase.title}</h2>
 
             <Button variant="outline" size="sm" onClick={onAddLocation} className="h-8 px-3">
-              <Plus className="w-4 h-4 mr-1" />
+              <Plus className="size-4 mr-1" />
+              <span className="sr-only">Add</span>
               Location
             </Button>
 
             <ActionMenu>
               <ActionMenuItem onSelect={handleEdit}>
-                <Pencil className="w-4 h-4 mr-2" />
+                <Pencil className="size-4 mr-2" />
                 Edit
               </ActionMenuItem>
               <ActionMenuSeparator />
@@ -61,7 +62,7 @@ export function PhaseHeader({ phase, tripId, onAddLocation }: PhaseHeaderProps) 
                 disabled={deleteTripPhase.isPending}
                 className="text-destructive"
               >
-                <Trash2 className="w-4 h-4 mr-2" />
+                <Trash2 className="size-4 mr-2" />
                 Delete
               </ActionMenuItem>
             </ActionMenu>

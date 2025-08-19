@@ -30,7 +30,7 @@ function Accordion({
   className,
   children,
 }: AccordionProps) {
-  // Initialize open items based on type and default/controlled values
+  // Initialise open items based on type and default/controlled values
   const [internalOpenItems, setInternalOpenItems] = React.useState<Set<string>>(() => {
     if (defaultValue) {
       return new Set(Array.isArray(defaultValue) ? defaultValue : [defaultValue]);
@@ -148,8 +148,7 @@ function AccordionTrigger({
     <button
       onClick={handleClick}
       className={cn(
-        "px-4 py-3 flex items-center gap-3 text-left hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-t-lg",
-        chevronAlign === "left" ? "flex-row" : "flex-row",
+        "px-4 py-3 flex items-center gap-3 text-left hover:bg-muted focus:bg-muted transition-colors focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none cursor-pointer rounded-md",
         className
       )}
       aria-expanded={isOpen}
@@ -164,12 +163,12 @@ function AccordionTrigger({
         />
       )}
 
-      <div className={cn("flex-1", chevronAlign === "left" ? "" : "mr-auto")}>{children}</div>
+      {children}
 
       {chevronAlign === "right" && (
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 transition-transform duration-200",
+            "size-6 shrink-0 transition-transform duration-200",
             isOpen ? "rotate-180" : ""
           )}
         />
@@ -221,7 +220,7 @@ function AccordionItemWithContext({ value, className, children }: AccordionItemP
 
   return (
     <AccordionItemContext.Provider value={contextValue}>
-      <div className={cn("border rounded-lg bg-card", className)}>{children}</div>
+      <div className={cn("", className)}>{children}</div>
     </AccordionItemContext.Provider>
   );
 }

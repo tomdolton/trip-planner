@@ -39,17 +39,19 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
   }
 
   return (
-    <>
-      <TripItemCard className="mt-4 p-6 @container flex gap-4 @md:gap-8" hoverEffect>
-        <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
-          <House className="size-8" />
+    <div className="@container">
+      <TripItemCard className="p-4 flex items-start gap-4 @md:gap-6 @md:p-6" hoverEffect>
+        <span className="inline-flex p-2 bg-secondary rounded-xl">
+          <House className="size-8 " strokeWidth={1} />
         </span>
 
         <div
           className="space-y-4 flex-1 cursor-pointer"
           onClick={() => dispatch(openDialog({ type: "accommodation", entity: accommodation }))}
         >
-          <p className="text-xl font-semibold">Staying: {accommodation.name} </p>
+          <h4 className="text-xl font-semibold">
+            <span className="text-muted-foreground me-1">Staying:</span> {accommodation.name}{" "}
+          </h4>
 
           {accommodation.check_in && (
             <p className="text-muted-foreground text-semibold">
@@ -84,6 +86,6 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
         onConfirm={confirmDelete}
         loading={deleteAccommodation.isPending}
       />
-    </>
+    </div>
   );
 }

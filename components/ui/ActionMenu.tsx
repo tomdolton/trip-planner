@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -7,7 +7,6 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 type ActionMenuProps = {
   children: React.ReactNode;
@@ -19,13 +18,8 @@ export function ActionMenu({ children, side = "bottom", className }: ActionMenuP
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className={cn("h-8 w-8 p-0", className)}
-          aria-label="Open actions"
-        >
-          <MoreHorizontal className="h-5 w-5" />
+        <Button variant="ghost" size="action" className={className} aria-label="Open actions">
+          <Ellipsis className="size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side={side} onClick={(e) => e.stopPropagation()}>

@@ -8,7 +8,6 @@ import { Location } from "@/types/trip";
 
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
-import { TripItemCard } from "@/components/ui/TripItemCard";
 
 import { useDeleteLocation } from "@/lib/mutations/useDeleteLocation";
 import { getLocationDateRange } from "@/lib/utils";
@@ -45,24 +44,26 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
   return (
     <>
-      <TripItemCard className="mt-4 p-4">
+      <div className="card p-6 space-y-10">
         {/* Header with action menu */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between">
           <div
             onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-            className="cursor-pointer p-2 rounded flex-1"
+            className="cursor-pointer rounded flex-1"
           >
             <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
-              <MapPin className="size-8" />
+              <MapPin className="size-8" strokeWidth={1} />
             </span>
 
-            <h3 className="text-lg font-semibold cursor-pointer mb-3">{location.name}</h3>
+            <div className="space-y-3">
+              <h3 className="text-2xl font-semibold cursor-pointer">{location.name}</h3>
 
-            <div className="font-semibold text-muted-foreground">
-              {dateRange || "No dates scheduled"}
+              <div className="font-semibold text-muted-foreground">
+                {dateRange || "No dates scheduled"}
+              </div>
+
+              {location.notes && <p className="text-muted-foreground">{location.notes}</p>}
             </div>
-
-            <p className="text-muted-foreground mt-3">{location.notes}</p>
           </div>
 
           {/* Action Menu */}
@@ -88,7 +89,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
         <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
 
         <TripActivities activities={location.activities ?? []} tripId={tripId} />
-      </TripItemCard>
+      </div>
 
       <ConfirmDeleteDialog
         open={showDeleteDialog}

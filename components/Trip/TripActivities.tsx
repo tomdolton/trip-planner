@@ -48,10 +48,13 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
 
   return (
     <>
-      <Accordion type="multiple" defaultValue={Object.keys(grouped)} className="space-y-4">
+      <Accordion type="multiple" defaultValue={Object.keys(grouped)} className="space-y-4 -mt-2">
         {Object.entries(grouped).map(([date, acts]) => (
-          <AccordionItem key={date} value={date}>
-            <AccordionTrigger className="px-4 py-2 hover:bg-muted gap-8">
+          <AccordionItem key={date} value={date} className="space-y-3">
+            <AccordionTrigger
+              chevronAlign="right"
+              className="px-0 py-2 hover:bg-muted gap-6 w-full"
+            >
               <Badge variant="green">
                 <h3 className="text-xs font-medium">{formatDateWithDay(date)}</h3>
               </Badge>
@@ -63,23 +66,30 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
               </span>
             </AccordionTrigger>
 
-            <AccordionContent className="px-4 pb-4">
-              <div className="space-y-2">
+            <AccordionContent>
+              <div className="space-y-5">
                 {acts.map((act) => (
                   <TripItemCard key={act.id} className="p-4 cursor-pointer" hoverEffect>
                     <div
                       onClick={() => dispatch(openDialog({ type: "activity", entity: act }))}
-                      className="flex items-center gap-3"
+                      className="flex items-center gap-4"
                     >
                       <ActivityIcon activityType={act.activity_type} />
-                      <div className="flex-1">
-                        <div className="font-medium">{act.name}</div>
+
+                      <div className="flex-1 space-y-3">
+                        <h4 className="font-medium font-sans">{act.name}</h4>
 
                         {act.notes && (
-                          <div className="text-sm text-muted-foreground">{act.notes}</div>
+                          <div className="text-xs text-muted-foreground font-medium">
+                            {act.notes}
+                          </div>
                         )}
                       </div>
-                      {act.start_time && <p>{formatTimeRange(act.start_time, act.end_time)}</p>}
+                      {act.start_time && (
+                        <p className="text-xs text-muted-foreground font-medium">
+                          {formatTimeRange(act.start_time, act.end_time)}
+                        </p>
+                      )}
 
                       {/* Action Menu */}
                       <ActionMenu>

@@ -104,7 +104,8 @@ export function TripPhaseSection({
           setShowAddLocationDialog(true);
         }}
       >
-        <Plus className="size-5" />
+        <Plus className="size-4 mr-1" />
+        <span className="sr-only">Add</span>
         Location
       </Button>
 
@@ -126,6 +127,7 @@ export function TripPhaseSection({
             >
               <Button variant="secondary">
                 <Plus className="size-5" />
+                <span className="sr-only">Add</span>
                 Start Journey
               </Button>
             </AddJourneyDialog>
@@ -219,10 +221,11 @@ export function TripPhaseSection({
     if (!hasLocations) return null;
 
     return (
-      <div className="mt-4 flex items-center gap-2">
+      <div className="mt-4 flex items-center gap-4">
         <Button variant="secondary" onClick={() => setShowAddLocationDialog(true)}>
-          <Plus className="w-4 h-4 mr-1" />
-          Add Location
+          <Plus className="size-4 mr-1" />
+          <span className="sr-only">Add</span>
+          Location
         </Button>
 
         {/* Show end journey button inline */}
@@ -241,7 +244,8 @@ export function TripPhaseSection({
                 title="Add End Journey"
               >
                 <Button variant="secondary">
-                  <Plus className="w-4 h-4 mr-1" />
+                  <Plus className="size-4 mr-1" />
+                  <span className="sr-only">Add</span>
                   End Journey
                 </Button>
               </AddJourneyDialog>
@@ -268,7 +272,8 @@ export function TripPhaseSection({
                 title="Add Inter-Phase Journey"
               >
                 <Button variant="secondary">
-                  <Plus className="w-4 h-4 mr-1" />
+                  <Plus className="size-4 mr-1" />
+                  <span className="sr-only">Add</span>
                   Journey to {nextPhase.title}
                 </Button>
               </AddJourneyDialog>
@@ -303,12 +308,9 @@ export function TripPhaseSection({
 
   return (
     <Accordion type="multiple" defaultValue={[phase.id]}>
-      <AccordionItem value={phase.id} className="border-none">
-        <div className="flex items-start py-3.5 px-5 @container">
-          <AccordionTrigger
-            chevronAlign="left"
-            className="mr-4 @lg:mr-8 hover:bg-transparent hover:no-underline p-0 focus:ring-0 cursor-pointer"
-          >
+      <AccordionItem value={phase.id} className="card">
+        <div className="flex items-end py-3.5 px-5 @container">
+          <AccordionTrigger chevronAlign="left" className="mr-4 @lg:mr-8 ">
             <h2 className="text-xl font-bold">{phase.title}</h2>
           </AccordionTrigger>
 
@@ -316,7 +318,7 @@ export function TripPhaseSection({
 
           {/* Action Menu for edit/delete - only for regular phases */}
           {!isNoPhaseSection && "order" in phase && (
-            <ActionMenu className="ml-auto">
+            <ActionMenu className="ml-auto self-start">
               <ActionMenuItem onSelect={handleEdit}>
                 <Pencil className="w-4 h-4 mr-2" />
                 Edit
@@ -341,7 +343,7 @@ export function TripPhaseSection({
           </div>
         )}
 
-        <AccordionContent className="mx-4 md:mx-5 pb-4 border-t border-border">
+        <AccordionContent className="mx-4 md:mx-5 pb-4 pt-8 border-t border-border">
           <StartJourneySection />
           <LocationsAndJourneys />
           <EndJourneySection />

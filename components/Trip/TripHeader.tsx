@@ -126,9 +126,9 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="mt-auto ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
-                  <Plus className="w-4 h-4" />
+                  <Plus className="size-4" />
                   Create New
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-40">

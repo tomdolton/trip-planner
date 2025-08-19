@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -51,7 +52,9 @@ export function AddActivityDialog({ tripId, locationId }: { tripId: string; loca
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">+ Add Activity</Button>
+        <Button variant="secondary">
+          <Plus className="size-4" /> <span className="sr-only">Add</span> Activity
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -87,13 +87,13 @@ export function formatTime(time: string | undefined | null): string {
   if (!time) return "-";
 
   try {
-    const parsed = parse(time, "HH:mm:ss", new Date());
+    let parsed = parse(time, "HH:mm:ss", new Date());
     // fallback if only "HH:mm" was provided
     if (isNaN(parsed.getTime())) {
-      return format(parse(time, "HH:mm", new Date()), "h:mm a");
+      parsed = parse(time, "HH:mm", new Date());
     }
-
-    return format(parsed, "h:mmaaa");
+    if (isNaN(parsed.getTime())) return "-";
+    return format(parsed, "HH:mm");
   } catch {
     return "-";
   }

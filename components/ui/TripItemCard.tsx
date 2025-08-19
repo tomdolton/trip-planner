@@ -11,7 +11,7 @@ export function TripItemCard({ className, hoverEffect, ...props }: TripItemCardP
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground rounded-md border",
+        "card",
         hoverEffect && "hover:shadow-sm transition hover:-translate-y-0.5",
         className
       )}
