@@ -127,7 +127,7 @@ export default function TripDetailPage() {
             </div>
           )}
           {/* TripFooter: Continue your trip section at the bottom of the left column */}
-          <TripFooter trip={trip} />
+          {(allPhases.length > 0 || unassignedLocations.length > 0) && <TripFooter trip={trip} />}
         </div>
 
         {/* Right Column: Map - Only show if there are locations */}
