@@ -7,12 +7,13 @@ import { toast } from "sonner";
 
 import { Trip } from "@/types/trip";
 
+import { TripImage } from "@/components/Trip/TripImage";
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TripItemCard } from "@/components/ui/TripItemCard";
 
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
 import { useTrips } from "@/lib/queries/useTrips";
@@ -63,16 +64,22 @@ export default function TripList() {
 
   return (
     <>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {trips.map((trip) => (
-          <Card
+          <TripItemCard
             key={trip.id}
             onClick={() => router.push(`/trips/${trip.id}`)}
-            className="cursor-pointer hover:shadow-lg transition-shadow"
+            className="cursor-pointer p-6 pb-14"
+            hoverEffect
           >
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>{trip.title}</span>
+            <TripImage
+              trip={trip}
+              className="h-32 w-full lg:h-58 rounded-xl overflow-hidden mb-8"
+              showAttribution={true}
+            />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-card-foreground text-xl font-semibold">{trip.title}</h2>
                 <ActionMenu>
                   <ActionMenuItem
                     onSelect={(e) => {
@@ -80,7 +87,7 @@ export default function TripList() {
                       setEditingTrip(trip);
                     }}
                   >
-                    <Pencil className="w-4 h-4 mr-2" />
+                    <Pencil className="size-4 mr-2" />
                     Edit
                   </ActionMenuItem>
                   <ActionMenuSeparator />
@@ -92,18 +99,16 @@ export default function TripList() {
                     disabled={deleteTrip.isPending}
                     className="text-destructive"
                   >
-                    <Trash2 className="w-4 h-4 mr-2" />
+                    <Trash2 className="size-4 mr-2" />
                     Delete
                   </ActionMenuItem>
                 </ActionMenu>
-              </CardTitle>
-            </CardHeader>
+              </div>
 
-            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p>{formatDateRange(trip.start_date, trip.end_date)}</p>
               {trip.description && <p>{trip.description}</p>}
-            </CardContent>
-          </Card>
+            </div>
+          </TripItemCard>
         ))}
       </ul>
 
