@@ -40,8 +40,8 @@ const mockTrips = [
   {
     id: "trip1",
     title: "Test Trip",
-    start_date: "2025-08-01",
-    end_date: "2025-08-10",
+    start_date: "2099-08-01",
+    end_date: "2099-08-10",
     description: "Trip notes",
   },
 ];
