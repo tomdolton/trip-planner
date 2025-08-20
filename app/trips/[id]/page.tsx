@@ -10,10 +10,9 @@ import { TripHeader } from "@/components/Trip/TripHeader";
 import { TripMap } from "@/components/Trip/TripMap";
 import { TripMapLegend } from "@/components/Trip/TripMapLegend";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
-import EditTripForm from "@/components/TripsDashboard/EditTripForm";
+import { EditTripDialog } from "@/components/TripsDashboard/EditTripDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
@@ -166,13 +165,7 @@ export default function TripDetailPage() {
       </div>
 
       {/* Dialogs */}
-      {trip && (
-        <Dialog open={editing} onOpenChange={(open) => setEditing(open)}>
-          <DialogContent>
-            <EditTripForm trip={trip} onClose={() => setEditing(false)} />
-          </DialogContent>
-        </Dialog>
-      )}
+      {trip && <EditTripDialog trip={trip} open={editing} onOpenChange={setEditing} />}
 
       <ConfirmDeleteDialog
         open={showDeleteDialog}

@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -25,6 +26,12 @@ jest.mock("@/lib/supabase", () => ({
     }),
     auth: {
       signOut: jest.fn(),
+      getUser: jest.fn(() => Promise.resolve({ data: { user: { id: "test-user-id" } } })),
+      onAuthStateChange: jest.fn(() => ({
+        data: {
+          subscription: { unsubscribe: jest.fn() },
+        },
+      })),
     },
   },
 }));
@@ -38,6 +45,11 @@ const mockTrips = [
     description: "Trip notes",
   },
 ];
+
+function renderWithQueryClient(ui: React.ReactElement) {
+  const queryClient = new QueryClient();
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+}
 
 describe("TripsList", () => {
   const mutateMock = jest.fn();
@@ -56,7 +68,7 @@ describe("TripsList", () => {
   });
 
   it("renders trip and calls delete mutation on confirm", async () => {
-    render(<TripsList />);
+    renderWithQueryClient(<TripsList />);
     const user = userEvent.setup();
 
     // Open the action menu (three dots button)

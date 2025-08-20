@@ -9,11 +9,10 @@ import { Trip } from "@/types/trip";
 
 import { TripImage } from "@/components/Trip/TripImage";
 import { AddTripDialog } from "@/components/TripsDashboard/AddTripDialog";
-import EditTripForm from "@/components/TripsDashboard/EditTripForm";
+import { EditTripDialog } from "@/components/TripsDashboard/EditTripDialog";
 import NewTripCard from "@/components/TripsDashboard/NewTripCard";
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TripItemCard } from "@/components/ui/TripItemCard";
 
@@ -125,11 +124,15 @@ export default function TripList() {
       {/* Create Trip Dialog */}
       <AddTripDialog open={openNewTrip} onOpenChange={setOpenNewTrip} />
 
-      <Dialog open={!!editingTrip} onOpenChange={(open) => !open && setEditingTrip(null)}>
-        <DialogContent>
-          {editingTrip && <EditTripForm trip={editingTrip} onClose={() => setEditingTrip(null)} />}
-        </DialogContent>
-      </Dialog>
+      {editingTrip && (
+        <EditTripDialog
+          trip={editingTrip}
+          open={!!editingTrip}
+          onOpenChange={(open) => {
+            if (!open) setEditingTrip(null);
+          }}
+        />
+      )}
 
       <ConfirmDeleteDialog
         open={!!tripToDelete}
