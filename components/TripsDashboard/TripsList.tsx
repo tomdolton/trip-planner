@@ -19,16 +19,25 @@ import { TripItemCard } from "@/components/ui/TripItemCard";
 import { useDeleteTrip } from "@/lib/mutations/useDeleteTrip";
 import { useTrips } from "@/lib/queries/useTrips";
 import { formatDateRange } from "@/lib/utils/dateTime";
+import { filterTrips, sortTrips } from "@/lib/utils/tripListUtils";
 
-export default function TripList() {
+import { TripsFilter } from "./TripsFilterTabs";
+
+type TripsListProps = {
+  filter?: TripsFilter;
+};
+
+export default function TripsList({ filter = "upcoming" }: TripsListProps) {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
   const [tripToDelete, setTripToDelete] = useState<Trip | null>(null);
   const [openNewTrip, setOpenNewTrip] = useState(false);
 
   const { data: trips, isLoading, isError } = useTrips();
   const deleteTrip = useDeleteTrip();
-
   const router = useRouter();
+
+  const now = new Date();
+  const filteredTrips = trips ? sortTrips(filterTrips(trips, filter, now)) : [];
 
   const confirmDelete = () => {
     if (!tripToDelete) return;
@@ -56,7 +65,7 @@ export default function TripList() {
     return <p className="text-center text-destructive">Failed to load trips.</p>;
   }
 
-  if (!trips || trips.length === 0) {
+  if (!filteredTrips || filteredTrips.length === 0) {
     return (
       <div className="text-center text-muted-foreground border rounded-md p-6">
         <p>No trips found. Add one to get started!</p>
@@ -70,7 +79,7 @@ export default function TripList() {
         <li>
           <NewTripCard onClick={() => setOpenNewTrip(true)} className="h-full" />
         </li>
-        {trips.map((trip) => (
+        {filteredTrips.map((trip) => (
           <TripItemCard
             key={trip.id}
             onClick={() => router.push(`/trips/${trip.id}`)}

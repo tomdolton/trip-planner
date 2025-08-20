@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
+
+import { TripsFilterTabs, TripsFilter } from "@/components/TripsDashboard/TripsFilterTabs";
 import TripsList from "@/components/TripsDashboard/TripsList";
 
 export default function TripsPage() {
+  const [filter, setFilter] = useState<TripsFilter>("upcoming");
   return (
     <div className="container 2xl:max-w-[96rem] py-8">
       <div className="flex justify-between items-center">
@@ -11,10 +15,10 @@ export default function TripsPage() {
           <p className="text-muted-foreground text-lg font-medium">Plan and manage your trips</p>
         </div>
 
-        <div>PLACEHOLDER</div>
+        <TripsFilterTabs value={filter} onChange={setFilter} />
       </div>
 
-      <TripsList />
+      <TripsList filter={filter} />
     </div>
   );
 }
