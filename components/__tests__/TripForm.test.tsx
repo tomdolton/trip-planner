@@ -1,3 +1,14 @@
+// Mock next/navigation's useRouter to avoid 'expected app router to be mounted' error
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    refresh: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
 jest.mock("@/lib/mutations/useAddTrip");
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -35,6 +46,7 @@ describe("AddTripDialog", () => {
   beforeEach(() => {
     (useAddTrip as jest.Mock).mockReturnValue({
       mutate: mutateMock,
+      mutateAsync: mutateMock,
       isSuccess: false,
       isError: false,
       error: null,
