@@ -171,7 +171,7 @@ export default function AccountPage() {
       </div>
 
       {/* Profile Information */}
-      <Card>
+      <Card className="p-5">
         <CardHeader>
           <CardTitle>Profile Information</CardTitle>
           <CardDescription>Update your personal information and email address</CardDescription>
@@ -216,7 +216,7 @@ export default function AccountPage() {
       </Card>
 
       {/* Password Change */}
-      <Card>
+      <Card className="p-5">
         <CardHeader>
           <CardTitle>Change Password</CardTitle>
           <CardDescription>Update your password to keep your account secure</CardDescription>
@@ -275,7 +275,7 @@ export default function AccountPage() {
       </Card>
 
       {/* Account Information */}
-      <Card>
+      <Card className="p-5">
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
           <CardDescription>View your account details</CardDescription>
