@@ -8,7 +8,9 @@ import { toast } from "sonner";
 import { Trip } from "@/types/trip";
 
 import { TripImage } from "@/components/Trip/TripImage";
+import { AddTripDialog } from "@/components/TripsDashboard/AddTripDialog";
 import EditTripForm from "@/components/TripsDashboard/EditTripForm";
+import NewTripCard from "@/components/TripsDashboard/NewTripCard";
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
 import { ConfirmDeleteDialog } from "@/components/ui/ConfirmDeleteDialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -22,6 +24,7 @@ import { formatDateRange } from "@/lib/utils/dateTime";
 export default function TripList() {
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
   const [tripToDelete, setTripToDelete] = useState<Trip | null>(null);
+  const [openNewTrip, setOpenNewTrip] = useState(false);
 
   const { data: trips, isLoading, isError } = useTrips();
   const deleteTrip = useDeleteTrip();
@@ -65,6 +68,9 @@ export default function TripList() {
   return (
     <>
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <li>
+          <NewTripCard onClick={() => setOpenNewTrip(true)} className="h-full" />
+        </li>
         {trips.map((trip) => (
           <TripItemCard
             key={trip.id}
@@ -74,8 +80,9 @@ export default function TripList() {
           >
             <TripImage
               trip={trip}
-              className="h-32 w-full lg:h-58 rounded-xl overflow-hidden mb-8"
+              className="h-40 w-full lg:h-58 rounded-xl overflow-hidden mb-8"
               showAttribution={true}
+              hasBackgroundLink={false}
             />
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -105,12 +112,18 @@ export default function TripList() {
                 </ActionMenu>
               </div>
 
-              <p>{formatDateRange(trip.start_date, trip.end_date)}</p>
-              {trip.description && <p>{trip.description}</p>}
+              <p className="text-muted-foreground font-semibold">
+                {formatDateRange(trip.start_date, trip.end_date)}
+              </p>
+
+              {trip.description && <p className="text-muted-foreground">{trip.description}</p>}
             </div>
           </TripItemCard>
         ))}
       </ul>
+
+      {/* Create Trip Dialog */}
+      <AddTripDialog open={openNewTrip} onOpenChange={setOpenNewTrip} />
 
       <Dialog open={!!editingTrip} onOpenChange={(open) => !open && setEditingTrip(null)}>
         <DialogContent>

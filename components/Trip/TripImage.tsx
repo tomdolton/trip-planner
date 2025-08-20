@@ -12,9 +12,15 @@ interface TripImageProps {
   trip: Trip;
   className?: string;
   showAttribution?: boolean;
+  hasBackgroundLink?: boolean;
 }
 
-export function TripImage({ trip, className, showAttribution = true }: TripImageProps) {
+export function TripImage({
+  trip,
+  className,
+  showAttribution = true,
+  hasBackgroundLink = true,
+}: TripImageProps) {
   const { imageData, loading, error } = useTripImage(trip);
 
   // Track download when image is displayed (only for new images)
@@ -68,7 +74,18 @@ export function TripImage({ trip, className, showAttribution = true }: TripImage
   return (
     <div className={`relative ${className}`}>
       {/* Main Image */}
-      <Link href={imageData.unsplashUrl} target="_blank" rel="noopener noreferrer">
+      {hasBackgroundLink ? (
+        <Link href={imageData.unsplashUrl} target="_blank" rel="noopener noreferrer">
+          <Image
+            src={imageData.imageUrl}
+            alt={imageData.altDescription}
+            fill
+            sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 160px"
+            className="object-cover hover:opacity-95 transition-opacity"
+            placeholder="empty"
+          />
+        </Link>
+      ) : (
         <Image
           src={imageData.imageUrl}
           alt={imageData.altDescription}
@@ -77,7 +94,7 @@ export function TripImage({ trip, className, showAttribution = true }: TripImage
           className="object-cover hover:opacity-95 transition-opacity"
           placeholder="empty"
         />
-      </Link>
+      )}
 
       {/* Attribution Overlay */}
       {showAttribution && imageData.photographerName && (

@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 import { useAddTrip } from "@/lib/mutations/useAddTrip";
 
-import TripForm from "../TripsDashboard/TripForm";
+import TripForm from "../TripsDashboard/TripFormFields";
 
 jest.mock("sonner", () => ({
   toast: {
