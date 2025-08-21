@@ -87,11 +87,12 @@
 
   --ring: theme(colors.slate.950);
 
-  --chart-1: theme(colors.orange.500);
-  --chart-2: theme(colors.blue.500);
-  --chart-3: theme(colors.indigo.500);
-  --chart-4: theme(colors.yellow.500);
-  --chart-5: theme(colors.pink.500);
+  --chart-1: theme(colors.blue.500);
+  --chart-2: theme(colors.red.500);
+  --chart-3: theme(colors.green.500);
+  --chart-4: theme(colors.amber.500);
+  --chart-5: theme(colors.purple.500);
+
   --sidebar: theme(colors.white);
   --sidebar-foreground: theme(colors.slate.950);
   --sidebar-primary: theme(colors.slate.900);

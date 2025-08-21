@@ -39,7 +39,7 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
   }
 
   return (
-    <div className="@container">
+    <div className="@container" id={`accommodation-${accommodation.id}`}>
       <TripItemCard className="p-4 flex items-start gap-4 @md:gap-6 @md:p-6" hoverEffect>
         <span className="inline-flex p-2 bg-secondary rounded-xl">
           <House className="size-8 " strokeWidth={1} />

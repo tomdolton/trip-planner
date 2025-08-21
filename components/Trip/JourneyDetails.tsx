@@ -71,6 +71,7 @@ export function JourneyDetails({
           className="ml-4 md:ml-6 my-6 p-6 flex-1 relative cursor-pointer @container"
           hoverEffect
           onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
+          id={`journey-${journey.id}`}
         >
           {/* Left: Main journey info */}
 

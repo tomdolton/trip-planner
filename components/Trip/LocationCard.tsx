@@ -44,7 +44,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
   return (
     <>
-      <div className="card p-6 space-y-10">
+      <div className="card p-6 space-y-10" id={`location-${location.id}`}>
         {/* Header with action menu */}
         <div className="flex items-start justify-between">
           <div

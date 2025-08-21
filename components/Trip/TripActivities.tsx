@@ -69,7 +69,12 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
             <AccordionContent>
               <div className="space-y-5">
                 {acts.map((act) => (
-                  <TripItemCard key={act.id} className="p-4 cursor-pointer" hoverEffect>
+                  <TripItemCard
+                    key={act.id}
+                    className="p-4 cursor-pointer"
+                    hoverEffect
+                    id={`activity-${act.id}`}
+                  >
                     <div
                       onClick={() => dispatch(openDialog({ type: "activity", entity: act }))}
                       className="flex items-center gap-4"
