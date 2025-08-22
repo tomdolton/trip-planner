@@ -81,7 +81,7 @@ export function TripFormFields({ form, children }: TripFormFieldsProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel required>Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder="Additional details" className="min-h-24" {...field} />
               </FormControl>

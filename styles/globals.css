@@ -161,3 +161,10 @@
 
   @apply mx-auto px-4 md:px-6;
 }
+
+@layer components {
+  a,
+  button {
+    @apply outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px];
+  }
+}
