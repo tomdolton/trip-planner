@@ -48,11 +48,12 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
         {/* Left Card - Trip Details */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center gap-6 lg:gap-10">
-              <div className="flex-shrink-0">
+            <div className="flex flex-col md:flex-row items-center gap-6 lg:gap-10">
+              <div className="relative aspect-[16/9] max-w-[360px] w-full flex-shrink-0">
                 <TripImage
                   trip={trip}
-                  className="h-24 w-32 lg:w-90 lg:h-42 rounded-xl overflow-hidden"
+                  className="rounded-xl overflow-hidden aspect-[16/9] max-w-[360px]"
+                  flex-shrink-0
                   showAttribution={true}
                 />
               </div>
