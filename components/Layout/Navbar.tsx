@@ -142,12 +142,12 @@ export default function Navbar() {
 
         {/* Mobile menu overlay */}
         {menuOpen && (
-          <div className="fixed inset-0 bg-background z-20 font-medium flex flex-col items-center justify-start pt-24 px-6 animate-in fade-in duration-200 md:hidden">
+          <div className="fixed inset-0 bg-background z-20 font-medium text-lg flex flex-col items-center gap-4 pt-32 px-6 animate-in fade-in duration-200 md:hidden">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.path}
-                className={`w-full  py-4 text-center border-b border-border ${
+                className={`w-full  py-5 text-center ${
                   isActive(pathname, item.path) ? "underline" : ""
                 }`}
                 onClick={handleMenuClose}
@@ -157,10 +157,10 @@ export default function Navbar() {
             ))}
 
             {user ? (
-              <div className="w-full flex flex-col items-center">
+              <div className="w-full h-full flex flex-col items-center pb-4 gap-3">
                 <Link
                   href="/account-settings"
-                  className="w-full flex items-center justify-center gap-2 py-4 border-b border-border"
+                  className="w-full flex items-center justify-center gap-2 py-5"
                 >
                   <SlidersHorizontal className="size-5" />
                   <span>Settings</span>
@@ -168,21 +168,25 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 py-4 border-b border-border cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-5  cursor-pointer"
                 >
                   <LogOut className="size-5" />
                   <span>Log out</span>
                 </button>
 
-                <div className="flex items-center gap-2 mt-2">
-                  <Avatar className="size-8">
-                    <AvatarFallback className="text-xs">{getUserInitials(user)}</AvatarFallback>
-                  </Avatar>
-                  <span className="text-base font-medium">{getUserDisplayName(user)}</span>
+                <div className="flex items-center justify-between w-full mt-auto">
+                  <div className="flex items-center gap-2 min-w-44 p-2 bg-card border rounded-md shadow-xs">
+                    <Avatar className="size-8">
+                      <AvatarFallback className="text-xs">{getUserInitials(user)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">{getUserDisplayName(user)}</span>
+                  </div>
+
+                  <ModeToggle />
                 </div>
               </div>
             ) : (
-              <div className="w-full flex flex-col gap-2 mt-6">
+              <div className="w-full h-full flex flex-col gap-3 mt-6 pb-4">
                 <Link href="/login" className="w-full">
                   <Button variant="ghost" size="lg" className="w-full">
                     Login
@@ -193,11 +197,12 @@ export default function Navbar() {
                     Sign Up
                   </Button>
                 </Link>
+
+                <div className="mt-auto ml-auto">
+                  <ModeToggle />
+                </div>
               </div>
             )}
-            <div className="mt-8">
-              <ModeToggle />
-            </div>
           </div>
         )}
       </nav>
