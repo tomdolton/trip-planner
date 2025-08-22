@@ -4,11 +4,11 @@ import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { TripMap } from "@/components/Map/TripMap";
+import { TripMapLegend } from "@/components/Map/TripMapLegend";
 import { EditEntityDialog } from "@/components/Trip/EditEntityDialog";
 import { TripFooter } from "@/components/Trip/TripFooter";
 import { TripHeader } from "@/components/Trip/TripHeader";
-import { TripMap } from "@/components/Map/TripMap";
-import { TripMapLegend } from "@/components/Map/TripMapLegend";
 import { TripPhaseSection } from "@/components/Trip/TripPhaseSection";
 import { EditTripDialog } from "@/components/TripsDashboard/EditTripDialog";
 import { Card, CardContent } from "@/components/ui/card";
@@ -144,10 +144,6 @@ export default function TripDetailPage() {
                   <div className="flex-1 min-h-[200px] lg:min-h-0">
                     <TripMap
                       trip={trip}
-                      onLocationClick={(location) => {
-                        // Optional: Show location details or open edit dialog
-                        console.log("Clicked location:", location);
-                      }}
                       height="100%"
                       className="rounded-lg overflow-hidden h-full"
                     />
