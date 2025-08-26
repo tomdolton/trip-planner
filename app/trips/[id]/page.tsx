@@ -68,7 +68,7 @@ export default function TripDetailPage() {
   const shouldShowMap = allPhases.length > 0 || unassignedLocations.length > 0;
 
   return (
-    <div className="container py-8">
+    <div className="container py-6 md:py-7">
       {/* Trip Header - Full Width */}
       <div className="mb-6">
         <TripHeader

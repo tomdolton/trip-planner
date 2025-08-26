@@ -96,7 +96,7 @@ export function TripPhaseSection({
 
   // Shared header content component
   const HeaderButtons = () => (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center mx-auto md:mx-0 gap-3 md:gap-4">
       <Button
         variant="secondary"
         onClick={(e) => {
@@ -221,7 +221,7 @@ export function TripPhaseSection({
     if (!hasLocations) return null;
 
     return (
-      <div className="mt-4 flex items-center gap-4">
+      <div className="mt-4 flex flex-col md:flex-row items-stretch gap-4">
         <Button variant="secondary" onClick={() => setShowAddLocationDialog(true)}>
           <Plus className="size-4 mr-1" />
           <span className="sr-only">Add</span>
@@ -309,16 +309,16 @@ export function TripPhaseSection({
   return (
     <Accordion type="multiple" defaultValue={[phase.id]}>
       <AccordionItem value={phase.id} className="card">
-        <div className="flex items-end py-3.5 px-5 @container">
-          <AccordionTrigger chevronAlign="left" className="mr-4 @lg:mr-8 ">
-            <h2 className="text-xl font-bold">{phase.title}</h2>
+        <div className="flex flex-col md:flex-row items-stretch md:items-end py-3.5 px-5 gap-2 md:gap-0 @container relative">
+          <AccordionTrigger chevronAlign="left" className="mr-8 md:mr-4 @lg:mr-8 md:w-auto">
+            <h2 className="text-lg md:text-xl font-bold mx-auto md:mx-0">{phase.title}</h2>
           </AccordionTrigger>
 
           <HeaderButtons />
 
           {/* Action Menu for edit/delete - only for regular phases */}
           {!isNoPhaseSection && "order" in phase && (
-            <ActionMenu className="ml-auto self-start">
+            <ActionMenu className="absolute right-4 top-4 md:ml-auto md:self-start">
               <ActionMenuItem onSelect={handleEdit}>
                 <Pencil className="w-4 h-4 mr-2" />
                 Edit

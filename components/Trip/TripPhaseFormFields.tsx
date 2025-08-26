@@ -25,7 +25,7 @@ export function TripPhaseFormFields({
 }) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -40,7 +40,7 @@ export function TripPhaseFormFields({
           )}
         />
 
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <FormField
             control={form.control}
             name="start_date"

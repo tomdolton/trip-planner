@@ -1,8 +1,7 @@
 "use client";
 
-import { ChevronLeft, Info, Plus, ChevronDown, FolderPlus, MapPin } from "lucide-react";
+import { Info, Plus, ChevronDown, FolderPlus, MapPin } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 
 import { Trip } from "@/types/trip";
@@ -36,19 +35,11 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
 
   return (
     <div className="space-y-4">
-      <Link
-        href="/trips"
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:underline"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        Back to trips
-      </Link>
-
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_352px] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_352px] gap-4 md:gap-6">
         {/* Left Card - Trip Details */}
         <Card>
-          <CardContent className="p-4">
-            <div className="flex flex-col md:flex-row items-center gap-6 lg:gap-10">
+          <CardContent className="p-4 pb-8 md:pb-4 @container">
+            <div className="flex flex-col md:flex-row items-center gap-4 @lg:gap-10">
               <div className="relative aspect-[16/9] max-w-[360px] w-full flex-shrink-0">
                 <TripImage
                   trip={trip}
@@ -59,12 +50,12 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
               </div>
 
               {/* Trip Details */}
-              <div className="flex-1">
+              <div className="flex-1 order-2 md:order-1">
                 <h1 className="text-xl lg:text-2xl font-semibold text-accent-foreground mb-3">
                   {trip.title}
                 </h1>
 
-                <p className="text-muted-foreground font-semibold mb-6">
+                <p className="text-muted-foreground font-semibold mb-4 md:mb-6">
                   {formatDateRange(trip.start_date, trip.end_date)}
                 </p>
 
@@ -75,7 +66,7 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                 )}
               </div>
 
-              <ActionMenu className="mb-auto">
+              <ActionMenu className="ms-auto md:ms-0 md:mb-auto order-1 md:order-2">
                 <ActionMenuItem
                   onSelect={(e) => {
                     e.preventDefault();
@@ -103,7 +94,7 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
 
         {/* Right Card - Start Your Trip */}
         <Card>
-          <CardContent className="p-6 flex flex-col items-start gap-3 h-full">
+          <CardContent className="p-6 flex flex-col items-center md:items-start gap-3 h-full">
             <div className="flex items-center gap-2">
               <TooltipProvider>
                 <Tooltip>
@@ -115,18 +106,20 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+
               <h2 className="text-lg lg:text-xl font-semibold text-accent-foreground">
                 Start your trip
               </h2>
             </div>
-            <p className="text-sm text-muted-foreground">
+
+            <p className="text-sm text-center md:text-left text-muted-foreground">
               Break your trip into phases, or start by adding locations first.
             </p>
 
             {/* Create New Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="mt-auto ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
+                <Button className="mt-4 md:mt-auto md:ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
                   <Plus className="size-4" />
                   Create New
                   <ChevronDown className="size-4" />
