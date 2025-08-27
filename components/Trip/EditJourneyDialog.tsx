@@ -99,19 +99,21 @@ export function EditJourneyDialog({
               Cancel
             </Button>
 
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={deleteMutation.isPending}
-              className="ms-auto"
-            >
-              Delete
-            </Button>
+            <div className="ms-auto flex flex-col gap-3 sm:flex-row">
+              <Button type="submit" disabled={updateMutation.isPending} className="sm:order-1">
+                Save Journey
+              </Button>
 
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save Journey
-            </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={deleteMutation.isPending}
+                className="ms-auto"
+              >
+                Delete
+              </Button>
+            </div>
           </JourneyFormFields>
         </DialogContent>
       </Dialog>

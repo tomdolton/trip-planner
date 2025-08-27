@@ -18,12 +18,12 @@ export function PlaceToggleButton({
     <Button type="button" variant="outline" size="sm" onClick={onToggle} className="text-xs">
       {isManualEntry ? (
         <>
-          <Search className="h-3 w-3 mr-1" />
+          <Search className="mr-1 size-3" />
           {searchText}
         </>
       ) : (
         <>
-          <Edit3 className="h-3 w-3 mr-1" />
+          <Edit3 className="mr-1 size-3" />
           {manualText}
         </>
       )}

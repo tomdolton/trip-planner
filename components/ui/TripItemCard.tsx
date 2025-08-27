@@ -12,7 +12,7 @@ export function TripItemCard({ className, hoverEffect, ...props }: TripItemCardP
       data-slot="card"
       className={cn(
         "card",
-        hoverEffect && "hover:shadow-sm transition hover:-translate-y-0.5",
+        hoverEffect && "transition hover:-translate-y-0.5 hover:shadow-sm",
         className
       )}
       {...props}

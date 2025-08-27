@@ -102,24 +102,24 @@ export function GooglePlacesAutocomplete({
       />
 
       {isLoading && (
-        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-white dark:bg-gray-800 border rounded-md shadow-lg z-50">
-          <p className="text-sm text-muted-foreground">Searching...</p>
+        <div className="absolute top-full right-0 left-0 z-50 mt-1 rounded-md border bg-white p-2 shadow-lg dark:bg-gray-800">
+          <p className="text-muted-foreground text-sm">Searching...</p>
         </div>
       )}
 
       {showSuggestions && suggestions.length > 0 && !isLoading && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border rounded-md shadow-lg z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full right-0 left-0 z-50 mt-1 max-h-64 overflow-y-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
           {suggestions.map((place) => (
             <Card
               key={place.place_id}
-              className="m-1 cursor-pointer hover:bg-muted border-0"
+              className="hover:bg-muted m-1 cursor-pointer border-0"
               onClick={() => handlePlaceSelect(place)}
             >
               <CardContent className="p-3">
                 <div>
-                  <h4 className="font-medium text-sm">{place.name}</h4>
-                  <p className="text-xs text-muted-foreground">{place.formatted_address}</p>
-                  {place.rating && <p className="text-xs mt-1">⭐ {place.rating}</p>}
+                  <h4 className="text-sm font-medium">{place.name}</h4>
+                  <p className="text-muted-foreground text-xs">{place.formatted_address}</p>
+                  {place.rating && <p className="mt-1 text-xs">⭐ {place.rating}</p>}
                 </div>
               </CardContent>
             </Card>

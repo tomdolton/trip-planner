@@ -68,16 +68,15 @@ export function JourneyDetails({
         showDownwardLine={!isEnd}
       >
         <TripItemCard
-          className="relative my-6 flex-1 cursor-pointer p-6 pt-24 @md:ml-6 @md:pt-0"
-          hoverEffect
+          className="relative my-6 flex-1 cursor-pointer p-6 pt-32 @md:ml-6 @md:pt-6"
           onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
           id={`journey-${journey.id}`}
         >
           {/* Left: Main journey info */}
 
           {/* Mode and route */}
-          <h3 className="mb-3 pr-6 text-center text-xl font-semibold @md:text-start">
-            <span className="text-muted-foreground me-2 block @md:inline">
+          <h3 className="mb-3 text-center text-xl font-semibold @md:pr-6 @md:text-start">
+            <span className="text-muted-foreground block @md:me-2 @md:inline">
               {journeyModeLabels[journey.mode as keyof typeof journeyModeLabels]}:
             </span>
             {departureLocationName} → {arrivalLocationName}
@@ -92,7 +91,7 @@ export function JourneyDetails({
             {journey.provider && <span>{journey.provider}</span>}
           </div>
 
-          <div className="flex flex-col justify-between gap-6 @lg:flex-row">
+          <div className="flex flex-col justify-between gap-6 @xl:flex-row">
             <div className="flex shrink-0 items-start gap-6">
               {/* Times and locations with vertical line */}
               <div className="before:bg-border relative flex w-full flex-col items-start justify-between gap-7 before:absolute before:top-4 before:bottom-4 before:left-1/2 before:w-px @md:before:left-2 @md:before:w-0.5">

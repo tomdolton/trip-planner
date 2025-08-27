@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 
-import { RelaxIcon } from "./RelaxIcon";
+import { RelaxIcon } from "@/components/Icons/RelaxIcon";
 
 import {
   ActivityType,
@@ -60,19 +60,6 @@ export function ActivityIcon({ activityType, size = "md", className = "" }: Acti
     </div>
   );
 }
-
-// function getSizeClasses(size: "sm" | "md" | "lg"): string {
-//   switch (size) {
-//     case "sm":
-//       return "size-6";
-//     case "md":
-//       return "size-8";
-//     case "lg":
-//       return "size-10";
-//     default:
-//       return "size-8";
-//   }
-// }
 
 function getIconSizeClasses(size: "sm" | "md" | "lg"): string {
   switch (size) {

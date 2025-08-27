@@ -56,7 +56,7 @@ export function JourneyPlaceField({
           <div className="flex flex-col items-start justify-between gap-2 md:flex-row">
             <div className="min-w-0 flex-1">
               <h4 className="truncate text-sm font-medium">{selectedPlace.name}</h4>
-              <p className="text-muted-foreground truncate text-xs">
+              <p className="text-muted-foreground text-xs text-wrap">
                 {selectedPlace.formatted_address}
               </p>
               {selectedPlace.rating && <p className="mt-1 text-xs">⭐ {selectedPlace.rating}</p>}

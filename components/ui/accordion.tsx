@@ -148,7 +148,7 @@ function AccordionTrigger({
     <button
       onClick={handleClick}
       className={cn(
-        "px-4 py-3 flex items-center gap-3 text-left hover:bg-muted focus:bg-muted transition-colors focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none cursor-pointer rounded-md",
+        "hover:bg-muted focus:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 flex cursor-pointer items-center gap-3 rounded-md px-4 py-3 text-left transition-colors outline-none focus-visible:ring-[3px]",
         className
       )}
       aria-expanded={isOpen}
