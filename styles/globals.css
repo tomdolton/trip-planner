@@ -165,6 +165,6 @@
 @layer components {
   a,
   button {
-    @apply outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px];
+    @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
   }
 }
