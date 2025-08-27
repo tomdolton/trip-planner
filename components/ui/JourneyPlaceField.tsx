@@ -51,17 +51,17 @@ export function JourneyPlaceField({
 
   if (isDisplayMode && selectedPlace) {
     return (
-      <Card className="border-dashed border-2 border-muted">
+      <Card className="border-muted border-2 border-dashed">
         <CardContent className="p-3">
-          <div className="flex items-start justify-between">
-            <div className="flex-1 min-w-0">
-              <h4 className="font-medium text-sm truncate">{selectedPlace.name}</h4>
-              <p className="text-xs text-muted-foreground truncate">
+          <div className="flex flex-col items-start justify-between gap-2 md:flex-row">
+            <div className="min-w-0 flex-1">
+              <h4 className="truncate text-sm font-medium">{selectedPlace.name}</h4>
+              <p className="text-muted-foreground truncate text-xs">
                 {selectedPlace.formatted_address}
               </p>
-              {selectedPlace.rating && <p className="text-xs mt-1">⭐ {selectedPlace.rating}</p>}
+              {selectedPlace.rating && <p className="mt-1 text-xs">⭐ {selectedPlace.rating}</p>}
             </div>
-            <div className="flex gap-1 ml-2">
+            <div className="ml-2 flex gap-1">
               <Button
                 type="button"
                 variant="ghost"
@@ -76,7 +76,7 @@ export function JourneyPlaceField({
                 variant="ghost"
                 size="sm"
                 onClick={handleClearPlace}
-                className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+                className="text-destructive hover:text-destructive h-6 px-2 text-xs"
               >
                 Remove
               </Button>
@@ -89,9 +89,9 @@ export function JourneyPlaceField({
 
   if (isDisplayMode && isLoading) {
     return (
-      <Card className="border-dashed border-2 border-muted">
+      <Card className="border-muted border-2 border-dashed">
         <CardContent className="p-3">
-          <p className="text-sm text-muted-foreground">Loading place...</p>
+          <p className="text-muted-foreground text-sm">Loading place...</p>
         </CardContent>
       </Card>
     );

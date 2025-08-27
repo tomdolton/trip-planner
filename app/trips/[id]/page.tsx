@@ -30,8 +30,8 @@ export default function TripDetailPage() {
   if (isLoading) {
     return (
       <div className="p-8">
-        <Skeleton className="h-10 w-1/3 mb-4" />
-        <Skeleton className="h-6 w-1/2 mb-2" />
+        <Skeleton className="mb-4 h-10 w-1/3" />
+        <Skeleton className="mb-2 h-6 w-1/2" />
         <Skeleton className="h-24 w-full" />
       </div>
     );
@@ -118,8 +118,8 @@ export default function TripDetailPage() {
 
           {/* Show empty state only if no phases AND no unassigned locations */}
           {allPhases.length === 0 && unassignedLocations.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground">
-              <h3 className="text-lg font-medium mb-2">No content yet</h3>
+            <div className="text-muted-foreground py-12 text-center">
+              <h3 className="mb-2 text-lg font-medium">No content yet</h3>
               <p>
                 Start by adding a phase or location to your trip using the Create New button above.
               </p>
@@ -132,27 +132,27 @@ export default function TripDetailPage() {
         {/* Right Column: Map - Only show if there are locations */}
         {shouldShowMap && (
           <div
-            className="flex flex-col gap-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-32px)] lg:min-h-[calc(100vh-32px)] lg:justify-between lg:mb-4 lg:mt-4"
+            className="flex flex-col gap-4 lg:sticky lg:top-4 lg:mt-4 lg:mb-4 lg:max-h-[calc(100vh-32px)] lg:min-h-[calc(100vh-32px)] lg:justify-between"
             style={{
               // 16px top and bottom margin, sticky, fit viewport
               height: "auto",
             }}
           >
-            <Card className="flex flex-col flex-1 min-h-[300px] lg:min-h-0 lg:h-0 lg:grow">
-              <CardContent className="flex flex-col flex-1 min-h-0 p-4">
-                <div className="flex flex-col h-full">
-                  <div className="flex-1 min-h-[200px] lg:min-h-0">
+            <Card className="flex min-h-[300px] flex-1 flex-col lg:h-0 lg:min-h-0 lg:grow">
+              <CardContent className="flex min-h-0 flex-1 flex-col p-4">
+                <div className="flex h-full flex-col">
+                  <div className="min-h-[200px] flex-1 lg:min-h-0">
                     <TripMap
                       trip={trip}
                       height="100%"
-                      className="rounded-lg overflow-hidden h-full"
+                      className="h-full overflow-hidden rounded-lg"
                     />
                   </div>
                 </div>
               </CardContent>
             </Card>
             <Card className="flex-shrink-0">
-              <CardContent className="p-6 max-h-[216px]">
+              <CardContent className="max-h-[216px] p-6">
                 <TripMapLegend />
               </CardContent>
             </Card>

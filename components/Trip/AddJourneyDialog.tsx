@@ -99,7 +99,7 @@ export function AddJourneyDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {getLocationDisplayName(fromLocation, fromLocation)} →{" "}
             {getLocationDisplayName(toLocation, fromLocation)}
           </p>

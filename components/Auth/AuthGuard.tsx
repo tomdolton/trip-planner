@@ -16,7 +16,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [loading, user, router]);
 
   if (loading || !user) {
-    return <p className="text-center mt-20">Loading...</p>;
+    return <p className="mt-20 text-center">Loading...</p>;
   }
 
   return <>{children}</>;

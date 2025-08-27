@@ -19,13 +19,13 @@ const FILTERS: { label: string; value: TripsFilter }[] = [
 
 export function TripsFilterTabs({ value, onChange }: TripsFilterTabsProps) {
   return (
-    <div className="inline-flex rounded-xl bg-secondary py-2 px-1.5">
+    <div className="bg-secondary inline-flex rounded-xl px-1.5 py-2">
       {FILTERS.map((filter) => (
         <button
           key={filter.value}
           type="button"
           className={cn(
-            "p-3 text-sm transition rounded-xl cursor-pointer min-w-32",
+            "min-w-32 cursor-pointer rounded-xl p-3 text-sm transition",
             value === filter.value
               ? "bg-card text-foreground font-semibold shadow-xs"
               : "text-muted-foreground"

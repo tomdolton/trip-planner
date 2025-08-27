@@ -40,8 +40,8 @@ export default function CreateNewTripPage() {
 
   return (
     <div className="container py-8">
-      <div className="max-w-3xl mx-auto card p-6 space-y-8">
-        <div className="h-40 w-full lg:h-56 rounded-xl overflow-hidden bg-secondary-hover flex items-end justify-center">
+      <div className="card mx-auto max-w-3xl space-y-8 p-6">
+        <div className="bg-secondary-hover flex h-40 w-full items-end justify-center overflow-hidden rounded-xl lg:h-56">
           <Image
             src="/images/new-trip-card.png"
             alt=""
@@ -53,7 +53,7 @@ export default function CreateNewTripPage() {
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-xl md:text-2xl font-semibold">Create New Trip</h1>
+          <h1 className="text-xl font-semibold md:text-2xl">Create New Trip</h1>
 
           <p className="text-muted-foreground text-lg font-medium">
             Start planning your next adventure

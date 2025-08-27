@@ -75,7 +75,7 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
         <h2 className="text-2xl font-bold tracking-tight">
           {type === "signup" ? "Create an account" : "Sign in to your account"}
         </h2>
-        <p className="text-sm text-muted-foreground mt-2">
+        <p className="text-muted-foreground mt-2 text-sm">
           {type === "signup"
             ? "Enter your details to get started"
             : "Enter your credentials to access your trips"}
@@ -125,7 +125,7 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 {type === "signup" ? "Creating account..." : "Signing in..."}
               </span>
             ) : type === "signup" ? (
@@ -137,7 +137,7 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
 
           {message && (
             <div
-              className={`text-sm text-center p-3 rounded-md ${
+              className={`rounded-md p-3 text-center text-sm ${
                 message.includes("error") || message.includes("Invalid")
                   ? "bg-destructive/15 text-destructive"
                   : "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"

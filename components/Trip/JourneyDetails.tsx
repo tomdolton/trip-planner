@@ -61,14 +61,14 @@ export function JourneyDetails({
   const isEnd = isEndJourney(journey);
 
   return (
-    <>
+    <div className="@container">
       <JourneyTimeline
         mode={journey.mode as JourneyMode}
         showUpwardLine={!isStart}
         showDownwardLine={!isEnd}
       >
         <TripItemCard
-          className="ml-4 md:ml-6 my-6 p-6 flex-1 relative cursor-pointer @container"
+          className="relative my-6 flex-1 cursor-pointer p-6 pt-24 @md:ml-6 @md:pt-0"
           hoverEffect
           onClick={() => dispatch(openDialog({ type: "journey", entity: journey }))}
           id={`journey-${journey.id}`}
@@ -76,15 +76,15 @@ export function JourneyDetails({
           {/* Left: Main journey info */}
 
           {/* Mode and route */}
-          <h3 className="font-semibold text-xl mb-3 pr-6">
-            <span className="text-muted-foreground me-2">
+          <h3 className="mb-3 pr-6 text-center text-xl font-semibold @md:text-start">
+            <span className="text-muted-foreground me-2 block @md:inline">
               {journeyModeLabels[journey.mode as keyof typeof journeyModeLabels]}:
             </span>
             {departureLocationName} → {arrivalLocationName}
           </h3>
 
           {/* Departure date */}
-          <div className="flex gap-3 text-muted-foreground text-sm font-medium mb-6">
+          <div className="text-muted-foreground mb-6 flex justify-center gap-3 text-sm font-medium @md:justify-start">
             {journey.departure_time && <span>{format(journey.departure_time, "d MMM y")}</span>}
 
             {journey.departure_time && journey.provider && "|"}
@@ -92,10 +92,10 @@ export function JourneyDetails({
             {journey.provider && <span>{journey.provider}</span>}
           </div>
 
-          <div className="flex flex-col @lg:flex-row justify-between gap-6">
-            <div className="flex items-start gap-6 shrink-0">
+          <div className="flex flex-col justify-between gap-6 @lg:flex-row">
+            <div className="flex shrink-0 items-start gap-6">
               {/* Times and locations with vertical line */}
-              <div className="flex flex-col items-start justify-between gap-7 relative before:w-0.5 before:top-4 before:bottom-4 before:bg-border before:absolute before:left-2">
+              <div className="before:bg-border relative flex w-full flex-col items-start justify-between gap-7 before:absolute before:top-4 before:bottom-4 before:left-1/2 before:w-px @md:before:left-2 @md:before:w-0.5">
                 {/* Top: Departure */}
                 <JourneyTimePlaceRow
                   time={journey.departure_time}
@@ -104,7 +104,10 @@ export function JourneyDetails({
 
                 {/* Duration badge */}
                 {duration && (
-                  <Badge variant="secondary" className="ml-9 font-normal text-xs">
+                  <Badge
+                    variant="secondary"
+                    className="relative mx-auto text-xs font-normal @md:mr-0 @md:ml-9"
+                  >
                     Duration: {duration}
                   </Badge>
                 )}
@@ -119,7 +122,7 @@ export function JourneyDetails({
 
             {/* Right: Notes box */}
             {journey.notes && (
-              <div className="border rounded-md p-4 text-muted-foreground text-sm flex-1">
+              <div className="text-muted-foreground flex-1 rounded-md border p-4 text-sm">
                 {journey.notes}
               </div>
             )}
@@ -128,7 +131,7 @@ export function JourneyDetails({
           {/* Action Menu (top right) */}
           <ActionMenu className="absolute top-4 right-4">
             <ActionMenuItem onSelect={handleEdit}>
-              <Pencil className="w-4 h-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit
             </ActionMenuItem>
             <ActionMenuSeparator />
@@ -137,7 +140,7 @@ export function JourneyDetails({
               disabled={deleteJourney.isPending}
               className="text-destructive"
             >
-              <Trash2 className="w-4 h-4 mr-2" />
+              <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </ActionMenuItem>
           </ActionMenu>
@@ -152,6 +155,6 @@ export function JourneyDetails({
         onConfirm={confirmDelete}
         loading={deleteJourney.isPending}
       />
-    </>
+    </div>
   );
 }

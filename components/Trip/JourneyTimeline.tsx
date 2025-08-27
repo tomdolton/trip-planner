@@ -3,6 +3,7 @@
 import * as LucideIcons from "lucide-react";
 
 import { JourneyMode, getJourneyModeLucideIcon } from "@/lib/constants/journeyModes";
+import { cn } from "@/lib/utils";
 
 interface JourneyTimelineProps {
   mode: JourneyMode;
@@ -30,17 +31,17 @@ export function JourneyTimeline({
   const iconSizeClasses = size === "sm" ? "w-6 h-6" : "w-6 h-6 lg:w-10 lg:h-10";
 
   return (
-    <div className={`relative -mb-4 flex items-start pl-12 lg:pl-20 ${className}`}>
+    <div className={cn("relative flex items-start @md:-mb-4 @md:pl-20", className)}>
       {/* Journey Icon with vertical line - positioned at left edge */}
-      <div className="absolute top-0 bottom-0 left-0 flex items-center justify-center">
+      <div className="absolute top-0 right-0 left-0 flex items-center justify-center @md:right-[unset] @md:bottom-0 @md:left-0">
         {/* Vertical line extending upward */}
         {showUpwardLine && (
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 h-1/2 bg-border"></div>
+          <div className="bg-border absolute top-0 left-1/2 h-1/2 w-0.5 -translate-x-1/2 transform"></div>
         )}
 
         {/* Journey Icon - centered */}
         <div
-          className={`flex-shrink-0 ${sizeClasses} bg-background border-2 border-border rounded-full flex items-center justify-center relative z-10`}
+          className={`flex-shrink-0 ${sizeClasses} bg-background border-border relative z-10 flex items-center justify-center rounded-full border-2`}
         >
           {IconComponent && (
             <IconComponent className={`${iconSizeClasses} text-muted-foreground`} />
@@ -49,7 +50,7 @@ export function JourneyTimeline({
 
         {/* Vertical line extending downward */}
         {showDownwardLine && (
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 h-1/2 bg-border"></div>
+          <div className="bg-border absolute bottom-0 left-1/2 h-1/2 w-0.5 -translate-x-1/2 transform"></div>
         )}
       </div>
 

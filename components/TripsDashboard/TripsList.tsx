@@ -53,7 +53,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
 
   if (isLoading) {
     return (
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+      <div className="grid w-full max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[...Array(3)].map((_, i) => (
           <Skeleton key={i} className="h-32 rounded-xl" />
         ))}
@@ -62,12 +62,12 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
   }
 
   if (isError) {
-    return <p className="text-center text-destructive">Failed to load trips.</p>;
+    return <p className="text-destructive text-center">Failed to load trips.</p>;
   }
 
   if (!filteredTrips || filteredTrips.length === 0) {
     return (
-      <div className="text-center text-muted-foreground border rounded-md p-6">
+      <div className="text-muted-foreground rounded-md border p-6 text-center">
         <p>No trips found. Add one to get started!</p>
       </div>
     );
@@ -88,7 +88,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
           >
             <TripImage
               trip={trip}
-              className="h-40 w-full lg:h-58 rounded-xl overflow-hidden mb-8"
+              className="mb-8 h-40 w-full overflow-hidden rounded-xl lg:h-58"
               showAttribution={true}
               hasBackgroundLink={false}
             />
@@ -102,7 +102,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
                       setEditingTrip(trip);
                     }}
                   >
-                    <Pencil className="size-4 mr-2" />
+                    <Pencil className="mr-2 size-4" />
                     Edit
                   </ActionMenuItem>
                   <ActionMenuSeparator />
@@ -114,7 +114,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
                     disabled={deleteTrip.isPending}
                     className="text-destructive"
                   >
-                    <Trash2 className="size-4 mr-2" />
+                    <Trash2 className="mr-2 size-4" />
                     Delete
                   </ActionMenuItem>
                 </ActionMenu>

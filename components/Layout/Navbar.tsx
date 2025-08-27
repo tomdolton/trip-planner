@@ -60,16 +60,16 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="container py-4 bg-background">
-      <nav className="flex justify-between items-center font-display relative">
+    <header className="bg-background container py-4">
+      <nav className="font-display relative flex items-center justify-between">
         {/* Logo always left */}
-        <Link href="/" className="flex items-center z-30">
-          <VenLogo className="inline-block mr-2" />
-          <span className="border-l pl-2 mt-6">Trip Planner</span>
+        <Link href="/" className="z-30 flex items-center">
+          <VenLogo className="mr-2 inline-block" />
+          <span className="mt-6 border-l pl-2">Trip Planner</span>
         </Link>
 
         {/* Desktop menu */}
-        <div className="hidden md:flex gap-4 lg:gap-8 items-center">
+        <div className="hidden items-center gap-4 md:flex lg:gap-8">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -88,7 +88,7 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="card"
-                  className="flex items-center justify-start gap-2 h-auto p-2 min-w-44"
+                  className="flex h-auto min-w-44 items-center justify-start gap-2 p-2"
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="text-xs">{getUserInitials(user)}</AvatarFallback>
@@ -98,7 +98,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-44">
                 <DropdownMenuItem asChild>
-                  <Link href="/account-settings" className="flex items-center gap-2 cursor-pointer">
+                  <Link href="/account-settings" className="flex cursor-pointer items-center gap-2">
                     <SlidersHorizontal className="h-4 w-4" />
                     <span>Settings</span>
                   </Link>
@@ -106,7 +106,7 @@ export default function Navbar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex cursor-pointer items-center gap-2"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Log out</span>
@@ -133,7 +133,7 @@ export default function Navbar() {
         <Button
           size="icon"
           variant="ghost"
-          className="md:hidden ml-auto z-30 rounded "
+          className="z-30 ml-auto rounded md:hidden"
           aria-label="Open menu"
           onClick={handleMenuToggle}
         >
@@ -142,12 +142,12 @@ export default function Navbar() {
 
         {/* Mobile menu overlay */}
         {menuOpen && (
-          <div className="fixed inset-0 bg-background z-20 font-medium text-lg flex flex-col items-center gap-4 pt-32 px-6 animate-in fade-in duration-200 md:hidden">
+          <div className="bg-background animate-in fade-in fixed inset-0 z-20 flex flex-col items-center gap-4 px-6 pt-32 text-lg font-medium duration-200 md:hidden">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.path}
-                className={`w-full  py-5 text-center ${
+                className={`w-full py-5 text-center ${
                   isActive(pathname, item.path) ? "underline" : ""
                 }`}
                 onClick={handleMenuClose}
@@ -157,10 +157,10 @@ export default function Navbar() {
             ))}
 
             {user ? (
-              <div className="w-full h-full flex flex-col items-center pb-4 gap-3">
+              <div className="flex h-full w-full flex-col items-center gap-3 pb-4">
                 <Link
                   href="/account-settings"
-                  className="w-full flex items-center justify-center gap-2 py-5"
+                  className="flex w-full items-center justify-center gap-2 py-5"
                 >
                   <SlidersHorizontal className="size-5" />
                   <span>Settings</span>
@@ -168,14 +168,14 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 py-5  cursor-pointer"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 py-5"
                 >
                   <LogOut className="size-5" />
                   <span>Log out</span>
                 </button>
 
-                <div className="flex items-center justify-between w-full mt-auto">
-                  <div className="flex items-center gap-2 min-w-44 p-2 bg-card border rounded-md shadow-xs">
+                <div className="mt-auto flex w-full items-center justify-between">
+                  <div className="bg-card flex min-w-44 items-center gap-2 rounded-md border p-2 shadow-xs">
                     <Avatar className="size-8">
                       <AvatarFallback className="text-xs">{getUserInitials(user)}</AvatarFallback>
                     </Avatar>
@@ -186,7 +186,7 @@ export default function Navbar() {
                 </div>
               </div>
             ) : (
-              <div className="w-full h-full flex flex-col gap-3 mt-6 pb-4">
+              <div className="mt-6 flex h-full w-full flex-col gap-3 pb-4">
                 <Link href="/login" className="w-full">
                   <Button variant="ghost" size="lg" className="w-full">
                     Login

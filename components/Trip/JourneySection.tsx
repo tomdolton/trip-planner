@@ -43,14 +43,14 @@ export function JourneySection({
 
   return (
     <>
-      <div className="flex items-center gap-4 my-10 justify-end">
+      <div className="my-10 flex items-center justify-end gap-4">
         {/* Add Location Button - left aligned */}
         <Button
           variant="secondary"
           onClick={() => setShowAddLocationDialog(true)}
           aria-label="Add location"
         >
-          <Plus className="size-4 mr-1" />
+          <Plus className="mr-1 size-4" />
           <span className="sr-only">Add</span>
           Location
         </Button>
@@ -63,7 +63,7 @@ export function JourneySection({
           onAddJourney={onAddJourney}
         >
           <Button variant="secondary" aria-label="Add journey">
-            <Plus className="size-4 mr-1" />
+            <Plus className="mr-1 size-4" />
             <span className="sr-only">Add</span>
             Journey
           </Button>

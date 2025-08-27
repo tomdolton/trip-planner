@@ -48,18 +48,18 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
 
   return (
     <>
-      <Accordion type="multiple" defaultValue={Object.keys(grouped)} className="space-y-4 -mt-2">
+      <Accordion type="multiple" defaultValue={Object.keys(grouped)} className="-mt-2 space-y-4">
         {Object.entries(grouped).map(([date, acts]) => (
           <AccordionItem key={date} value={date} className="space-y-3">
             <AccordionTrigger
               chevronAlign="right"
-              className="px-0 py-2 hover:bg-muted gap-6 w-full"
+              className="hover:bg-muted w-full gap-6 px-0 py-2"
             >
               <Badge variant="green">
                 <h3 className="text-xs font-medium">{formatDateWithDay(date)}</h3>
               </Badge>
 
-              <span className="text-xs text-muted-foreground font-medium mr-auto">
+              <span className="text-muted-foreground mr-auto text-xs font-medium">
                 <span className="me-1">{acts.length}</span>
                 {acts.length > 0 && acts.length < 2 && `Activity`}
                 {acts.length > 1 && `Activities`}
@@ -71,7 +71,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                 {acts.map((act) => (
                   <TripItemCard
                     key={act.id}
-                    className="p-4 cursor-pointer"
+                    className="cursor-pointer p-4"
                     hoverEffect
                     id={`activity-${act.id}`}
                   >
@@ -82,16 +82,16 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                       <ActivityIcon activityType={act.activity_type} />
 
                       <div className="flex-1 space-y-3">
-                        <h4 className="font-medium font-sans">{act.name}</h4>
+                        <h4 className="font-sans font-medium">{act.name}</h4>
 
                         {act.notes && (
-                          <div className="text-xs text-muted-foreground font-medium">
+                          <div className="text-muted-foreground text-xs font-medium">
                             {act.notes}
                           </div>
                         )}
                       </div>
                       {act.start_time && (
-                        <p className="text-xs text-muted-foreground font-medium">
+                        <p className="text-muted-foreground text-xs font-medium">
                           {formatTimeRange(act.start_time, act.end_time)}
                         </p>
                       )}
@@ -99,7 +99,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                       {/* Action Menu */}
                       <ActionMenu>
                         <ActionMenuItem onSelect={() => handleEdit(act)}>
-                          <Pencil className="w-4 h-4 mr-2" />
+                          <Pencil className="mr-2 h-4 w-4" />
                           Edit
                         </ActionMenuItem>
                         <ActionMenuSeparator />
@@ -108,7 +108,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                           disabled={deleteActivity.isPending}
                           className="text-destructive"
                         >
-                          <Trash2 className="w-4 h-4 mr-2" />
+                          <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </ActionMenuItem>
                       </ActionMenu>

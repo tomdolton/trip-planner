@@ -35,45 +35,45 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_352px] gap-4 md:gap-6">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-[1fr_352px]">
         {/* Left Card - Trip Details */}
         <Card>
-          <CardContent className="p-4 pb-8 md:pb-4 @container">
-            <div className="flex flex-col md:flex-row items-center gap-4 @lg:gap-10">
-              <div className="relative aspect-[16/9] max-w-[360px] w-full flex-shrink-0">
+          <CardContent className="@container p-4 pb-8 md:pb-4">
+            <div className="flex flex-col items-center gap-4 md:flex-row @lg:gap-10">
+              <div className="relative aspect-[16/9] w-full max-w-[360px] flex-shrink-0">
                 <TripImage
                   trip={trip}
-                  className="rounded-xl overflow-hidden aspect-[16/9] max-w-[360px]"
+                  className="aspect-[16/9] max-w-[360px] overflow-hidden rounded-xl"
                   flex-shrink-0
                   showAttribution={true}
                 />
               </div>
 
               {/* Trip Details */}
-              <div className="flex-1 order-2 md:order-1">
-                <h1 className="text-xl lg:text-2xl font-semibold text-accent-foreground mb-3">
+              <div className="order-2 flex-1 md:order-1">
+                <h1 className="text-accent-foreground mb-3 text-xl font-semibold lg:text-2xl">
                   {trip.title}
                 </h1>
 
-                <p className="text-muted-foreground font-semibold mb-4 md:mb-6">
+                <p className="text-muted-foreground mb-4 font-semibold md:mb-6">
                   {formatDateRange(trip.start_date, trip.end_date)}
                 </p>
 
                 {trip.description && (
                   <div>
-                    <p className="whitespace-pre-line text-sm lg:text-base">{trip.description}</p>
+                    <p className="text-sm whitespace-pre-line lg:text-base">{trip.description}</p>
                   </div>
                 )}
               </div>
 
-              <ActionMenu className="ms-auto md:ms-0 md:mb-auto order-1 md:order-2">
+              <ActionMenu className="order-1 ms-auto md:order-2 md:ms-0 md:mb-auto">
                 <ActionMenuItem
                   onSelect={(e) => {
                     e.preventDefault();
                     onEditClick();
                   }}
                 >
-                  <Pencil className="w-4 h-4 mr-2" />
+                  <Pencil className="mr-2 h-4 w-4" />
                   Edit
                 </ActionMenuItem>
                 <ActionMenuSeparator />
@@ -84,7 +84,7 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                   }}
                   className="text-destructive"
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                  <Trash2 className="mr-2 h-4 w-4" />
                   Delete
                 </ActionMenuItem>
               </ActionMenu>
@@ -94,12 +94,12 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
 
         {/* Right Card - Start Your Trip */}
         <Card>
-          <CardContent className="p-6 flex flex-col items-center md:items-start gap-3 h-full">
+          <CardContent className="flex h-full flex-col items-center gap-3 p-6 md:items-start">
             <div className="flex items-center gap-2">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <Info className="text-muted-foreground h-4 w-4 cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Phases let you organise and make sense of longer or multi-focus trips</p>
@@ -107,19 +107,19 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
                 </Tooltip>
               </TooltipProvider>
 
-              <h2 className="text-lg lg:text-xl font-semibold text-accent-foreground">
+              <h2 className="text-accent-foreground text-lg font-semibold lg:text-xl">
                 Start your trip
               </h2>
             </div>
 
-            <p className="text-sm text-center md:text-left text-muted-foreground">
+            <p className="text-muted-foreground text-center text-sm md:text-left">
               Break your trip into phases, or start by adding locations first.
             </p>
 
             {/* Create New Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="mt-4 md:mt-auto md:ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
+                <Button className="bg-primary hover:bg-primary/90 mt-4 flex min-w-40 items-center gap-2 rounded-lg px-4 py-2 text-white md:mt-auto md:ml-auto">
                   <Plus className="size-4" />
                   Create New
                   <ChevronDown className="size-4" />
@@ -127,17 +127,17 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-40">
                 <DropdownMenuItem
-                  className="flex items-center gap-2 py-2 cursor-pointer"
+                  className="flex cursor-pointer items-center gap-2 py-2"
                   onSelect={() => setShowAddPhaseDialog(true)}
                 >
-                  <FolderPlus className="w-4 h-4" />
+                  <FolderPlus className="h-4 w-4" />
                   <span>Phase</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="flex items-center gap-2 py-2 cursor-pointer border-t"
+                  className="flex cursor-pointer items-center gap-2 border-t py-2"
                   onSelect={() => setShowAddLocationDialog(true)}
                 >
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="h-4 w-4" />
                   <span>Location</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

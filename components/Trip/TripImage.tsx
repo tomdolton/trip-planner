@@ -49,7 +49,7 @@ export function TripImage({
   if (loading) {
     return (
       <div
-        className={`bg-muted rounded-lg flex items-center justify-center animate-pulse ${className}`}
+        className={`bg-muted flex animate-pulse items-center justify-center rounded-lg ${className}`}
       >
         <span className="text-muted-foreground text-sm">Loading...</span>
       </div>
@@ -81,7 +81,7 @@ export function TripImage({
             alt={imageData.altDescription}
             fill
             sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 160px"
-            className="object-cover hover:opacity-95 transition-opacity"
+            className="object-cover transition-opacity hover:opacity-95"
             placeholder="empty"
           />
         </Link>
@@ -91,14 +91,14 @@ export function TripImage({
           alt={imageData.altDescription}
           fill
           sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 160px"
-          className="object-cover hover:opacity-95 transition-opacity"
+          className="object-cover transition-opacity hover:opacity-95"
           placeholder="empty"
         />
       )}
 
       {/* Attribution Overlay */}
       {showAttribution && imageData.photographerName && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs py-1 px-3 transition">
+        <div className="absolute right-0 bottom-0 left-0 bg-black/50 px-3 py-1 text-xs text-white transition">
           <div className="flex items-center justify-between">
             <span>
               Photo by{" "}

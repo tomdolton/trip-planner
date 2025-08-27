@@ -88,7 +88,7 @@ export function TripMap({ trip, className, height = "400px" }: TripMapProps) {
   if (!isLoaded) {
     return (
       <div
-        className={`bg-card rounded-lg flex items-center justify-center ${className}`}
+        className={`bg-card flex items-center justify-center rounded-lg ${className}`}
         style={mapContainerStyle}
       >
         <p className="text-card-foreground">Loading map...</p>

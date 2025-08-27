@@ -13,7 +13,7 @@ interface NewTripCardProps {
 export default function NewTripCard({ onClick, className }: NewTripCardProps) {
   return (
     <TripItemCard
-      className={`relative flex flex-col p-6 cursor-pointer ${className}`}
+      className={`relative flex cursor-pointer flex-col p-6 ${className}`}
       hoverEffect
       onClick={onClick}
       tabIndex={0}
@@ -24,17 +24,17 @@ export default function NewTripCard({ onClick, className }: NewTripCardProps) {
       }}
     >
       <div>
-        <div className="h-40 w-full lg:h-58 rounded-xl overflow-hidden mb-8 bg-secondary-hover flex items-end justify-center">
+        <div className="bg-secondary-hover mb-8 flex h-40 w-full items-end justify-center overflow-hidden rounded-xl lg:h-58">
           <Image src="/images/new-trip-card.png" alt="" width={320} height={128} priority />
         </div>
 
-        <h2 className="text-card-foreground text-xl font-semibold mb-2">Create a new trip</h2>
+        <h2 className="text-card-foreground mb-2 text-xl font-semibold">Create a new trip</h2>
 
         <p className="text-muted-foreground mb-4">Start creating the itinerary for your new trip</p>
       </div>
 
       <Button
-        className="w-full mt-auto bg-primary-hover"
+        className="bg-primary-hover mt-auto w-full"
         onClick={(e) => {
           e.stopPropagation();
           onClick();

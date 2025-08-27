@@ -40,13 +40,13 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
 
   return (
     <div className="@container" id={`accommodation-${accommodation.id}`}>
-      <TripItemCard className="p-4 flex items-start gap-4 @md:gap-6 @md:p-6" hoverEffect>
-        <span className="inline-flex p-2 bg-secondary rounded-xl">
-          <House className="size-8 " strokeWidth={1} />
+      <TripItemCard className="flex items-start gap-4 p-4 @md:gap-6 @md:p-6" hoverEffect>
+        <span className="bg-secondary inline-flex rounded-xl p-2">
+          <House className="size-8" strokeWidth={1} />
         </span>
 
         <div
-          className="space-y-4 flex-1 cursor-pointer"
+          className="flex-1 cursor-pointer space-y-4"
           onClick={() => dispatch(openDialog({ type: "accommodation", entity: accommodation }))}
         >
           <h4 className="text-xl font-semibold">
@@ -63,7 +63,7 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
         {/* Action Menu */}
         <ActionMenu>
           <ActionMenuItem onSelect={handleEdit}>
-            <Pencil className="w-4 h-4 mr-2" />
+            <Pencil className="mr-2 h-4 w-4" />
             Edit
           </ActionMenuItem>
           <ActionMenuSeparator />
@@ -72,7 +72,7 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
             disabled={deleteAccommodation.isPending}
             className="text-destructive"
           >
-            <Trash2 className="w-4 h-4 mr-2" />
+            <Trash2 className="mr-2 h-4 w-4" />
             Delete
           </ActionMenuItem>
         </ActionMenu>

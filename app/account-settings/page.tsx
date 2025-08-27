@@ -153,7 +153,7 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <div className="max-w-2xl mx-auto mt-12">
+      <div className="mx-auto mt-12 max-w-2xl">
         <Card>
           <CardContent className="p-6">
             <p>Please log in to manage your account.</p>
@@ -164,7 +164,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 space-y-6 pb-12">
+    <div className="mx-auto mt-12 max-w-2xl space-y-6 pb-12">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
         <p className="text-muted-foreground">Manage your account details and preferences</p>
@@ -281,13 +281,13 @@ export default function AccountPage() {
           <CardDescription>View your account details</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Account Created</label>
+              <label className="text-muted-foreground text-sm font-medium">Account Created</label>
               <p className="text-sm">{new Date(user.created_at).toLocaleDateString()}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Last Sign In</label>
+              <label className="text-muted-foreground text-sm font-medium">Last Sign In</label>
               <p className="text-sm">
                 {user.last_sign_in_at
                   ? new Date(user.last_sign_in_at).toLocaleDateString()
@@ -295,7 +295,7 @@ export default function AccountPage() {
               </p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Email Confirmed</label>
+              <label className="text-muted-foreground text-sm font-medium">Email Confirmed</label>
               <p className="text-sm">{user.email_confirmed_at ? "Yes" : "No"}</p>
             </div>
           </div>

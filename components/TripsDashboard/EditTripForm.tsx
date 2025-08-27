@@ -121,7 +121,7 @@ export default function EditTripForm({ trip, onClose }: EditTripFormProps) {
           <Button type="submit" disabled={updateTrip.isPending}>
             {updateTrip.isPending ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin border border-border border-t-transparent rounded-full" />
+                <span className="border-border h-4 w-4 animate-spin rounded-full border border-t-transparent" />
                 Saving...
               </span>
             ) : (

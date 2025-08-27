@@ -44,21 +44,21 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
   return (
     <>
-      <div className="card p-6 space-y-10" id={`location-${location.id}`}>
+      <div className="card space-y-10 p-6" id={`location-${location.id}`}>
         {/* Header with action menu */}
         <div className="flex items-start justify-between">
           <div
             onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-            className="cursor-pointer rounded flex-1"
+            className="flex-1 cursor-pointer rounded"
           >
-            <span className="inline-flex p-2 bg-secondary rounded-xl mb-6">
+            <span className="bg-secondary mb-6 inline-flex rounded-xl p-2">
               <MapPin className="size-8" strokeWidth={1} />
             </span>
 
             <div className="space-y-3">
-              <h3 className="text-2xl font-semibold cursor-pointer">{location.name}</h3>
+              <h3 className="cursor-pointer text-2xl font-semibold">{location.name}</h3>
 
-              <div className="font-semibold text-muted-foreground">
+              <div className="text-muted-foreground font-semibold">
                 {dateRange || "No dates scheduled"}
               </div>
 
@@ -69,7 +69,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
           {/* Action Menu */}
           <ActionMenu>
             <ActionMenuItem onSelect={handleEdit}>
-              <Pencil className="w-4 h-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit
             </ActionMenuItem>
             <ActionMenuSeparator />
@@ -78,7 +78,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
               disabled={deleteLocation.isPending}
               className="text-destructive"
             >
-              <Trash2 className="w-4 h-4 mr-2" />
+              <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </ActionMenuItem>
           </ActionMenu>

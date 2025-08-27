@@ -96,7 +96,7 @@ export function TripPhaseSection({
 
   // Shared header content component
   const HeaderButtons = () => (
-    <div className="flex items-center mx-auto md:mx-0 gap-3 md:gap-4">
+    <div className="mx-auto flex items-center gap-3 md:mx-0 md:gap-4">
       <Button
         variant="secondary"
         onClick={(e) => {
@@ -104,7 +104,7 @@ export function TripPhaseSection({
           setShowAddLocationDialog(true);
         }}
       >
-        <Plus className="size-4 mr-1" />
+        <Plus className="mr-1 size-4" />
         <span className="sr-only">Add</span>
         Location
       </Button>
@@ -221,9 +221,9 @@ export function TripPhaseSection({
     if (!hasLocations) return null;
 
     return (
-      <div className="mt-4 flex flex-col md:flex-row items-stretch gap-4">
+      <div className="mt-4 flex flex-col items-stretch gap-4 md:flex-row">
         <Button variant="secondary" onClick={() => setShowAddLocationDialog(true)}>
-          <Plus className="size-4 mr-1" />
+          <Plus className="mr-1 size-4" />
           <span className="sr-only">Add</span>
           Location
         </Button>
@@ -244,7 +244,7 @@ export function TripPhaseSection({
                 title="Add End Journey"
               >
                 <Button variant="secondary">
-                  <Plus className="size-4 mr-1" />
+                  <Plus className="mr-1 size-4" />
                   <span className="sr-only">Add</span>
                   End Journey
                 </Button>
@@ -272,7 +272,7 @@ export function TripPhaseSection({
                 title="Add Inter-Phase Journey"
               >
                 <Button variant="secondary">
-                  <Plus className="size-4 mr-1" />
+                  <Plus className="mr-1 size-4" />
                   <span className="sr-only">Add</span>
                   Journey to {nextPhase.title}
                 </Button>
@@ -309,18 +309,18 @@ export function TripPhaseSection({
   return (
     <Accordion type="multiple" defaultValue={[phase.id]}>
       <AccordionItem value={phase.id} className="card">
-        <div className="flex flex-col md:flex-row items-stretch md:items-end py-3.5 px-5 gap-2 md:gap-0 @container relative">
-          <AccordionTrigger chevronAlign="left" className="mr-8 md:mr-4 @lg:mr-8 md:w-auto">
-            <h2 className="text-lg md:text-xl font-bold mx-auto md:mx-0">{phase.title}</h2>
+        <div className="@container relative flex flex-col items-stretch gap-2 px-5 py-3.5 md:flex-row md:items-end md:gap-0">
+          <AccordionTrigger chevronAlign="left" className="mr-8 md:mr-4 md:w-auto @lg:mr-8">
+            <h2 className="mx-auto text-lg font-bold md:mx-0 md:text-xl">{phase.title}</h2>
           </AccordionTrigger>
 
           <HeaderButtons />
 
           {/* Action Menu for edit/delete - only for regular phases */}
           {!isNoPhaseSection && "order" in phase && (
-            <ActionMenu className="absolute right-4 top-4 md:ml-auto md:self-start">
+            <ActionMenu className="absolute top-4 right-4 md:ml-auto md:self-start">
               <ActionMenuItem onSelect={handleEdit}>
-                <Pencil className="w-4 h-4 mr-2" />
+                <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </ActionMenuItem>
               <ActionMenuSeparator />
@@ -329,7 +329,7 @@ export function TripPhaseSection({
                 disabled={deleteTripPhase.isPending}
                 className="text-destructive"
               >
-                <Trash2 className="w-4 h-4 mr-2" />
+                <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </ActionMenuItem>
             </ActionMenu>
@@ -343,14 +343,14 @@ export function TripPhaseSection({
           </div>
         )}
 
-        <AccordionContent className="mx-4 md:mx-5 pb-4 pt-8 border-t border-border">
+        <AccordionContent className="border-border mx-4 border-t pt-8 pb-4 md:mx-5">
           <StartJourneySection />
           <LocationsAndJourneys />
           <EndJourneySection />
 
           {/* Show empty state for phases without locations - only for regular phases */}
           {!hasLocations && !isNoPhaseSection && (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-muted-foreground py-8 text-center">
               <p className="mb-4">No locations added to this phase yet.</p>
               <Button onClick={() => setShowAddLocationDialog(true)}>Add First Location</Button>
             </div>

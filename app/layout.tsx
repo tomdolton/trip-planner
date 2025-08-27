@@ -33,7 +33,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} antialiased font-sans`}>
+      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
             <ThemeProvider

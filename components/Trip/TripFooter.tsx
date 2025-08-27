@@ -29,24 +29,24 @@ export function TripFooter({ trip }: TripFooterProps) {
   return (
     <>
       <Card>
-        <CardContent className="p-5 flex flex-col md:flex-row items-start gap-3">
+        <CardContent className="flex flex-col items-start gap-3 p-5 md:flex-row">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <Info className="text-muted-foreground h-4 w-4 cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Phases let you organise and make sense of longer or multi-focus trips</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              <h2 className="text-lg lg:text-xl font-semibold text-accent-foreground">
+              <h2 className="text-accent-foreground text-lg font-semibold lg:text-xl">
                 Continue your trip
               </h2>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Add the next part of your journey - start a new phase or location.
             </p>
           </div>
@@ -54,7 +54,7 @@ export function TripFooter({ trip }: TripFooterProps) {
           {/* Create New Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="mt-auto ml-auto flex items-center gap-2 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-lg min-w-40">
+              <Button className="bg-primary hover:bg-primary/90 mt-auto ml-auto flex min-w-40 items-center gap-2 rounded-lg px-4 py-2 text-white">
                 <Plus className="size-4" />
                 Create New
                 <ChevronDown className="size-4" />
@@ -62,17 +62,17 @@ export function TripFooter({ trip }: TripFooterProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-40">
               <DropdownMenuItem
-                className="flex items-center gap-2 py-2 cursor-pointer"
+                className="flex cursor-pointer items-center gap-2 py-2"
                 onSelect={() => setShowAddPhaseDialog(true)}
               >
-                <FolderPlus className="w-4 h-4" />
+                <FolderPlus className="h-4 w-4" />
                 <span>Phase</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="flex items-center gap-2 py-2 cursor-pointer border-t"
+                className="flex cursor-pointer items-center gap-2 border-t py-2"
                 onSelect={() => setShowAddLocationDialog(true)}
               >
-                <MapPin className="w-4 h-4" />
+                <MapPin className="h-4 w-4" />
                 <span>Location</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
