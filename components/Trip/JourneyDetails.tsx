@@ -61,7 +61,7 @@ export function JourneyDetails({
   const isEnd = isEndJourney(journey);
 
   return (
-    <div className="@container">
+    <>
       <JourneyTimeline
         mode={journey.mode as JourneyMode}
         showUpwardLine={!isStart}
@@ -154,6 +154,6 @@ export function JourneyDetails({
         onConfirm={confirmDelete}
         loading={deleteJourney.isPending}
       />
-    </div>
+    </>
   );
 }

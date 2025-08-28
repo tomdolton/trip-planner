@@ -39,8 +39,11 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
   }
 
   return (
-    <div className="@container" id={`accommodation-${accommodation.id}`}>
-      <TripItemCard className="flex items-start gap-4 p-4 @md:gap-6 @md:p-6" hoverEffect>
+    <div className="relative" id={`accommodation-${accommodation.id}`}>
+      <TripItemCard
+        className="flex flex-col items-center gap-4 p-4 @md:flex-row @md:items-start @md:gap-6 @md:p-6"
+        hoverEffect
+      >
         <span className="bg-secondary inline-flex rounded-xl p-2">
           <House className="size-8" strokeWidth={1} />
         </span>
@@ -49,19 +52,20 @@ export function AccommodationItem({ accommodation, tripId }: AccommodationItemPr
           className="flex-1 cursor-pointer space-y-4"
           onClick={() => dispatch(openDialog({ type: "accommodation", entity: accommodation }))}
         >
-          <h4 className="text-xl font-semibold">
-            <span className="text-muted-foreground me-1">Staying:</span> {accommodation.name}{" "}
+          <h4 className="text-center text-xl font-semibold @md:text-start">
+            <span className="text-muted-foreground block @md:me-1 @md:inline">Staying:</span>{" "}
+            {accommodation.name}{" "}
           </h4>
 
           {accommodation.check_in && (
-            <p className="text-muted-foreground text-semibold">
+            <p className="text-muted-foreground text-medium text-sm">
               {formatDateRange(accommodation.check_in, accommodation.check_out)}
             </p>
           )}
         </div>
 
         {/* Action Menu */}
-        <ActionMenu>
+        <ActionMenu className="absolute top-4 right-4 @md:static">
           <ActionMenuItem onSelect={handleEdit}>
             <Pencil className="mr-2 h-4 w-4" />
             Edit

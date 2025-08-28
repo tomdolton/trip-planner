@@ -44,12 +44,15 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
   return (
     <>
-      <div className="card space-y-10 p-6" id={`location-${location.id}`}>
+      <div
+        className="card relative space-y-6 p-4 md:space-y-10 @md:p-6"
+        id={`location-${location.id}`}
+      >
         {/* Header with action menu */}
         <div className="flex items-start justify-between">
           <div
             onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-            className="flex-1 cursor-pointer rounded"
+            className="flex-1 cursor-pointer rounded text-center @sm:text-start"
           >
             <span className="bg-secondary mb-6 inline-flex rounded-xl p-2">
               <MapPin className="size-8" strokeWidth={1} />
@@ -62,12 +65,14 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
                 {dateRange || "No dates scheduled"}
               </div>
 
-              {location.notes && <p className="text-muted-foreground">{location.notes}</p>}
+              {location.notes && (
+                <p className="text-muted-foreground text-sm @sm:text-base">{location.notes}</p>
+              )}
             </div>
           </div>
 
           {/* Action Menu */}
-          <ActionMenu>
+          <ActionMenu className="absolute top-4 right-4 @sm:static">
             <ActionMenuItem onSelect={handleEdit}>
               <Pencil className="mr-2 h-4 w-4" />
               Edit
@@ -86,9 +91,13 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
 
         <LocationActions tripId={tripId} locationId={location.id} />
 
-        <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
+        {location.accommodations && location.accommodations.length > 0 && (
+          <AccommodationsList accommodations={location.accommodations ?? []} tripId={tripId} />
+        )}
 
-        <TripActivities activities={location.activities ?? []} tripId={tripId} />
+        {location.activities && location.activities.length > 0 && (
+          <TripActivities activities={location.activities ?? []} tripId={tripId} />
+        )}
       </div>
 
       <ConfirmDeleteDialog

@@ -308,8 +308,8 @@ export function TripPhaseSection({
 
   return (
     <Accordion type="multiple" defaultValue={[phase.id]}>
-      <AccordionItem value={phase.id} className="card">
-        <div className="@container relative flex flex-col items-stretch gap-2 px-5 py-3.5 md:flex-row md:items-end md:gap-0">
+      <AccordionItem value={phase.id} className="card @container">
+        <div className="relative flex flex-col items-stretch gap-2 px-5 py-3.5 md:flex-row md:items-end md:gap-0">
           <AccordionTrigger chevronAlign="left" className="mr-8 md:mr-4 md:w-auto @lg:mr-8">
             <h2 className="mx-auto text-lg font-bold md:mx-0 md:text-xl">{phase.title}</h2>
           </AccordionTrigger>

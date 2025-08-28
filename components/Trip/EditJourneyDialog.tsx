@@ -99,7 +99,7 @@ export function EditJourneyDialog({
               Cancel
             </Button>
 
-            <div className="ms-auto flex flex-col gap-3 sm:flex-row">
+            <div className="ms-auto flex flex-col items-end gap-3 sm:flex-row">
               <Button type="submit" disabled={updateMutation.isPending} className="sm:order-1">
                 Save Journey
               </Button>
@@ -109,7 +109,6 @@ export function EditJourneyDialog({
                 variant="destructive"
                 onClick={handleDelete}
                 disabled={deleteMutation.isPending}
-                className="ms-auto"
               >
                 Delete
               </Button>

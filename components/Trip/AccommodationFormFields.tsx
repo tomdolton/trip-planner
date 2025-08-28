@@ -40,7 +40,7 @@ export function AccommodationFormFields({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 md:space-y-6">
         {/* Name Field - Google Places Search or Manual Input */}
         <PlaceSelectionField
           form={form}
@@ -68,7 +68,7 @@ export function AccommodationFormFields({
         {/* Selected Place Card */}
         {selectedPlace && <SelectedPlaceCard place={selectedPlace} onRemove={clearPlace} />}
 
-        <div className="flex gap-3 md:gap-5">
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="check_in"

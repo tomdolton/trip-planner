@@ -51,7 +51,7 @@ export function ActivityFormFields({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 md:space-y-6">
         {/* Name Field - Google Places Search or Manual Input */}
         <PlaceSelectionField
           form={form}

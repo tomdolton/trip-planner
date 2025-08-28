@@ -71,7 +71,7 @@ export function AddAccommodationDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary">
+        <Button variant="default">
           <Plus className="size-4" />
           <span className="sr-only">Add</span> Accommodation
         </Button>
