@@ -53,7 +53,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
 
   if (isLoading) {
     return (
-      <div className="grid w-full max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full max-w-6xl gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
         {[...Array(3)].map((_, i) => (
           <Skeleton key={i} className="h-32 rounded-xl" />
         ))}
@@ -75,7 +75,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
 
   return (
     <>
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
         <li>
           <NewTripCard onClick={() => setOpenNewTrip(true)} className="h-full" />
         </li>
@@ -83,7 +83,7 @@ export default function TripsList({ filter = "upcoming" }: TripsListProps) {
           <TripItemCard
             key={trip.id}
             onClick={() => router.push(`/trips/${trip.id}`)}
-            className="cursor-pointer p-6 pb-14"
+            className="cursor-pointer p-6 md:pb-14"
             hoverEffect
           >
             <TripImage
