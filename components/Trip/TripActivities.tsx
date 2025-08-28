@@ -53,7 +53,7 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
           <AccordionItem key={date} value={date} className="space-y-3">
             <AccordionTrigger
               chevronAlign="right"
-              className="hover:bg-muted w-full gap-6 px-0 py-2"
+              className="hover:bg-muted w-full gap-4 px-0 py-2 @md:gap-6"
             >
               <Badge variant="green">
                 <h3 className="text-xs font-medium">{formatDateWithDay(date)}</h3>
@@ -77,27 +77,34 @@ export function TripActivities({ activities, tripId }: { activities: Activity[];
                   >
                     <div
                       onClick={() => dispatch(openDialog({ type: "activity", entity: act }))}
-                      className="flex items-center gap-4"
+                      className="relative flex flex-col items-center gap-4 text-center @md:flex-row @md:text-start"
                     >
                       <ActivityIcon activityType={act.activity_type} />
 
-                      <div className="flex-1 space-y-3">
+                      <div className="flex-1">
                         <h4 className="font-sans font-medium">{act.name}</h4>
 
                         {act.notes && (
-                          <div className="text-muted-foreground text-xs font-medium">
+                          <div className="text-muted-foreground mt-3 hidden text-xs font-medium @md:block">
                             {act.notes}
                           </div>
                         )}
                       </div>
+
                       {act.start_time && (
                         <p className="text-muted-foreground text-xs font-medium">
                           {formatTimeRange(act.start_time, act.end_time)}
                         </p>
                       )}
 
+                      {act.notes && (
+                        <div className="text-muted-foreground text-xs font-medium @md:hidden">
+                          {act.notes}
+                        </div>
+                      )}
+
                       {/* Action Menu */}
-                      <ActionMenu>
+                      <ActionMenu className="absolute top-0 right-0 @md:static">
                         <ActionMenuItem onSelect={() => handleEdit(act)}>
                           <Pencil className="mr-2 h-4 w-4" />
                           Edit
