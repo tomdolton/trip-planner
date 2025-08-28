@@ -68,7 +68,7 @@ export default function TripDetailPage() {
   const shouldShowMap = allPhases.length > 0 || unassignedLocations.length > 0;
 
   return (
-    <div className="container py-6 md:py-7">
+    <div className="container px-0 py-6 sm:px-6 md:py-7">
       {/* Trip Header - Full Width */}
       <div className="mb-6">
         <TripHeader
@@ -141,7 +141,7 @@ export default function TripDetailPage() {
             <Card className="flex min-h-[300px] flex-1 flex-col lg:h-0 lg:min-h-0 lg:grow">
               <CardContent className="flex min-h-0 flex-1 flex-col p-4">
                 <div className="flex h-full flex-col">
-                  <div className="min-h-[200px] flex-1 lg:min-h-0">
+                  <div className="min-h-[550px] flex-1 lg:min-h-0">
                     <TripMap
                       trip={trip}
                       height="100%"

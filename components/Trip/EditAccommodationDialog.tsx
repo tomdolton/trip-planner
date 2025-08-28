@@ -97,20 +97,19 @@ export function EditAccommodationDialog({
               Cancel
             </Button>
 
-            <div className="ms-auto flex flex-col items-end gap-3 sm:flex-row">
-              <Button type="submit" disabled={updateMutation.isPending} className="sm:order-1">
-                Save Accommodation
-              </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+              className="ms-auto"
+            >
+              Delete
+            </Button>
 
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={deleteMutation.isPending}
-              >
-                Delete
-              </Button>
-            </div>
+            <Button type="submit" disabled={updateMutation.isPending} className="min-w-[70px]">
+              Save <span className="hidden sm:inline">Changes</span>
+            </Button>
           </AccommodationFormFields>
         </DialogContent>
       </Dialog>

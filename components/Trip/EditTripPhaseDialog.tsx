@@ -76,8 +76,8 @@ export function EditTripPhaseDialog({
               Delete
             </Button>
 
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save
+            <Button type="submit" disabled={updateMutation.isPending} className="min-w-[70px]">
+              Save <span className="hidden sm:inline">Changes</span>
             </Button>
           </TripPhaseFormFields>
         </DialogContent>

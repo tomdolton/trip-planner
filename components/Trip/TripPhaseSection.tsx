@@ -222,8 +222,12 @@ export function TripPhaseSection({
     if (!hasLocations) return null;
 
     return (
-      <div className="mt-4 flex flex-col items-stretch gap-4 md:flex-row">
-        <Button variant="secondary" onClick={() => setShowAddLocationDialog(true)}>
+      <div className="mt-4 flex flex-row justify-end gap-4">
+        <Button
+          variant="secondary"
+          className="flex-1 @md:flex-none"
+          onClick={() => setShowAddLocationDialog(true)}
+        >
           <Plus className="mr-1 size-4" />
           <span className="sr-only">Add</span>
           Location
@@ -244,7 +248,7 @@ export function TripPhaseSection({
                 onAddJourney={handleAddJourney}
                 title="Add End Journey"
               >
-                <Button variant="secondary">
+                <Button variant="secondary" className="flex-1 @md:flex-none">
                   <Plus className="mr-1 size-4" />
                   <span className="sr-only">Add</span>
                   End Journey

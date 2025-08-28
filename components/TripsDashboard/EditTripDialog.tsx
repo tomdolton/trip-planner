@@ -62,10 +62,10 @@ export function EditTripDialog({ trip, open, onOpenChange }: EditTripDialogProps
           <Button
             type="submit"
             disabled={updateTrip.isPending}
-            className="ms-auto"
+            className="ms-auto min-w-[72px]"
             onClick={form.handleSubmit(onSubmit)}
           >
-            {updateTrip.isPending ? "Saving..." : "Save Changes"}
+            Save <span className="hidden sm:inline">Changes</span>
           </Button>
         </TripFormFields>
       </DialogContent>

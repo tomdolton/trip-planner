@@ -39,7 +39,7 @@ export function TripFormFields({ form, children }: TripFormFieldsProps) {
           )}
         />
 
-        <div className="flex gap-3 md:gap-5">
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="start_date"

@@ -94,7 +94,7 @@ export function TripPhaseFormFields({
             </FormItem>
           )}
         />
-        <div className="flex gap-3 md:gap-6">{children}</div>
+        <div className="mt-6 flex gap-3 md:gap-6">{children}</div>
       </form>
     </Form>
   );

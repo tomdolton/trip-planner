@@ -106,8 +106,8 @@ export function EditLocationDialog({
               Delete
             </Button>
 
-            <Button type="submit" disabled={updateMutation.isPending}>
-              Save Location
+            <Button type="submit" disabled={updateMutation.isPending} className="min-w-[70px]">
+              Save <span className="hidden sm:inline">Changes</span>
             </Button>
           </LocationFormFields>
         </DialogContent>
