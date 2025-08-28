@@ -11,7 +11,7 @@ interface LocationActionsProps {
 
 export function LocationActions({ tripId, locationId, className }: LocationActionsProps) {
   return (
-    <div className={cn("flex flex-col gap-4 @sm:flex-row", className)}>
+    <div className={cn("flex flex-col gap-4 @md:flex-row", className)}>
       <AddAccommodationDialog tripId={tripId} locationId={locationId} />
       <AddActivityDialog tripId={tripId} locationId={locationId} />
     </div>

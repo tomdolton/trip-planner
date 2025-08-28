@@ -49,7 +49,7 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
         <div className="flex items-start justify-between">
           <div
             onClick={() => dispatch(openDialog({ type: "location", entity: location }))}
-            className="flex-1 cursor-pointer rounded text-center @sm:text-start"
+            className="flex-1 cursor-pointer rounded text-center @md:text-start"
           >
             <span className="bg-secondary mb-6 inline-flex rounded-xl p-2">
               <MapPin className="size-8" strokeWidth={1} />
@@ -63,13 +63,13 @@ export function LocationCard({ location, tripId }: LocationCardProps) {
               </div>
 
               {location.notes && (
-                <p className="text-muted-foreground text-sm @sm:text-base">{location.notes}</p>
+                <p className="text-muted-foreground text-sm @md:text-base">{location.notes}</p>
               )}
             </div>
           </div>
 
           {/* Action Menu */}
-          <ActionMenu className="absolute top-4 right-4 @sm:static">
+          <ActionMenu className="absolute top-4 right-4 @md:static">
             <ActionMenuItem onSelect={handleEdit}>
               <Pencil className="mr-2 h-4 w-4" />
               Edit

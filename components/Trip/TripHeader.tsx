@@ -1,26 +1,20 @@
 "use client";
 
-import { Info, Plus, ChevronDown, FolderPlus, MapPin } from "lucide-react";
+import { Info } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { Trip } from "@/types/trip";
 
 import { ActionMenu, ActionMenuItem, ActionMenuSeparator } from "@/components/ui/ActionMenu";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { formatDateRange } from "@/lib/utils/dateTime";
 
 import { AddLocationDialog } from "./AddLocationDialog";
 import { AddTripPhaseDialog } from "./AddTripPhaseDialog";
+import { CreateNewDropdown } from "./CreateNewDropdown";
 import { TripImage } from "./TripImage";
 
 interface TripHeaderProps {
@@ -94,11 +88,11 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
 
         {/* Right Card - Start Your Trip */}
         <Card>
-          <CardContent className="flex h-full flex-col items-center gap-3 p-6 md:items-start">
+          <CardContent className="flex h-full flex-col items-center gap-5 p-6 md:items-start md:gap-3">
             <div className="flex items-center gap-2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger asChild className="hidden md:block">
                     <Info className="text-muted-foreground h-4 w-4 cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent>
@@ -112,36 +106,15 @@ export function TripHeader({ trip, onEditClick, onDeleteClick }: TripHeaderProps
               </h2>
             </div>
 
-            <p className="text-muted-foreground text-center text-sm md:text-left">
+            <p className="text-muted-foreground hidden text-center text-sm md:block md:text-left">
               Break your trip into phases, or start by adding locations first.
             </p>
 
-            {/* Create New Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 mt-4 flex min-w-40 items-center gap-2 rounded-lg px-4 py-2 text-white md:mt-auto md:ml-auto">
-                  <Plus className="size-4" />
-                  Create New
-                  <ChevronDown className="size-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-40">
-                <DropdownMenuItem
-                  className="flex cursor-pointer items-center gap-2 py-2"
-                  onSelect={() => setShowAddPhaseDialog(true)}
-                >
-                  <FolderPlus className="h-4 w-4" />
-                  <span>Phase</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="flex cursor-pointer items-center gap-2 border-t py-2"
-                  onSelect={() => setShowAddLocationDialog(true)}
-                >
-                  <MapPin className="h-4 w-4" />
-                  <span>Location</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <CreateNewDropdown
+              onAddPhase={() => setShowAddPhaseDialog(true)}
+              onAddLocation={() => setShowAddLocationDialog(true)}
+              className="md:mt-auto md:ml-auto"
+            />
           </CardContent>
         </Card>
       </div>

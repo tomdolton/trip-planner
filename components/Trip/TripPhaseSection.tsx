@@ -96,9 +96,10 @@ export function TripPhaseSection({
 
   // Shared header content component
   const HeaderButtons = () => (
-    <div className="mx-auto flex items-center gap-3 md:mx-0 md:gap-4">
+    <div className="flex items-center justify-between gap-4 @md:justify-start">
       <Button
         variant="secondary"
+        className="flex-1 @md:flex-none"
         onClick={(e) => {
           e.stopPropagation();
           setShowAddLocationDialog(true);
@@ -125,7 +126,7 @@ export function TripPhaseSection({
               onAddJourney={handleAddJourney}
               title="Add Start Journey"
             >
-              <Button variant="secondary">
+              <Button variant="secondary" className="flex-1 @md:flex-none">
                 <Plus className="size-5" />
                 <span className="sr-only">Add</span>
                 Start Journey
@@ -311,7 +312,7 @@ export function TripPhaseSection({
       <AccordionItem value={phase.id} className="card @container">
         <div className="relative flex flex-col items-stretch gap-2 px-5 py-3.5 md:flex-row md:items-end md:gap-0">
           <AccordionTrigger chevronAlign="left" className="mr-8 md:mr-4 md:w-auto @lg:mr-8">
-            <h2 className="mx-auto text-lg font-bold md:mx-0 md:text-xl">{phase.title}</h2>
+            <h2 className="mx-auto text-lg font-semibold md:mx-0 md:text-xl">{phase.title}</h2>
           </AccordionTrigger>
 
           <HeaderButtons />
