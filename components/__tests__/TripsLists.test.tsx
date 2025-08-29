@@ -55,12 +55,6 @@ describe("TripsList", () => {
   const mutateMock = jest.fn();
 
   beforeEach(() => {
-    (useTrips as jest.Mock).mockReturnValue({
-      data: mockTrips,
-      isLoading: false,
-      isError: false,
-    });
-
     (useDeleteTrip as jest.Mock).mockReturnValue({
       mutate: mutateMock,
       isPending: false,
@@ -68,23 +62,66 @@ describe("TripsList", () => {
   });
 
   it("renders trip and calls delete mutation on confirm", async () => {
+    (useTrips as jest.Mock).mockReturnValue({
+      data: mockTrips,
+      isLoading: false,
+      isError: false,
+    });
     renderWithQueryClient(<TripsList />);
     const user = userEvent.setup();
-
-    // Open the action menu (three dots button)
     const menuButton = screen.getByRole("button", { name: /open actions/i });
     await user.click(menuButton);
-
-    // Click the Delete menu item
     const deleteMenuItem = await screen.findByText(/delete/i);
     await user.click(deleteMenuItem);
-
-    // Click the confirm button in the dialog
     const confirmButton = await screen.findByRole("button", { name: /yes, delete/i });
     await user.click(confirmButton);
-
     await waitFor(() => {
       expect(mutateMock).toHaveBeenCalledWith("trip1", expect.any(Object));
     });
+  });
+
+  it("shows loading skeletons when loading", () => {
+    (useTrips as jest.Mock).mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      isError: false,
+    });
+    renderWithQueryClient(<TripsList />);
+    expect(screen.getAllByRole("status").length).toBeGreaterThan(0); // Skeletons
+  });
+
+  it("shows error message when error", () => {
+    (useTrips as jest.Mock).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+    });
+    renderWithQueryClient(<TripsList />);
+    expect(screen.getByText(/failed to load trips/i)).toBeInTheDocument();
+  });
+
+  it("shows empty state when no trips", () => {
+    (useTrips as jest.Mock).mockReturnValue({
+      data: [],
+      isLoading: false,
+      isError: false,
+    });
+    renderWithQueryClient(<TripsList />);
+    expect(screen.getByText(/no trips found/i)).toBeInTheDocument();
+  });
+
+  it("opens edit dialog when edit is clicked", async () => {
+    (useTrips as jest.Mock).mockReturnValue({
+      data: mockTrips,
+      isLoading: false,
+      isError: false,
+    });
+    renderWithQueryClient(<TripsList />);
+    const user = userEvent.setup();
+    const menuButton = screen.getByRole("button", { name: /open actions/i });
+    await user.click(menuButton);
+    const editMenuItem = await screen.findByText(/edit/i);
+    await user.click(editMenuItem);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 });
