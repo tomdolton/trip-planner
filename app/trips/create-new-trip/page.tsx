@@ -52,10 +52,10 @@ export default function CreateNewTripPage() {
           />
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 text-center md:text-start">
           <h1 className="text-xl font-semibold md:text-2xl">Create New Trip</h1>
 
-          <p className="text-muted-foreground text-lg font-medium">
+          <p className="text-muted-foreground font-medium md:text-lg">
             Start planning your next adventure
           </p>
         </div>

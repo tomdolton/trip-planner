@@ -164,10 +164,12 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="mx-auto mt-12 max-w-2xl space-y-6 pb-12">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
-        <p className="text-muted-foreground">Manage your account details and preferences</p>
+    <div className="container mt-12 max-w-2xl space-y-6 pb-12">
+      <div className="space-y-3 text-center md:text-start">
+        <h1 className="text-xl font-semibold md:text-2xl">Account Settings</h1>
+        <p className="text-muted-foreground font-medium md:text-lg">
+          Manage your account details and preferences
+        </p>
       </div>
 
       {/* Profile Information */}

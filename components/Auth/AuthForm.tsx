@@ -70,12 +70,12 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold tracking-tight">
+    <div className="space-y-8">
+      <div className="space-y-3 text-center">
+        <h2 className="text-2xl font-semibold">
           {type === "signup" ? "Create an account" : "Sign in to your account"}
         </h2>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground text-sm">
           {type === "signup"
             ? "Enter your details to get started"
             : "Enter your credentials to access your trips"}
