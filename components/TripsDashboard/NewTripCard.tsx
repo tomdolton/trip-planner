@@ -34,7 +34,7 @@ export default function NewTripCard({ onClick, className }: NewTripCardProps) {
       </div>
 
       <Button
-        className="bg-primary-hover mt-auto w-full"
+        className="mt-auto w-full"
         onClick={(e) => {
           e.stopPropagation();
           onClick();
