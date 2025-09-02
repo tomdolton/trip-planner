@@ -104,18 +104,18 @@
 }
 
 .dark {
-  --background: theme(colors.gray.950); // oklch(13% 0.028 261.692)
-  --foreground: theme(colors.slate.50); // oklch(0.984 0.003 247.858)
-  --card: theme(colors.slate.900); // oklch(0.208 0.042 265.755)
-  --card-foreground: theme(colors.slate.50); // oklch(0.984 0.003 247.858)
-  --popover: theme(colors.slate.900); // oklch(0.208 0.042 265.755)
-  --popover-foreground: theme(colors.slate.50); // oklch(0.984 0.003 247.858)
+  --background: theme(colors.gray.950); /* oklch(13% 0.028 261.692) */
+  --foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
+  --card: theme(colors.slate.900); /* oklch(0.208 0.042 265.755) */
+  --card-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
+  --popover: theme(colors.slate.900); /* oklch(0.208 0.042 265.755) */
+  --popover-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
 
-  --primary: theme(colors.slate.200); // oklch(0.929 0.013 255.508);
-  --primary-foreground: theme(colors.slate.900); // oklch(0.208 0.042 265.755);
+  --primary: theme(colors.slate.200); /* oklch(0.929 0.013 255.508) */
+  --primary-foreground: theme(colors.slate.900); /* oklch(0.208 0.042 265.755) */
 
-  --secondary: theme(colors.slate.800);  // oklch(0.279 0.041 260.031);
-  --secondary-foreground: theme(colors.slate.50); // oklch(0.984 0.003 247.858);
+  --secondary: theme(colors.slate.800); /* oklch(0.279 0.041 260.031) */
+  --secondary-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
 
   --muted: oklch(0.279 0.041 260.031);
   --muted-foreground: oklch(0.704 0.04 256.788);
