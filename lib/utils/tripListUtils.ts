@@ -10,14 +10,16 @@ import { TripsFilter } from "@/components/TripsDashboard/TripsFilterTabs";
  * @param now - The current date (defaults to now). Used for date comparisons.
  * @returns The filtered array of trips.
  *
- * - "upcoming": Returns trips where end_date is in the future or not set.
+ * - "upcoming": Returns trips with start_date that haven't ended yet (no end_date or end_date >= now).
  * - "past": Returns trips where end_date is set and in the past.
  * - "all": Returns all trips.
  */
 export function filterTrips(trips: Trip[], filter: TripsFilter, now: Date = new Date()): Trip[] {
   if (filter === "all") return trips;
   if (filter === "upcoming") {
-    return trips.filter((trip) => !trip.end_date || new Date(trip.end_date) >= now);
+    return trips.filter(
+      (trip) => trip.start_date && (!trip.end_date || new Date(trip.end_date) >= now)
+    );
   }
   if (filter === "past") {
     return trips.filter((trip) => trip.end_date && new Date(trip.end_date) < now);
