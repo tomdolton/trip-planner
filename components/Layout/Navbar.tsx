@@ -5,8 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 
-import { getUserDisplayName, getUserInitials } from "@/util/userUtils";
-
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +17,7 @@ import {
 import ModeToggle from "@/components/ui/ModeToggle";
 
 import { supabase } from "@/lib/supabase";
+import { getUserDisplayName, getUserInitials } from "@/lib/utils/userUtils";
 
 import { useUser } from "@/hooks/useUser";
 

@@ -87,11 +87,11 @@ export function useJourneyHelpers({
      * Check if cross-phase journey should be shown
      */
     function shouldShowCrossPhaseJourney() {
-      return (
+      return Boolean(
         allPhases &&
-        allPhases.length > 1 &&
-        phaseIndex < allPhases.length - 1 &&
-        getCrossPhaseJourneyLocationsToNext() !== null
+          allPhases.length > 1 &&
+          phaseIndex < allPhases.length - 1 &&
+          getCrossPhaseJourneyLocationsToNext() !== null
       );
     }
 
