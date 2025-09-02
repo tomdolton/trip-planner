@@ -55,6 +55,7 @@
   --color-icon-slate: theme(colors.slate.200);
   --color-icon-blue: theme(colors.blue.200);
   --color-icon-indigo: theme(colors.indigo.200);
+  --color-icon-foreground: theme(colors.slate.800);
 }
 
 :root {
@@ -72,7 +73,7 @@
   --muted-foreground: theme(colors.slate.500); /* #62748E */
 
   --destructive: theme(colors.red.700); /* #C10007 */
-  --destructive-foreground: theme(colors.slate.50); /* #F8FAFC */
+  /* --destructive-foreground: theme(colors.slate.50); #F8FAFC */
 
   --primary: theme(colors.slate.700); /* #1E293B */
   --primary-foreground: theme(colors.slate.50); /* #F8FAFC */
@@ -111,21 +112,27 @@
   --popover: theme(colors.slate.900); /* oklch(0.208 0.042 265.755) */
   --popover-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
 
+  --border: oklch(1 0 0 / 10%); /* oklch(1 0 0 / 10%) */
+  --input: oklch(1 0 0 / 15%); /* oklch(1 0 0 / 15%) */
+
   --primary: theme(colors.slate.200); /* oklch(0.929 0.013 255.508) */
   --primary-foreground: theme(colors.slate.900); /* oklch(0.208 0.042 265.755) */
+  --primary-hover: theme(colors.slate.50);
 
   --secondary: theme(colors.slate.800); /* oklch(0.279 0.041 260.031) */
   --secondary-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
+  --secondary-hover: theme(colors.slate.700);
 
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
+  --muted: theme(colors.slate.800); /* oklch(0.279 0.041 260.031) */
+  --muted-foreground: theme(colors.slate.400); /* oklch(0.704 0.04 256.788) */
 
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --accent: theme(colors.slate.800); /* oklch(0.279 0.041 260.031) */
+  --accent-foreground: theme(colors.slate.50); /* oklch(0.984 0.003 247.858) */
+
+  --destructive: theme(colors.red.400); /* oklch(0.704 0.191 22.216) */
+  /* --destructive-foreground: theme(colors.slate.900); oklch(13% 0.028 261.692) */
+
+  --ring: theme(colors.gray.500); /* oklch(0.551 0.027 264.364) */
 
   --chart-1: theme(colors.blue.500);
   --chart-2: theme(colors.red.500);

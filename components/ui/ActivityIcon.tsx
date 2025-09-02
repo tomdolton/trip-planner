@@ -23,7 +23,7 @@ export function ActivityIcon({ activityType, size = "md", className = "" }: Acti
   if (isCustomSvgActivityType(activityType)) {
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-full p-2 ${className}`}
+        className={`text-icon-foreground inline-flex items-center justify-center rounded-full p-2 ${className}`}
         style={{ backgroundColor }}
       >
         {activityType === "relax" && <RelaxIcon className={getIconSizeClasses(size)} />}
@@ -43,7 +43,7 @@ export function ActivityIcon({ activityType, size = "md", className = "" }: Acti
     const FallbackIcon = LucideIcons.HelpCircle;
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-full p-2 ${className}`}
+        className={`text-icon-foreground inline-flex items-center justify-center rounded-full p-2 ${className}`}
         style={{ backgroundColor }}
       >
         <FallbackIcon className={getIconSizeClasses(size)} />
@@ -53,7 +53,7 @@ export function ActivityIcon({ activityType, size = "md", className = "" }: Acti
 
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-full p-2 ${className}`}
+      className={`text-icon-foreground inline-flex items-center justify-center rounded-full p-2 ${className}`}
       style={{ backgroundColor }}
     >
       <IconComponent className={getIconSizeClasses(size)} />
