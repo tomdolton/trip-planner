@@ -23,7 +23,19 @@ export function DatePicker({
   className,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
-  const selectedDate = value ? new Date(value) : undefined;
+
+  // Safely parse the date, handling invalid dates
+  const selectedDate = React.useMemo(() => {
+    if (!value) return undefined;
+    try {
+      const date = new Date(value);
+      // Check if the date is valid
+      if (isNaN(date.getTime())) return undefined;
+      return date;
+    } catch {
+      return undefined;
+    }
+  }, [value]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
