@@ -47,8 +47,17 @@ export function TripMapMarker({
       }}
     >
       {selected && (
-        <InfoWindow position={{ lat: marker.lat, lng: marker.lng }} onCloseClick={onClose}>
-          <TripMapInfoWindow marker={marker} trip={trip} onView={onView} />
+        <InfoWindow
+          position={{ lat: marker.lat, lng: marker.lng }}
+          onCloseClick={onClose}
+          options={{
+            disableAutoPan: false,
+            maxWidth: 300,
+            pixelOffset: new google.maps.Size(0, -30),
+            headerDisabled: true,
+          }}
+        >
+          <TripMapInfoWindow marker={marker} trip={trip} onView={onView} onClose={onClose} />
         </InfoWindow>
       )}
     </Marker>
