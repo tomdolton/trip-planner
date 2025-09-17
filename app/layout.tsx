@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, DM_Sans } from "next/font/google";
 import { useState } from "react";
 import { Provider } from "react-redux";
 
@@ -18,7 +18,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const outfit = Outfit({
+const dmSans = DM_Sans({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
@@ -33,7 +33,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${dmSans.variable} font-sans antialiased`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
             <ThemeProvider
