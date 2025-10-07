@@ -98,7 +98,7 @@ export async function ensureLoggedOut(page: Page): Promise<void> {
     await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000); // Let auth state resolve
-  } catch (error) {
+  } catch {
     // If all else fails, just navigate to homepage
     await page.goto("/");
     await page.waitForLoadState("networkidle");

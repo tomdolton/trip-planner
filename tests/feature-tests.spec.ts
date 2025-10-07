@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 
 test.describe("Trip Management Features", () => {
   // Helper function to login if credentials are available
-  async function loginIfPossible(page) {
+  async function loginIfPossible(page: Page) {
     const testEmail = process.env.TEST_USER_EMAIL;
     const testPassword = process.env.TEST_USER_PASSWORD;
 
@@ -44,7 +44,9 @@ test.describe("Trip Management Features", () => {
     // Should have some navigation or action elements
     const pageContent = await page.textContent("body");
     expect(pageContent).toBeTruthy();
-    expect(pageContent.length).toBeGreaterThan(100); // Page should have substantial content
+    if (pageContent) {
+      expect(pageContent.length).toBeGreaterThan(100); // Page should have substantial content
+    }
   });
 
   test("create new trip button/link is present when authenticated", async ({ page }) => {
@@ -152,12 +154,14 @@ test.describe("Navigation and User Experience", () => {
     await page.waitForLoadState("networkidle");
 
     // Look for footer or bottom content
-    const footerElements = await page.locator('footer, [role="contentinfo"]').count();
+    await page.locator('footer, [role="contentinfo"]').count();
 
     // While footer might not be present, page should have proper structure
     const bodyContent = await page.textContent("body");
     expect(bodyContent).toBeTruthy();
-    expect(bodyContent.length).toBeGreaterThan(50);
+    if (bodyContent) {
+      expect(bodyContent.length).toBeGreaterThan(50);
+    }
   });
 
   test("error handling for non-existent pages", async ({ page }) => {
@@ -167,17 +171,19 @@ test.describe("Navigation and User Experience", () => {
     const pageContent = await page.textContent("body");
     expect(pageContent).toBeTruthy();
 
-    // Should either show 404 content or redirect to a valid page
-    const is404 =
-      pageContent.includes("404") ||
-      pageContent.includes("Not Found") ||
-      pageContent.includes("Page not found");
-    const hasValidContent =
-      pageContent.includes("Trip Planner") ||
-      pageContent.includes("Welcome") ||
-      pageContent.includes("Get Started");
+    if (pageContent) {
+      // Should either show 404 content or redirect to a valid page
+      const is404 =
+        pageContent.includes("404") ||
+        pageContent.includes("Not Found") ||
+        pageContent.includes("Page not found");
+      const hasValidContent =
+        pageContent.includes("Trip Planner") ||
+        pageContent.includes("Welcome") ||
+        pageContent.includes("Get Started");
 
-    expect(is404 || hasValidContent).toBe(true);
+      expect(is404 || hasValidContent).toBe(true);
+    }
   });
 
   test("page loading performance is reasonable", async ({ page }) => {
@@ -203,7 +209,7 @@ test.describe("Form Accessibility and Usability", () => {
 
     // Should be able to tab through form elements
     await page.keyboard.press("Tab");
-    const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
+    await page.evaluate(() => document.activeElement?.tagName);
 
     // Continue tabbing to find form elements
     let tabCount = 0;
