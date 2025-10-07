@@ -33,6 +33,10 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Trip Planner</title>
+        <meta name="description" content="Plan and manage your trips with ease" />
+      </head>
       <body className={`${inter.variable} ${dmSans.variable} font-sans antialiased`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
