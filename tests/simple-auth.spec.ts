@@ -15,12 +15,12 @@ test.describe("Simplified Authentication Tests", () => {
     await ensureLoggedOut(page);
     await page.goto("/");
     await page.waitForLoadState("networkidle");
-    
+
     // Wait for auth state to resolve (useUser hook)
     await page.waitForTimeout(5000);
-    
+
     await expect(page.getByRole("heading", { name: "Trip Planner" })).toBeVisible();
-    
+
     // Check that the link to /trips contains "Get Started" text
     const tripLink = page.locator('a[href="/trips"]');
     await expect(tripLink).toBeVisible();
@@ -29,7 +29,7 @@ test.describe("Simplified Authentication Tests", () => {
 
   test("can login with test credentials", async ({ page }) => {
     await ensureLoggedOut(page);
-    
+
     try {
       await loginWithTestUser(page);
       // Should redirect to trips page after login
@@ -38,14 +38,14 @@ test.describe("Simplified Authentication Tests", () => {
       // If login fails, let's see what page we're on
       console.log("Login failed, current URL:", page.url());
       console.log("Login error:", error);
-      
+
       // Check if we're still on login page with an error
       if (page.url().includes("/login")) {
         // Look for error messages
         const errorText = await page.textContent("body");
         console.log("Page content:", errorText);
       }
-      
+
       throw error;
     }
   });
