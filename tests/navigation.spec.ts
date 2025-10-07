@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-import { mockAuthenticatedUser } from "./helpers";
+import { loginWithTestUser } from "./helpers";
 
 test.describe("Navigation and Layout", () => {
   test("should have consistent layout across public pages", async ({ page }) => {
@@ -52,7 +52,7 @@ test.describe("Navigation and Layout", () => {
   });
 
   test("should navigate properly for authenticated users", async ({ page }) => {
-    await mockAuthenticatedUser(page);
+    await loginWithTestUser(page);
 
     // Test navigation to protected routes
     await page.goto("/trips");

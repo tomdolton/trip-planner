@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-import { mockAuthenticatedUser, mockUnauthenticatedUser } from "./helpers";
+import { loginWithTestUser, ensureLoggedOut } from "./helpers";
 
 test.describe("Homepage", () => {
   test("should display the homepage with correct title and content", async ({ page }) => {
@@ -21,29 +21,23 @@ test.describe("Homepage", () => {
   });
 
   test("should show 'Get Started' for unauthenticated users", async ({ page }) => {
-    await mockUnauthenticatedUser(page);
+    await ensureLoggedOut(page);
     await page.goto("/");
-
-    // Wait for auth state to load
-    await page.waitForTimeout(1000);
 
     // Should show "Get Started" for unauthenticated users
     await expect(page.getByRole("link", { name: "Get Started" })).toBeVisible();
   });
 
   test("should show 'View Trips' for authenticated users", async ({ page }) => {
-    await mockAuthenticatedUser(page);
+    await loginWithTestUser(page);
     await page.goto("/");
-
-    // Wait for auth state to load
-    await page.waitForTimeout(1000);
 
     // Should show "View Trips" for authenticated users
     await expect(page.getByRole("link", { name: "View Trips" })).toBeVisible();
   });
 
   test("should navigate to login when unauthenticated user clicks CTA", async ({ page }) => {
-    await mockUnauthenticatedUser(page);
+    await ensureLoggedOut(page);
     await page.goto("/");
 
     // Click the main CTA button

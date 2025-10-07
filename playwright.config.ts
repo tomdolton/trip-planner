@@ -1,13 +1,19 @@
+/* eslint-disable import/order */
+import path from "path";
+
 import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// Temporarily disabled to test without env vars
-// import dotenv from "dotenv";
-// import path from "path";
-// dotenv.config({ path: path.resolve(__dirname, "tests/.env.test") });
+import dotenv from "dotenv";
+
+// Load environment variables from .env.local (main file) and .env (fallback)
+dotenv.config({ path: path.resolve(__dirname, ".env.local") });
+dotenv.config({ path: path.resolve(__dirname, ".env"), override: false });
+// Also load test-specific env if it exists
+dotenv.config({ path: path.resolve(__dirname, "tests/.env.test"), override: false });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
