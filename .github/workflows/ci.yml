@@ -25,6 +25,9 @@ jobs:
 
       - name: Type check
         run: npx tsc --noEmit
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       - name: Run lint checks
         run: npm run lint
@@ -34,6 +37,9 @@ jobs:
 
       - name: Run tests with coverage
         run: npm test -- --coverage
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       - name: Cache Next.js build artifacts
         uses: actions/cache@v4
