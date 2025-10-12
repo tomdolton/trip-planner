@@ -20,13 +20,13 @@ test.describe("Real Authentication Tests", () => {
     // Verify homepage shows "View Trips" now - handle CI session expiry
     try {
       await page.goto("/", { waitUntil: "networkidle" });
-      
+
       // Check if redirected to login (session expired)
       if (page.url().includes("/login")) {
         console.log("Auth session expired in CI - core login functionality verified");
         return;
       }
-      
+
       await expect(page.getByRole("link", { name: "View Trips" })).toBeVisible();
     } catch (error) {
       if (page.url().includes("/login")) {
@@ -55,20 +55,20 @@ test.describe("Real Authentication Tests", () => {
 
     // Login and check authenticated state
     await loginWithTestUser(page);
-    
+
     // Wait for auth state to stabilize
     await page.waitForTimeout(1000);
-    
+
     // Try to go to homepage - handle potential session expiry in CI
     try {
       await page.goto("/", { waitUntil: "networkidle" });
-      
+
       // Check if redirected to login (session expired)
       if (page.url().includes("/login")) {
         console.log("Auth session expired in CI - core login functionality verified");
         return;
       }
-      
+
       await expect(page.getByRole("link", { name: "View Trips" })).toBeVisible();
     } catch (error) {
       if (page.url().includes("/login")) {
@@ -250,7 +250,7 @@ test.describe("Real Authentication Tests", () => {
     // Handle potential session expiry in CI environment
     try {
       await page.goto("/", { waitUntil: "networkidle" });
-      
+
       // Check if we got redirected to login (session expired)
       if (page.url().includes("/login")) {
         // Session expired in CI - this can happen, so we'll skip the homepage check
@@ -258,7 +258,7 @@ test.describe("Real Authentication Tests", () => {
         console.log("Skipping homepage check - auth session expired in CI environment");
         return;
       }
-      
+
       // If we're on homepage, verify the authenticated state
       await expect(page.getByRole("link", { name: "View Trips" })).toBeVisible();
     } catch (error) {
