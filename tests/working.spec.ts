@@ -61,7 +61,7 @@ test.describe("Working E2E Tests", () => {
 
   test("can fill out login form", async ({ page }) => {
     await page.goto("/login");
-    
+
     // Wait for form to be fully loaded
     await page.waitForSelector('input[type="email"]');
     await page.waitForTimeout(500); // Small delay for form initialization
@@ -69,10 +69,10 @@ test.describe("Working E2E Tests", () => {
     // Fill out the form with slower typing
     const emailInput = page.getByLabel("Email");
     const passwordInput = page.getByLabel("Password");
-    
+
     await emailInput.fill("test@example.com");
     await passwordInput.fill("password123");
-    
+
     // Wait a bit for the form to process the input
     await page.waitForTimeout(200);
 

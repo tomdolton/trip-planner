@@ -44,7 +44,7 @@ test.describe("Authentication", () => {
 
   test("should handle form input correctly", async ({ page }) => {
     await page.goto("/login");
-    
+
     // Wait for form to be fully loaded
     await page.waitForSelector('input[type="email"]');
     await page.waitForTimeout(500); // Small delay for form initialization
@@ -52,10 +52,10 @@ test.describe("Authentication", () => {
     // Fill in the form with slower typing
     const emailInput = page.getByLabel("Email");
     const passwordInput = page.getByLabel("Password");
-    
+
     await emailInput.fill("test@example.com");
     await passwordInput.fill("password123");
-    
+
     // Wait a bit for the form to process the input
     await page.waitForTimeout(200);
 
