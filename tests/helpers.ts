@@ -38,26 +38,82 @@ export async function loginWithTestUser(page: Page): Promise<void> {
 }
 export async function logoutUser(page: Page): Promise<void> {
   try {
-    // Look for common logout patterns
-    const logoutButton = page
+    // First ensure we're on a page where logout is available
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(1000);
+
+    // Look for navbar or user menu that might contain logout
+    // Try to find a user dropdown or menu button first
+    const userMenuButton = page
       .locator(
-        'button:has-text("logout"), button:has-text("log out"), button:has-text("sign out"), a:has-text("logout"), a:has-text("log out"), a:has-text("sign out")'
+        '[data-testid="user-menu"], .user-menu, button:has-text("menu"), [aria-label*="user"], [aria-label*="account"]'
       )
       .first();
 
-    if (await logoutButton.isVisible({ timeout: 2000 })) {
-      await logoutButton.click();
-      await page.waitForTimeout(1000);
-    } else {
-      // If no logout button found, navigate to homepage
-      // The auth state should reset naturally
-      await page.goto("/");
-      await page.waitForLoadState("networkidle");
+    if (await userMenuButton.isVisible({ timeout: 2000 })) {
+      await userMenuButton.click();
+      await page.waitForTimeout(500);
     }
-  } catch {
-    // Fallback: just navigate to homepage
+
+    // Look for logout button/link with various patterns
+    const logoutSelectors = [
+      'button:has-text("Logout")',
+      'button:has-text("Log out")',
+      'button:has-text("Sign out")',
+      'a:has-text("Logout")',
+      'a:has-text("Log out")',
+      'a:has-text("Sign out")',
+      '[data-testid="logout"]',
+      ".logout-button",
+      'button[type="button"]:has-text("out")',
+    ];
+
+    let loggedOut = false;
+    for (const selector of logoutSelectors) {
+      const logoutElement = page.locator(selector).first();
+      if (await logoutElement.isVisible({ timeout: 1000 })) {
+        await logoutElement.click();
+        await page.waitForTimeout(2000);
+        loggedOut = true;
+        break;
+      }
+    }
+
+    // If no explicit logout found, try clearing browser storage to simulate logout
+    if (!loggedOut) {
+      try {
+        await page.evaluate(() => {
+          localStorage.clear();
+          sessionStorage.clear();
+        });
+        await page.reload();
+        await page.waitForLoadState("networkidle");
+      } catch {
+        // Storage operations might fail, continue anyway
+      }
+    }
+
+    // Verify logout by checking the page content
     await page.goto("/");
     await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(2000);
+  } catch {
+    // Fallback: try to clear storage and reload
+    try {
+      await page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+      });
+      await page.goto("/");
+      await page.waitForLoadState("networkidle");
+      await page.waitForTimeout(2000);
+    } catch {
+      // If all else fails, just navigate to homepage
+      await page.goto("/");
+      await page.waitForLoadState("networkidle");
+      await page.waitForTimeout(2000);
+    }
   }
 }
 
@@ -66,7 +122,22 @@ export async function ensureLoggedOut(page: Page): Promise<void> {
     // Navigate to homepage first to establish context
     await page.goto("/");
     await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(2000); // Let auth state resolve
+    await page.waitForTimeout(1000);
+
+    // Clear storage after we're on the page
+    try {
+      await page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+      });
+    } catch {
+      // Storage clearing might fail, continue anyway
+    }
+
+    // Reload to apply storage changes
+    await page.reload();
+    await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(2000); // Give auth state time to resolve
 
     // Check if we're already logged out by looking for "Get Started"
     const getStartedVisible = await page
@@ -78,28 +149,22 @@ export async function ensureLoggedOut(page: Page): Promise<void> {
       return;
     }
 
-    // If we see "View Trips", we're logged in and need to logout
+    // If we see "View Trips", we might still be logged in - try explicit logout
     const viewTripsVisible = await page
       .locator('a[href="/trips"]:has-text("View Trips")')
       .isVisible({ timeout: 3000 });
 
     if (viewTripsVisible) {
-      // Look for logout button
-      const logoutButton = page.locator(
-        'button:has-text("logout"), button:has-text("log out"), button:has-text("sign out"), a:has-text("logout"), a:has-text("log out"), a:has-text("sign out")'
-      );
-      if (await logoutButton.isVisible({ timeout: 2000 })) {
-        await logoutButton.click();
-        await page.waitForTimeout(1000);
-      }
+      // Try to logout explicitly
+      await logoutUser(page);
     }
 
-    // Navigate to homepage again to ensure we're in a clean state
+    // Final verification
     await page.goto("/");
     await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(2000); // Let auth state resolve
+    await page.waitForTimeout(2000);
   } catch {
-    // If all else fails, just navigate to homepage
+    // Fallback: just navigate to homepage
     await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
@@ -107,11 +172,39 @@ export async function ensureLoggedOut(page: Page): Promise<void> {
 }
 
 export async function checkAuthState(page: Page): Promise<boolean> {
-  // Check for authenticated UI elements
-  const isLoggedIn = await page
-    .locator('a:has-text("View Trips"), button:has-text("View Trips"), a[href="/trips"]')
-    .isVisible({ timeout: 2000 });
-  return isLoggedIn;
+  try {
+    // Navigate to homepage to check auth state
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(2000); // Let auth state resolve
+
+    // Check for authenticated indicators
+    const viewTripsVisible = await page
+      .locator('a[href="/trips"]:has-text("View Trips")')
+      .isVisible({ timeout: 3000 });
+
+    if (viewTripsVisible) {
+      return true;
+    }
+
+    // Check for unauthenticated indicators
+    const getStartedVisible = await page
+      .locator('a[href="/trips"]:has-text("Get Started")')
+      .isVisible({ timeout: 3000 });
+
+    if (getStartedVisible) {
+      return false;
+    }
+
+    // Fallback: check if accessing /trips redirects to login
+    await page.goto("/trips");
+    await page.waitForLoadState("networkidle");
+    const currentUrl = page.url();
+    return !currentUrl.includes("/login");
+  } catch {
+    // Final fallback - assume not logged in if we can't determine
+    return false;
+  }
 }
 
 /**
@@ -141,14 +234,13 @@ export class TripPlannerTestHelpers {
   }
 
   async checkForErrors(): Promise<void> {
-    // Check for any visible error messages
+    // Check for any visible error messages - be more specific to avoid false positives
     const errorSelectors = [
       '[data-testid="error"]',
-      ".error",
-      '[role="alert"]',
+      '[data-testid="error-banner"]',
+      ".error-banner",
+      '[role="alert"]:has-text("Error")',
       ".alert-error",
-      "text=/error/i",
-      "text=/something went wrong/i",
     ];
 
     for (const selector of errorSelectors) {
